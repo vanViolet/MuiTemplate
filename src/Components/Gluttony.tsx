@@ -18,6 +18,8 @@ import {
   ContainerProps,
   Divider,
   DividerProps,
+  Fab,
+  FabProps,
   FormControlLabel,
   FormControlLabelProps,
   Grid,
@@ -34,10 +36,15 @@ import {
   ListProps,
   Paper,
   PaperProps,
+  Radio,
+  RadioProps,
   Stack,
   StackProps,
+  Switch,
+  SwitchProps,
   SxProps,
   TextField,
+  TextFieldProps,
   Theme,
   Typography,
   TypographyProps,
@@ -76,6 +83,10 @@ interface IDevourObject extends CommonTypes {
   IconButton?: () => IIconButton[]
   ButtonGroup?: () => IButtonGroup[]
   Checkbox?: () => ICheckbox[]
+  RadioButton?: () => IRadioButton[]
+  Switch?: () => ISwitch[]
+  TextField?: () => ITextField[]
+  FloatingActionButton?: () => IFloatingActionButton[]
 }
 
 export interface IGridContainer extends CommonTypes {
@@ -107,6 +118,10 @@ export interface IGridItem extends CommonTypes {
   IconButton?: () => IIconButton[]
   ButtonGroup?: () => IButtonGroup[]
   Checkbox?: () => ICheckbox[]
+  RadioButton?: () => IRadioButton[]
+  Switch?: () => ISwitch[]
+  TextField?: () => ITextField[]
+  FloatingActionButton?: () => IFloatingActionButton[]
 }
 
 // Layout ============================================================================== Layout Interface
@@ -185,6 +200,26 @@ export interface ICheckbox extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
   Property?: CheckboxProps
   FromControlLabelProperty?: FormControlLabelProps
   label?: React.ReactNode | undefined
+}
+
+export interface IRadioButton extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
+  Property?: RadioProps
+  FromControlLabelProperty?: FormControlLabelProps
+  label?: React.ReactNode | undefined
+}
+
+export interface ISwitch extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
+  Property?: SwitchProps
+  FromControlLabelProperty?: FormControlLabelProps
+  label?: React.ReactNode | undefined
+}
+
+export interface ITextField extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
+  Property?: TextFieldProps
+}
+
+export interface IFloatingActionButton extends CommonTypes {
+  Property?: FabProps
 }
 
 // Gluttony ===================================================================== Export Gluttony Component
@@ -322,6 +357,25 @@ export const Gluttony = ({ DevourArraysObject }: IGluttony) => {
                       {...row.FromControlLabelProperty}
                     />
                   ))}
+
+                  {row?.Switch?.().map((row, key) => (
+                    <FormControlLabel
+                      key={key}
+                      control={<Switch {...row.Property} />}
+                      label={row.label}
+                      {...row.FromControlLabelProperty}
+                    />
+                  ))}
+
+                  {row?.TextField?.().map((row, key) => (
+                    <TextField key={key} {...row.Property} />
+                  ))}
+
+                  {row?.FloatingActionButton?.().map((row, key) => (
+                    <Fab key={key} {...row.Property}>
+                      {row.WhateverIwantAsChild}
+                    </Fab>
+                  ))}
                 </Grid>
               ))}
             </Grid>
@@ -409,6 +463,28 @@ export const Gluttony = ({ DevourArraysObject }: IGluttony) => {
 
           {row?.Checkbox?.().map((row, key) => (
             <FormControlLabel key={key} control={<Checkbox {...row.Property} />} label={row.label} {...row.FromControlLabelProperty} />
+          ))}
+
+          {row?.RadioButton?.().map((row, key) => (
+            <FormControlLabel key={key} control={<Radio {...row.Property} />} label={row.label} {...row.FromControlLabelProperty} />
+          ))}
+
+          {row?.Checkbox?.().map((row, key) => (
+            <FormControlLabel key={key} control={<Checkbox {...row.Property} />} label={row.label} {...row.FromControlLabelProperty} />
+          ))}
+
+          {row?.Switch?.().map((row, key) => (
+            <FormControlLabel key={key} control={<Switch {...row.Property} />} label={row.label} {...row.FromControlLabelProperty} />
+          ))}
+
+          {row?.TextField?.().map((row, key) => (
+            <TextField key={key} {...row.Property} />
+          ))}
+
+          {row?.FloatingActionButton?.().map((row, key) => (
+            <Fab key={key} {...row.Property}>
+              {row.WhateverIwantAsChild}
+            </Fab>
           ))}
         </Box>
       ))}
