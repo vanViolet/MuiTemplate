@@ -28,7 +28,7 @@ export type IColorLibrary =
   | 'active-bg-light'
   | 'active-bg-dark'
 
-export const ColorLibrary = (color: IColorLibrary) => {
+export const COLOR = (color: IColorLibrary) => {
   if (color === 'header-light') return 'linear-gradient(133deg, rgba(0,112,189,1) 0%, rgba(29,183,235,1) 100%)'
   if (color === 'header-dark') return 'rgba(39,39,42,0)'
 

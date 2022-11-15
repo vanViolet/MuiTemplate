@@ -9,7 +9,7 @@ export interface IDispatch {
 
 export const store = configureStore({
   reducer: {
-    counter: counterSlice.reducer,
+    custom: counterSlice.reducer,
     auth: authReducer.reducer,
     darkMode: darkModeReducer.reducer,
   },

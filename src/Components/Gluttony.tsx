@@ -1,8 +1,11 @@
+import { CSSObject } from '@emotion/react'
 import {
   Autocomplete,
   AutocompleteProps,
   Avatar,
   AvatarProps,
+  Badge,
+  BadgeProps,
   Box,
   BoxProps,
   Button,
@@ -46,126 +49,226 @@ import {
   TextField,
   TextFieldProps,
   Theme,
+  Tooltip,
+  TooltipProps,
   Typography,
   TypographyProps,
 } from '@mui/material'
+import { DataGrid, DataGridProps, GridColDef, GridRowsProp } from '@mui/x-data-grid'
 import React from 'react'
 
 interface CommonTypes {
-  WhateverIwantAsChild?: React.ReactNode | JSX.Element | JSX.Element[] | undefined
+  WhateverIwantAsChild?: React.ReactNode | JSX.Element | JSX.Element[] | undefined | undefined
 }
 
 interface IGluttony {
-  DevourArraysObject?: IDevourObject[]
+  FoodForGluttony?: IFoodForGluttony[] | undefined
 }
 
-interface IDevourObject extends CommonTypes {
-  StylingParentRootForThisObject?: SxProps<Theme> | undefined
+export interface IFoodForGluttony extends CommonTypes {
+  StyleForGluttonyParentRoot?: SxProps<Theme> | undefined
+
   /** Layout Interface */
-  GridContainer?: () => IGridContainer[]
-  Box?: () => IBox[]
-  Container?: () => IContainer[]
-  Stack?: () => IStack[]
+  GridContainer?: () => IGridContainer[] | IGridContainer[] | undefined
+  Box?: () => IBox[] | IBox[] | undefined | undefined
+  Container?: () => IContainer[] | IContainer[] | undefined
+  Stack?: () => IStack[] | IStack[] | undefined
 
   /** Surfaces Interface */
-  Paper?: () => IPaper[]
+  Paper?: () => IPaper[] | IPaper[] | undefined
 
   /** Data Display Interface */
-  Typography?: () => ITypography[]
-  Divider?: () => IDivider[]
-  Chip?: () => IChip[]
-  Avatar?: () => IAvatar[]
-  List?: () => IList[]
+  Typography?: () => ITypography[] | ITypography[] | undefined
+  Divider?: () => IDivider[] | IDivider[] | undefined
+  Chip?: () => IChip[] | IChip[] | undefined
+  Avatar?: () => IAvatar[] | IAvatar[] | undefined
+  Badge?: () => IBadge[] | IBadge[] | undefined
+  Table?: () => ITable[] | ITable[] | undefined
+  Tooltip?: () => ITooltip[] | ITooltip[] | undefined
+  List?: () => IList[] | IList[] | undefined
 
   /** Inputs Interface */
-  Autocomplete?: <T>() => IAutocomplete<T>[]
-  Button?: () => IButton[]
-  IconButton?: () => IIconButton[]
-  ButtonGroup?: () => IButtonGroup[]
-  Checkbox?: () => ICheckbox[]
-  RadioButton?: () => IRadioButton[]
-  Switch?: () => ISwitch[]
-  TextField?: () => ITextField[]
-  FloatingActionButton?: () => IFloatingActionButton[]
+  Autocomplete?: <T>() => IAutocomplete<T>[] | IAutocomplete<T>[] | undefined
+  Button?: () => IButton[] | IButton[] | undefined
+  IconButton?: () => IIconButton[] | IIconButton[] | undefined
+  ButtonGroup?: () => IButtonGroup[] | IButtonGroup[] | undefined
+  Checkbox?: () => ICheckbox[] | ICheckbox[] | undefined
+  RadioButton?: () => IRadioButton[] | IRadioButton[] | undefined
+  Switch?: () => ISwitch[] | ISwitch[] | undefined
+  TextField?: () => ITextField[] | ITextField[] | undefined
+  FloatingActionButton?: () => IFloatingActionButton[] | IFloatingActionButton[] | undefined
 }
 
 export interface IGridContainer extends CommonTypes {
-  Property?: Omit<GridProps, 'item' | 'container'>
-  GridItem?: () => IGridItem[]
+  PropsForThisGridContainer?: Omit<GridProps, 'item' | 'container'>
+  OrderThisGridContainerTo?: number | undefined
+  GridItem?: () => IGridItem[] | undefined
 }
 
 export interface IGridItem extends CommonTypes {
-  Property?: Omit<GridProps, 'item' | 'container'>
+  PropsForThisGridItem?: Omit<GridProps, 'item' | 'container'>
 
   /** Layout Interface */
-  Box?: () => IBox[]
-  Container?: () => IContainer[]
-  Stack?: () => IStack[]
+  Box?: () =>
+    | Array<Pick<IBox, 'PropsForThisBox' | 'WhateverIwantAsChild' | 'OrderThisBoxTo'>>
+    | Array<Pick<IBox, 'PropsForThisBox' | 'WhateverIwantAsChild' | 'OrderThisBoxTo'>>
+    | undefined
+    | undefined
+  Container?: () => IContainer[] | IContainer[] | undefined
+  Stack?: () => IStack[] | IStack[] | undefined
 
   /** Surfaces Interface */
-  Paper?: () => IPaper[]
+  Paper?: () => IPaper[] | IPaper[] | undefined
 
   /** Data Display Interface */
-  Typography?: () => ITypography[]
-  Divider?: () => IDivider[]
-  Chip?: () => IChip[]
-  Avatar?: () => IAvatar[]
-  List?: () => IList[]
+  Typography?: () => ITypography[] | ITypography[] | undefined
+  Divider?: () => IDivider[] | IDivider[] | undefined
+  Chip?: () => IChip[] | IChip[] | undefined
+  Avatar?: () => IAvatar[] | IAvatar[] | undefined
+
+  List?: () => IList[] | IList[] | undefined
 
   /** Inputs Interface */
-  Autocomplete?: <T>() => IAutocomplete<T>[]
-  Button?: () => IButton[]
-  IconButton?: () => IIconButton[]
-  ButtonGroup?: () => IButtonGroup[]
-  Checkbox?: () => ICheckbox[]
-  RadioButton?: () => IRadioButton[]
-  Switch?: () => ISwitch[]
-  TextField?: () => ITextField[]
-  FloatingActionButton?: () => IFloatingActionButton[]
+  Autocomplete?: <T>() => IAutocomplete<T>[] | IAutocomplete<T>[] | undefined
+  Button?: () => IButton[] | IButton[] | undefined
+  IconButton?: () => IIconButton[] | IIconButton[] | undefined
+  ButtonGroup?: () => IButtonGroup[] | IButtonGroup[] | undefined
+  Checkbox?: () => ICheckbox[] | ICheckbox[] | undefined
+  RadioButton?: () => IRadioButton[] | IRadioButton[] | undefined
+  Switch?: () => ISwitch[] | ISwitch[] | undefined
+  TextField?: () => ITextField[] | ITextField[] | undefined
+  FloatingActionButton?: () => IFloatingActionButton[] | IFloatingActionButton[] | undefined
 }
 
 // Layout ============================================================================== Layout Interface
+
+export type IBoxNotNested = Pick<IBox, 'PropsForThisBox' | 'WhateverIwantAsChild' | 'OrderThisBoxTo'> | undefined | undefined
+
 export interface IBox extends CommonTypes {
-  Property?: BoxProps
+  PropsForThisBox?: BoxProps
+  OrderThisBoxTo?: number | undefined
+  Box?: () =>
+    | Array<Pick<IBox, 'PropsForThisBox' | 'WhateverIwantAsChild' | 'OrderThisBoxTo'>>
+    | Array<Pick<IBox, 'PropsForThisBox' | 'WhateverIwantAsChild' | 'OrderThisBoxTo'>>
+    | undefined
+    | undefined
+  Container?: () => IContainer[] | IContainer[] | undefined
+  Stack?: () => IStack[] | IStack[] | undefined
+
+  /** Surfaces Interface */
+  Paper?: () => IPaper[] | IPaper[] | undefined
+
+  /** Data Display Interface */
+  Typography?: () => ITypography[] | ITypography[] | undefined
+  Divider?: () => IDivider[] | IDivider[] | undefined
+  Chip?: () => IChip[] | IChip[] | undefined
+  Avatar?: () => IAvatar[] | IAvatar[] | undefined
+  List?: () => IList[] | IList[] | undefined
+
+  /** Inputs Interface */
+  Autocomplete?: <T>() => IAutocomplete<T>[] | IAutocomplete<T>[] | undefined
+  Button?: () => IButton[] | IButton[] | undefined
+  IconButton?: () => IIconButton[] | IIconButton[] | undefined
+  ButtonGroup?: () => IButtonGroup[] | IButtonGroup[] | undefined
+  Checkbox?: () => ICheckbox[] | ICheckbox[] | undefined
+  RadioButton?: () => IRadioButton[] | IRadioButton[] | undefined
+  Switch?: () => ISwitch[] | ISwitch[] | undefined
+  TextField?: () => ITextField[] | ITextField[] | undefined
+  FloatingActionButton?: () => IFloatingActionButton[] | IFloatingActionButton[] | undefined
 }
 export interface IContainer extends CommonTypes {
-  Property?: ContainerProps
+  PropsForThisContainer?: ContainerProps
+  OrderThisContainerTo?: number | undefined
 }
 export interface IStack extends CommonTypes {
-  Property?: StackProps
+  PropsForThisStack?: StackProps
+  OrderThisStackTo?: number | undefined
 }
 
 // Surface ============================================================================== Surface Interface
 export interface IPaper extends CommonTypes {
-  Property?: PaperProps
+  PropsForThisPaper?: PaperProps
+  OrderThisPaperTo?: number | undefined
+  Box?: () =>
+    | Array<Pick<IBox, 'PropsForThisBox' | 'WhateverIwantAsChild' | 'OrderThisBoxTo'>>
+    | Array<Pick<IBox, 'PropsForThisBox' | 'WhateverIwantAsChild' | 'OrderThisBoxTo'>>
+    | undefined
+    | undefined
+  Container?: () => IContainer[] | IContainer[] | undefined
+  Stack?: () => IStack[] | IStack[] | undefined
+
+  /** Surfaces Interface */
+  Paper?: () => IPaper[] | IPaper[] | undefined
+
+  /** Data Display Interface */
+  Typography?: () => ITypography[] | ITypography[] | undefined
+  Divider?: () => IDivider[] | IDivider[] | undefined
+  Chip?: () => IChip[] | IChip[] | undefined
+  Avatar?: () => IAvatar[] | IAvatar[] | undefined
+  List?: () => IList[] | IList[] | undefined
+
+  /** Inputs Interface */
+  Autocomplete?: <T>() => IAutocomplete<T>[] | IAutocomplete<T>[] | undefined
+  Button?: () => IButton[] | IButton[] | undefined
+  IconButton?: () => IIconButton[] | IIconButton[] | undefined
+  ButtonGroup?: () => IButtonGroup[] | IButtonGroup[] | undefined
+  Checkbox?: () => ICheckbox[] | ICheckbox[] | undefined
+  RadioButton?: () => IRadioButton[] | IRadioButton[] | undefined
+  Switch?: () => ISwitch[] | ISwitch[] | undefined
+  TextField?: () => ITextField[] | ITextField[] | undefined
+  FloatingActionButton?: () => IFloatingActionButton[] | IFloatingActionButton[] | undefined
 }
 
 // Data Display ================================================================== Data Display Interface
 export interface ITypography extends CommonTypes {
-  Property?: TypographyProps
+  PropsForThisTypography?: TypographyProps
+  OrderThisTypographyTo?: number | undefined
 }
 export interface IDivider extends CommonTypes {
-  Property?: DividerProps
+  PropsForThisDivider?: DividerProps
+  OrderThisDividerTo?: number | undefined
 }
 export interface IChip extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
-  Property?: ChipProps
+  PropsForThisChip?: ChipProps
+  OrderThisChipTo?: number | undefined
 }
+
 export interface IAvatar extends CommonTypes {
-  Property?: AvatarProps
+  PropsForThisAvatar?: AvatarProps
+  OrderThisAvatarTo?: number | undefined
 }
+export interface IBadge extends CommonTypes {
+  PropsForThisBadge?: BadgeProps
+  OrderThisBadgeTo?: number | undefined
+}
+
+export interface ITable extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
+  PropsForThisTable?: DataGridProps
+  OrderThisTableTo?: number | undefined
+  COLUMNS?: GridColDef[]
+  ROWS?: GridRowsProp
+}
+
+export interface ITooltip extends CommonTypes {
+  PropsForThisTooltip?: TooltipProps
+  OrderThisTooltipTo?: number | undefined
+  title?: string
+}
+
 //  List
 export interface IList extends CommonTypes {
-  Property?: ListProps
-  ListItemButton?: () => IListItemButton[]
-  ListItemAvatar?: () => IListItemAvatar[]
+  PropsForThisList?: ListProps
+  OrderThisListTo?: number | undefined
+  ListItemButton?: () => IListItemButton[] | undefined
+  ListItemAvatar?: () => IListItemAvatar[] | undefined
 }
 export interface IListItemButton extends CommonTypes {
-  Property?: ListItemProps
+  PropsForThisListItemButton?: ListItemProps
   ListIcon?: React.ReactNode | JSX.Element | undefined
   ListText?: React.ReactNode | JSX.Element | undefined
 }
 export interface IListItemAvatar extends CommonTypes {
-  Property?: ListItemProps
+  PropsForThisListAvatar?: ListItemProps
   Avatar?: React.ReactNode | JSX.Element | undefined
   ListText?: React.ReactNode | JSX.Element | undefined
 }
@@ -178,44 +281,52 @@ export interface IAutocomplete<
   FreeSolo extends boolean | undefined = undefined,
   ChipComponent extends React.ElementType = ChipTypeMap['defaultComponent']
 > {
-  Property?: AutocompleteProps<T, Multiple, DisableClearable, FreeSolo, ChipComponent>
+  PropsForThisAutocomplete?: AutocompleteProps<T, Multiple, DisableClearable, FreeSolo, ChipComponent>
+  OrderThisAutoCompleteTo?: number | undefined
   option: ReadonlyArray<T>
   label?: string
 }
 
 export interface IButton extends CommonTypes {
-  Property?: ButtonProps
+  PropsForThisButton?: ButtonProps
+  OrderThisButtonTo?: number | undefined
 }
 
-export interface IIconButton extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
-  Property?: IconButtonProps
+export interface IIconButton extends CommonTypes {
+  PropsForThisIconButton?: IconButtonProps
+  OrderThisIconButtonTo?: number | undefined
 }
 
 export interface IButtonGroup extends CommonTypes {
-  Property?: ButtonGroupProps
-  Button?: () => IButton[]
+  PropsForThisButtonGroup?: ButtonGroupProps
+  OrderThisButtonGroupTo?: number | undefined
+  Button?: () => IButton[] | undefined
 }
 
 export interface ICheckbox extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
-  Property?: CheckboxProps
+  PropsForThisCheckbox?: CheckboxProps
+  OrderThisCheckboxTo?: number | undefined
   FromControlLabelProperty?: FormControlLabelProps
   label?: React.ReactNode | undefined
 }
 
 export interface IRadioButton extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
-  Property?: RadioProps
+  PropsForThisRadioButton?: RadioProps
+  OrderThisRadioButtonTo?: number | undefined
   FromControlLabelProperty?: FormControlLabelProps
   label?: React.ReactNode | undefined
 }
 
 export interface ISwitch extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
-  Property?: SwitchProps
+  PropsForThisSwitch?: SwitchProps
+  OrderThisSwitchTo?: number | undefined
   FromControlLabelProperty?: FormControlLabelProps
   label?: React.ReactNode | undefined
 }
 
 export interface ITextField extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
-  Property?: TextFieldProps
+  PropsForThisTextField?: TextFieldProps
+  OrderThisTextFieldTo?: number | undefined
 }
 
 export interface IFloatingActionButton extends CommonTypes {
@@ -223,82 +334,97 @@ export interface IFloatingActionButton extends CommonTypes {
 }
 
 // Gluttony ===================================================================== Export Gluttony Component
-export const Gluttony = ({ DevourArraysObject }: IGluttony) => {
+export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
   return (
     <>
-      {DevourArraysObject?.map((row, key) => (
+      {FoodForGluttony?.map((row, key) => (
         // Mapping ======================================================= ParentRoot As Devourobject
-        <Box key={key} sx={row.StylingParentRootForThisObject}>
+        <Box key={key} sx={[{ display: 'flex', flexDirection: 'column' }, row.StyleForGluttonyParentRoot as CSSObject]}>
           {row.WhateverIwantAsChild}
-          {row?.GridContainer?.().map((row, key) => (
+
+          {/**  ( Root Parent ============================================================================> Grid )
+         *
+         *
+         *
+         *
+         *
+
+
+
+
+
+
+
+
+
+
+
+
+
+        */}
+          {row?.GridContainer?.()?.map((row, key) => (
             // Mapping ==================================================== Grid Container
-            <Grid key={key} container {...row.Property}>
+            <Grid container key={key} style={{ order: row.OrderThisGridContainerTo }} {...row.PropsForThisGridContainer}>
               {row.WhateverIwantAsChild}
 
-              {row?.GridItem?.().map((row, key) => (
+              {row?.GridItem?.()?.map((row, key) => (
                 // Mapping ==================================================== Grid Item
-                <Grid key={key} item {...row.Property}>
+                <Grid item key={key} style={{ display: 'flex', flexDirection: 'column' }} {...row.PropsForThisGridItem}>
                   {row.WhateverIwantAsChild}
 
-                  {row?.Box?.().map((row, key) => (
-                    <Box key={key} {...row.Property}>
+                  {row?.Box?.()?.map((row, key) => (
+                    <Box key={key} style={{ order: row.OrderThisBoxTo }} {...row.PropsForThisBox}>
                       {row.WhateverIwantAsChild}
                     </Box>
                   ))}
 
-                  {row?.Container?.().map((row, key) => (
-                    <Container key={key} {...row.Property}>
+                  {row?.Container?.()?.map((row, key) => (
+                    <Container key={key} style={{ order: row.OrderThisContainerTo }} {...row.PropsForThisContainer}>
                       {row.WhateverIwantAsChild}
                     </Container>
                   ))}
 
-                  {row?.Stack?.().map((row, key) => (
-                    <Stack key={key} {...row.Property}>
+                  {row?.Stack?.()?.map((row, key) => (
+                    <Stack key={key} style={{ order: row.OrderThisStackTo }} {...row.PropsForThisStack}>
                       {row.WhateverIwantAsChild}
                     </Stack>
                   ))}
 
-                  {row?.Paper?.().map((row, key) => (
-                    <Paper key={key} {...row.Property}>
+                  {row?.Paper?.()?.map((row, key) => (
+                    <Paper key={key} style={{ order: row.OrderThisPaperTo }} {...row.PropsForThisPaper}>
                       {row.WhateverIwantAsChild}
                     </Paper>
                   ))}
 
-                  {row?.Paper?.().map((row, key) => (
-                    <Paper key={key} {...row.Property}>
-                      {row.WhateverIwantAsChild}
-                    </Paper>
-                  ))}
-
-                  {row?.Typography?.().map((row, key) => (
-                    <Typography key={key} {...row.Property}>
+                  {row?.Typography?.()?.map((row, key) => (
+                    <Typography key={key} style={{ order: row.OrderThisTypographyTo }} {...row.PropsForThisTypography}>
                       {row.WhateverIwantAsChild}
                     </Typography>
                   ))}
 
-                  {row?.Divider?.().map((row, key) => (
-                    <Divider key={key} {...row.Property}>
+                  {row?.Divider?.()?.map((row, key) => (
+                    <Divider key={key} style={{ order: row.OrderThisDividerTo }} {...row.PropsForThisDivider}>
                       {row.WhateverIwantAsChild}
                     </Divider>
                   ))}
 
-                  {row?.Chip?.().map((row, key) => (
-                    <Chip key={key} {...row.Property} />
+                  {row?.Chip?.()?.map((row, key) => (
+                    <Chip key={key} style={{ order: row.OrderThisChipTo }} {...row.PropsForThisChip} />
                   ))}
 
-                  {row?.Avatar?.().map((row, key) => (
-                    <Avatar key={key} {...row.Property}>
+                  {row?.Avatar?.()?.map((row, key) => (
+                    <Avatar key={key} style={{ order: row.OrderThisAvatarTo }} {...row.PropsForThisAvatar}>
                       {row.WhateverIwantAsChild}
                     </Avatar>
                   ))}
 
-                  {/**  List  =============================================== Depends ON Grid Item*/}
-                  {row?.List?.().map((row, key) => (
-                    <List key={key} {...row.Property}>
+                  {/**  RootParent  =============================================== List*/}
+                  {row?.List?.()?.map((row, key) => (
+                    <List key={key} style={{ order: row.OrderThisListTo }} {...row.PropsForThisList}>
                       {row.WhateverIwantAsChild}
 
-                      {row.ListItemButton?.().map((row, key) => (
-                        <ListItem key={key} {...row.Property}>
+                      {row.ListItemButton?.()?.map((row, key) => (
+                        <ListItem key={key} {...row.PropsForThisListItemButton}>
                           {row.WhateverIwantAsChild}
                           <ListItemButton>
                             <ListItemIcon>{row.ListIcon}</ListItemIcon>
@@ -307,8 +433,8 @@ export const Gluttony = ({ DevourArraysObject }: IGluttony) => {
                         </ListItem>
                       ))}
 
-                      {row.ListItemAvatar?.().map((row, key) => (
-                        <ListItem key={key} {...row.Property}>
+                      {row.ListItemAvatar?.()?.map((row, key) => (
+                        <ListItem key={key} {...row.PropsForThisListAvatar}>
                           {row.WhateverIwantAsChild}
                           <ListItemAvatar>
                             <Avatar>{row.Avatar}</Avatar>
@@ -319,59 +445,71 @@ export const Gluttony = ({ DevourArraysObject }: IGluttony) => {
                     </List>
                   ))}
 
-                  {row?.Autocomplete?.().map((row, key) => (
+                  {/**  Root Parent  =============================================== Inputs*/}
+                  {row?.Autocomplete?.()?.map((row, key) => (
                     <Autocomplete
                       key={key}
                       disablePortal
+                      style={{ order: row.OrderThisAutoCompleteTo }}
                       options={row.option}
                       renderInput={(params) => <TextField {...params} label={row.label} />}
-                      {...row.Property}
+                      {...row.PropsForThisAutocomplete}
                     />
                   ))}
 
-                  {row?.Button?.().map((row, key) => (
-                    <Button key={key} {...row.Property}>
-                      {row.WhateverIwantAsChild}
-                    </Button>
+                  {row?.Button?.()?.map((row, key) => (
+                    <Button key={key} style={{ order: row.OrderThisButtonTo }} {...row.PropsForThisButton} />
                   ))}
 
-                  {row?.IconButton?.().map((row, key) => (
-                    <IconButton key={key} {...row.Property} />
+                  {row?.IconButton?.()?.map((row, key) => (
+                    <IconButton key={key} style={{ order: row.OrderThisIconButtonTo }} {...row.PropsForThisIconButton} />
                   ))}
 
-                  {row?.ButtonGroup?.().map((row, key) => (
-                    <ButtonGroup key={key} {...row.Property}>
-                      {row.Button?.().map((row, key) => (
-                        <Button key={key} {...row.Property}>
+                  {row?.ButtonGroup?.()?.map((row, key) => (
+                    <ButtonGroup key={key} style={{ order: row.OrderThisButtonGroupTo }} {...row.PropsForThisButtonGroup}>
+                      {row.Button?.()?.map((row, key) => (
+                        <Button key={key} {...row.PropsForThisButton}>
                           {row.WhateverIwantAsChild}
                         </Button>
                       ))}
                     </ButtonGroup>
                   ))}
 
-                  {row?.Checkbox?.().map((row, key) => (
+                  {row?.Checkbox?.()?.map((row, key) => (
                     <FormControlLabel
                       key={key}
-                      control={<Checkbox {...row.Property} />}
+                      style={{ order: row.OrderThisCheckboxTo }}
+                      control={<Checkbox {...row.PropsForThisCheckbox} />}
                       label={row.label}
                       {...row.FromControlLabelProperty}
                     />
                   ))}
 
-                  {row?.Switch?.().map((row, key) => (
+                  {row?.RadioButton?.()?.map((row, key) => (
                     <FormControlLabel
                       key={key}
-                      control={<Switch {...row.Property} />}
+                      style={{ order: row.OrderThisRadioButtonTo }}
+                      control={<Radio {...row.PropsForThisRadioButton} />}
                       label={row.label}
                       {...row.FromControlLabelProperty}
                     />
                   ))}
 
-                  {row?.TextField?.().map((row, key) => (
-                    <TextField key={key} {...row.Property} />
+                  {row?.Switch?.()?.map((row, key) => (
+                    <FormControlLabel
+                      key={key}
+                      style={{ order: row.OrderThisSwitchTo }}
+                      control={<Switch {...row.PropsForThisSwitch} />}
+                      label={row.label}
+                      {...row.FromControlLabelProperty}
+                    />
                   ))}
 
-                  {row?.FloatingActionButton?.().map((row, key) => (
+                  {row?.TextField?.()?.map((row, key) => (
+                    <TextField key={key} style={{ order: row.OrderThisTextFieldTo }} {...row.PropsForThisTextField} />
+                  ))}
+
+                  {row?.FloatingActionButton?.()?.map((row, key) => (
                     <Fab key={key} {...row.Property}>
                       {row.WhateverIwantAsChild}
                     </Fab>
@@ -383,45 +521,448 @@ export const Gluttony = ({ DevourArraysObject }: IGluttony) => {
 
           {/** The Parent Gluttony ========================================= Depends ON Mapping( RootParent )*/}
 
-          {row?.Box?.().map((row, key) => (
-            <Box key={key} {...row.Property}>
+          {/**  ( Root Parent ============================================================================> Box )
+         *
+         *
+         *
+         *
+         *
+
+
+
+
+
+
+
+
+
+
+
+
+
+        */}
+          {row?.Box?.()?.map((row, key) => (
+            <Box key={key} style={{ order: row.OrderThisBoxTo, display: 'flex', flexDirection: 'column' }} {...row.PropsForThisBox}>
               {row.WhateverIwantAsChild}
+
+              {row?.Box?.()?.map((row, key) => (
+                <Box key={key} style={{ order: row.OrderThisBoxTo }} {...row.PropsForThisBox}>
+                  {row.WhateverIwantAsChild}
+                </Box>
+              ))}
+
+              {row?.Container?.()?.map((row, key) => (
+                <Container key={key} style={{ order: row.OrderThisContainerTo }} {...row.PropsForThisContainer}>
+                  {row.WhateverIwantAsChild}
+                </Container>
+              ))}
+
+              {row?.Stack?.()?.map((row, key) => (
+                <Stack key={key} style={{ order: row.OrderThisStackTo }} {...row.PropsForThisStack}>
+                  {row.WhateverIwantAsChild}
+                </Stack>
+              ))}
+
+              {row?.Paper?.()?.map((row, key) => (
+                <Paper key={key} style={{ order: row.OrderThisPaperTo }} {...row.PropsForThisPaper}>
+                  {row.WhateverIwantAsChild}
+                </Paper>
+              ))}
+
+              {row?.Typography?.()?.map((row, key) => (
+                <Typography key={key} style={{ order: row.OrderThisTypographyTo }} {...row.PropsForThisTypography}>
+                  {row.WhateverIwantAsChild}
+                </Typography>
+              ))}
+
+              {row?.Divider?.()?.map((row, key) => (
+                <Divider key={key} style={{ order: row.OrderThisDividerTo }} {...row.PropsForThisDivider}>
+                  {row.WhateverIwantAsChild}
+                </Divider>
+              ))}
+
+              {row?.Chip?.()?.map((row, key) => (
+                <Chip key={key} style={{ order: row.OrderThisChipTo }} {...row.PropsForThisChip} />
+              ))}
+
+              {row?.Avatar?.()?.map((row, key) => (
+                <Avatar key={key} style={{ order: row.OrderThisAvatarTo }} {...row.PropsForThisAvatar}>
+                  {row.WhateverIwantAsChild}
+                </Avatar>
+              ))}
+
+              {/**  RootParent  =============================================== List*/}
+              {row?.List?.()?.map((row, key) => (
+                <List key={key} style={{ order: row.OrderThisListTo }} {...row.PropsForThisList}>
+                  {row.WhateverIwantAsChild}
+
+                  {row.ListItemButton?.()?.map((row, key) => (
+                    <ListItem key={key} {...row.PropsForThisListItemButton}>
+                      {row.WhateverIwantAsChild}
+                      <ListItemButton>
+                        <ListItemIcon>{row.ListIcon}</ListItemIcon>
+                        <ListItemText primary={row.ListText} />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+
+                  {row.ListItemAvatar?.()?.map((row, key) => (
+                    <ListItem key={key} {...row.PropsForThisListAvatar}>
+                      {row.WhateverIwantAsChild}
+                      <ListItemAvatar>
+                        <Avatar>{row.Avatar}</Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={row.ListText} />
+                    </ListItem>
+                  ))}
+                </List>
+              ))}
+
+              {/**  Root Parent  =============================================== Inputs*/}
+              {row?.Autocomplete?.()?.map((row, key) => (
+                <Autocomplete
+                  key={key}
+                  disablePortal
+                  style={{ order: row.OrderThisAutoCompleteTo }}
+                  options={row.option}
+                  renderInput={(params) => <TextField {...params} label={row.label} />}
+                  {...row.PropsForThisAutocomplete}
+                />
+              ))}
+
+              {row?.Button?.()?.map((row, key) => (
+                <Button key={key} style={{ order: row.OrderThisButtonTo }} {...row.PropsForThisButton} />
+              ))}
+
+              {row?.IconButton?.()?.map((row, key) => (
+                <IconButton key={key} style={{ order: row.OrderThisIconButtonTo }} {...row.PropsForThisIconButton} />
+              ))}
+
+              {row?.ButtonGroup?.()?.map((row, key) => (
+                <ButtonGroup key={key} style={{ order: row.OrderThisButtonGroupTo }} {...row.PropsForThisButtonGroup}>
+                  {row.Button?.()?.map((row, key) => (
+                    <Button key={key} {...row.PropsForThisButton}>
+                      {row.WhateverIwantAsChild}
+                    </Button>
+                  ))}
+                </ButtonGroup>
+              ))}
+
+              {row?.Checkbox?.()?.map((row, key) => (
+                <FormControlLabel
+                  key={key}
+                  style={{ order: row.OrderThisCheckboxTo }}
+                  control={<Checkbox {...row.PropsForThisCheckbox} />}
+                  label={row.label}
+                  {...row.FromControlLabelProperty}
+                />
+              ))}
+
+              {row?.RadioButton?.()?.map((row, key) => (
+                <FormControlLabel
+                  key={key}
+                  style={{ order: row.OrderThisRadioButtonTo }}
+                  control={<Radio {...row.PropsForThisRadioButton} />}
+                  label={row.label}
+                  {...row.FromControlLabelProperty}
+                />
+              ))}
+
+              {row?.Switch?.()?.map((row, key) => (
+                <FormControlLabel
+                  key={key}
+                  style={{ order: row.OrderThisSwitchTo }}
+                  control={<Switch {...row.PropsForThisSwitch} />}
+                  label={row.label}
+                  {...row.FromControlLabelProperty}
+                />
+              ))}
+
+              {row?.TextField?.()?.map((row, key) => (
+                <TextField key={key} style={{ order: row.OrderThisTextFieldTo }} {...row.PropsForThisTextField} />
+              ))}
+
+              {row?.FloatingActionButton?.()?.map((row, key) => (
+                <Fab key={key} {...row.Property}>
+                  {row.WhateverIwantAsChild}
+                </Fab>
+              ))}
             </Box>
           ))}
-          {row?.Container?.().map((row, key) => (
-            <Container key={key} {...row.Property}>
+
+          {/**  ( RootParent )
+         *
+         *
+         *
+         *
+         *
+
+
+
+
+
+
+
+
+
+
+
+
+
+        */}
+          {row?.Container?.()?.map((row, key) => (
+            <Container key={key} style={{ order: row.OrderThisContainerTo }} {...row.PropsForThisContainer}>
               {row.WhateverIwantAsChild}
             </Container>
           ))}
-          {row?.Stack?.().map((row, key) => (
-            <Stack key={key} {...row.Property}>
+          {row?.Stack?.()?.map((row, key) => (
+            <Stack key={key} style={{ order: row.OrderThisStackTo }} {...row.PropsForThisStack}>
               {row.WhateverIwantAsChild}
             </Stack>
           ))}
-          {row?.Paper?.().map((row, key) => (
-            <Paper key={key} {...row.Property}>
+
+          {/** The Parent Gluttony ========================================= Depends ON Mapping( RootParent )*/}
+
+          {/**  ( Root Parent ============================================================================> Box )
+         *
+         *
+         *
+         *
+         *
+
+
+
+
+
+
+
+
+
+
+
+
+
+        */}
+
+          {row?.Paper?.()?.map((row, key) => (
+            <Paper key={key} style={{ order: row.OrderThisPaperTo, display: 'flex', flexDirection: 'column' }} {...row.PropsForThisPaper}>
               {row.WhateverIwantAsChild}
+
+              {row?.Box?.()?.map((row, key) => (
+                <Box key={key} style={{ order: row.OrderThisBoxTo }} {...row.PropsForThisBox}>
+                  {row.WhateverIwantAsChild}
+                </Box>
+              ))}
+
+              {row?.Container?.()?.map((row, key) => (
+                <Container key={key} style={{ order: row.OrderThisContainerTo }} {...row.PropsForThisContainer}>
+                  {row.WhateverIwantAsChild}
+                </Container>
+              ))}
+
+              {row?.Stack?.()?.map((row, key) => (
+                <Stack key={key} style={{ order: row.OrderThisStackTo }} {...row.PropsForThisStack}>
+                  {row.WhateverIwantAsChild}
+                </Stack>
+              ))}
+
+              {row?.Paper?.()?.map((row, key) => (
+                <Paper key={key} style={{ order: row.OrderThisPaperTo }} {...row.PropsForThisPaper}>
+                  {row.WhateverIwantAsChild}
+                </Paper>
+              ))}
+
+              {row?.Typography?.()?.map((row, key) => (
+                <Typography key={key} style={{ order: row.OrderThisTypographyTo }} {...row.PropsForThisTypography}>
+                  {row.WhateverIwantAsChild}
+                </Typography>
+              ))}
+
+              {row?.Divider?.()?.map((row, key) => (
+                <Divider key={key} style={{ order: row.OrderThisDividerTo }} {...row.PropsForThisDivider}>
+                  {row.WhateverIwantAsChild}
+                </Divider>
+              ))}
+
+              {row?.Chip?.()?.map((row, key) => (
+                <Chip key={key} style={{ order: row.OrderThisChipTo }} {...row.PropsForThisChip} />
+              ))}
+
+              {row?.Avatar?.()?.map((row, key) => (
+                <Avatar key={key} style={{ order: row.OrderThisAvatarTo }} {...row.PropsForThisAvatar}>
+                  {row.WhateverIwantAsChild}
+                </Avatar>
+              ))}
+
+              {/**  RootParent  =============================================== List*/}
+              {row?.List?.()?.map((row, key) => (
+                <List key={key} style={{ order: row.OrderThisListTo }} {...row.PropsForThisList}>
+                  {row.WhateverIwantAsChild}
+
+                  {row.ListItemButton?.()?.map((row, key) => (
+                    <ListItem key={key} {...row.PropsForThisListItemButton}>
+                      {row.WhateverIwantAsChild}
+                      <ListItemButton>
+                        <ListItemIcon>{row.ListIcon}</ListItemIcon>
+                        <ListItemText primary={row.ListText} />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+
+                  {row.ListItemAvatar?.()?.map((row, key) => (
+                    <ListItem key={key} {...row.PropsForThisListAvatar}>
+                      {row.WhateverIwantAsChild}
+                      <ListItemAvatar>
+                        <Avatar>{row.Avatar}</Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={row.ListText} />
+                    </ListItem>
+                  ))}
+                </List>
+              ))}
+
+              {/**  Root Parent  =============================================== Inputs*/}
+              {row?.Autocomplete?.()?.map((row, key) => (
+                <Autocomplete
+                  key={key}
+                  disablePortal
+                  style={{ order: row.OrderThisAutoCompleteTo }}
+                  options={row.option}
+                  renderInput={(params) => <TextField {...params} label={row.label} />}
+                  {...row.PropsForThisAutocomplete}
+                />
+              ))}
+
+              {row?.Button?.()?.map((row, key) => (
+                <Button key={key} style={{ order: row.OrderThisButtonTo }} {...row.PropsForThisButton} />
+              ))}
+
+              {row?.IconButton?.()?.map((row, key) => (
+                <IconButton key={key} style={{ order: row.OrderThisIconButtonTo }} {...row.PropsForThisIconButton} />
+              ))}
+
+              {row?.ButtonGroup?.()?.map((row, key) => (
+                <ButtonGroup key={key} style={{ order: row.OrderThisButtonGroupTo }} {...row.PropsForThisButtonGroup}>
+                  {row.Button?.()?.map((row, key) => (
+                    <Button key={key} {...row.PropsForThisButton}>
+                      {row.WhateverIwantAsChild}
+                    </Button>
+                  ))}
+                </ButtonGroup>
+              ))}
+
+              {row?.Checkbox?.()?.map((row, key) => (
+                <FormControlLabel
+                  key={key}
+                  style={{ order: row.OrderThisCheckboxTo }}
+                  control={<Checkbox {...row.PropsForThisCheckbox} />}
+                  label={row.label}
+                  {...row.FromControlLabelProperty}
+                />
+              ))}
+
+              {row?.RadioButton?.()?.map((row, key) => (
+                <FormControlLabel
+                  key={key}
+                  style={{ order: row.OrderThisRadioButtonTo }}
+                  control={<Radio {...row.PropsForThisRadioButton} />}
+                  label={row.label}
+                  {...row.FromControlLabelProperty}
+                />
+              ))}
+
+              {row?.Switch?.()?.map((row, key) => (
+                <FormControlLabel
+                  key={key}
+                  style={{ order: row.OrderThisSwitchTo }}
+                  control={<Switch {...row.PropsForThisSwitch} />}
+                  label={row.label}
+                  {...row.FromControlLabelProperty}
+                />
+              ))}
+
+              {row?.TextField?.()?.map((row, key) => (
+                <TextField key={key} style={{ order: row.OrderThisTextFieldTo }} {...row.PropsForThisTextField} />
+              ))}
+
+              {row?.FloatingActionButton?.()?.map((row, key) => (
+                <Fab key={key} {...row.Property}>
+                  {row.WhateverIwantAsChild}
+                </Fab>
+              ))}
             </Paper>
           ))}
-          {row?.Typography?.().map((row, key) => (
-            <Typography key={key} {...row.Property}>
+
+          {row?.Typography?.()?.map((row, key) => (
+            <Typography key={key} style={{ order: row.OrderThisTypographyTo }} {...row.PropsForThisTypography}>
               {row.WhateverIwantAsChild}
             </Typography>
           ))}
 
-          {row?.Divider?.().map((row, key) => (
-            <Divider key={key} {...row.Property}>
+          {row?.Divider?.()?.map((row, key) => (
+            <Divider key={key} style={{ order: row.OrderThisDividerTo }} {...row.PropsForThisDivider}>
               {row.WhateverIwantAsChild}
             </Divider>
           ))}
 
-          {/**  List  =============================================== Depends ON Mapping( RootParent )*/}
-          {row?.List?.().map((row, key) => (
-            <List key={key} {...row.Property}>
+          {row?.Chip?.()?.map((row, key) => (
+            <Chip key={key} style={{ order: row.OrderThisChipTo }} {...row.PropsForThisChip} />
+          ))}
+
+          {row?.Avatar?.()?.map((row, key) => (
+            <Avatar key={key} style={{ order: row.OrderThisAvatarTo }} {...row.PropsForThisAvatar}>
+              {row.WhateverIwantAsChild}
+            </Avatar>
+          ))}
+
+          {row?.Badge?.()?.map((row, key) => (
+            <Badge key={key} style={{ order: row.OrderThisBadgeTo }} {...row.PropsForThisBadge}>
+              {row.WhateverIwantAsChild}
+            </Badge>
+          ))}
+
+          {row?.Table?.()?.map((row, key) => (
+            <DataGrid
+              key={key}
+              columns={
+                row.COLUMNS || [
+                  {
+                    field: 'col1',
+                    headerName: 'This Is COLUMN 1',
+                    width: 90,
+                  },
+                  {
+                    field: 'col2',
+                    headerName: 'This Is COLUMN 2',
+                    width: 150,
+                    editable: true,
+                  },
+                ]
+              }
+              rows={
+                row.ROWS || [
+                  { col1: 'This is Row 1 in Col 1', col2: 'This is Row 1 in Col 2' },
+                  { col1: 'This is Row 2 in Col 1', col2: 'This is Row 2 in Col 2' },
+                ]
+              }
+              style={{ order: row.OrderThisTableTo }}
+              {...row.PropsForThisTable}
+            />
+          ))}
+
+          {row?.Tooltip?.()?.map((row, key) => (
+            <Tooltip key={key} title={row.title} style={{ order: row.OrderThisTooltipTo }} {...row.PropsForThisTooltip}>
+              <Box>{row.WhateverIwantAsChild}</Box>
+            </Tooltip>
+          ))}
+
+          {/**  RootParent  =============================================== List*/}
+          {row?.List?.()?.map((row, key) => (
+            <List key={key} style={{ order: row.OrderThisListTo }} {...row.PropsForThisList}>
               {row.WhateverIwantAsChild}
 
-              {row.ListItemButton?.().map((row, key) => (
-                <ListItem key={key} {...row.Property}>
+              {row.ListItemButton?.()?.map((row, key) => (
+                <ListItem key={key} {...row.PropsForThisListItemButton}>
                   {row.WhateverIwantAsChild}
                   <ListItemButton>
                     <ListItemIcon>{row.ListIcon}</ListItemIcon>
@@ -430,8 +971,8 @@ export const Gluttony = ({ DevourArraysObject }: IGluttony) => {
                 </ListItem>
               ))}
 
-              {row.ListItemAvatar?.().map((row, key) => (
-                <ListItem key={key} {...row.Property}>
+              {row.ListItemAvatar?.()?.map((row, key) => (
+                <ListItem key={key} {...row.PropsForThisListAvatar}>
                   {row.WhateverIwantAsChild}
                   <ListItemAvatar>
                     <Avatar>{row.Avatar}</Avatar>
@@ -442,46 +983,71 @@ export const Gluttony = ({ DevourArraysObject }: IGluttony) => {
             </List>
           ))}
 
-          {/**  Inputs  =============================================== Depends ON Mapping( RootParent )*/}
-          {row?.Autocomplete?.().map((row, key) => (
+          {/**  Root Parent  =============================================== Inputs*/}
+          {row?.Autocomplete?.()?.map((row, key) => (
             <Autocomplete
               key={key}
               disablePortal
+              style={{ order: row.OrderThisAutoCompleteTo }}
               options={row.option}
               renderInput={(params) => <TextField {...params} label={row.label} />}
-              {...row.Property}
+              {...row.PropsForThisAutocomplete}
             />
           ))}
 
-          {row?.Button?.().map((row, key) => (
-            <Button key={key} {...row.Property} />
+          {row?.Button?.()?.map((row, key) => (
+            <Button key={key} style={{ order: row.OrderThisButtonTo }} {...row.PropsForThisButton} />
           ))}
 
-          {row?.IconButton?.().map((row, key) => (
-            <IconButton key={key} {...row.Property} />
+          {row?.IconButton?.()?.map((row, key) => (
+            <IconButton key={key} style={{ order: row.OrderThisIconButtonTo }} {...row.PropsForThisIconButton} />
           ))}
 
-          {row?.Checkbox?.().map((row, key) => (
-            <FormControlLabel key={key} control={<Checkbox {...row.Property} />} label={row.label} {...row.FromControlLabelProperty} />
+          {row?.ButtonGroup?.()?.map((row, key) => (
+            <ButtonGroup key={key} style={{ order: row.OrderThisButtonGroupTo }} {...row.PropsForThisButtonGroup}>
+              {row.Button?.()?.map((row, key) => (
+                <Button key={key} {...row.PropsForThisButton}>
+                  {row.WhateverIwantAsChild}
+                </Button>
+              ))}
+            </ButtonGroup>
           ))}
 
-          {row?.RadioButton?.().map((row, key) => (
-            <FormControlLabel key={key} control={<Radio {...row.Property} />} label={row.label} {...row.FromControlLabelProperty} />
+          {row?.Checkbox?.()?.map((row, key) => (
+            <FormControlLabel
+              key={key}
+              style={{ order: row.OrderThisCheckboxTo }}
+              control={<Checkbox {...row.PropsForThisCheckbox} />}
+              label={row.label}
+              {...row.FromControlLabelProperty}
+            />
           ))}
 
-          {row?.Checkbox?.().map((row, key) => (
-            <FormControlLabel key={key} control={<Checkbox {...row.Property} />} label={row.label} {...row.FromControlLabelProperty} />
+          {row?.RadioButton?.()?.map((row, key) => (
+            <FormControlLabel
+              key={key}
+              style={{ order: row.OrderThisRadioButtonTo }}
+              control={<Radio {...row.PropsForThisRadioButton} />}
+              label={row.label}
+              {...row.FromControlLabelProperty}
+            />
           ))}
 
-          {row?.Switch?.().map((row, key) => (
-            <FormControlLabel key={key} control={<Switch {...row.Property} />} label={row.label} {...row.FromControlLabelProperty} />
+          {row?.Switch?.()?.map((row, key) => (
+            <FormControlLabel
+              key={key}
+              style={{ order: row.OrderThisSwitchTo }}
+              control={<Switch {...row.PropsForThisSwitch} />}
+              label={row.label}
+              {...row.FromControlLabelProperty}
+            />
           ))}
 
-          {row?.TextField?.().map((row, key) => (
-            <TextField key={key} {...row.Property} />
+          {row?.TextField?.()?.map((row, key) => (
+            <TextField key={key} style={{ order: row.OrderThisTextFieldTo }} {...row.PropsForThisTextField} />
           ))}
 
-          {row?.FloatingActionButton?.().map((row, key) => (
+          {row?.FloatingActionButton?.()?.map((row, key) => (
             <Fab key={key} {...row.Property}>
               {row.WhateverIwantAsChild}
             </Fab>

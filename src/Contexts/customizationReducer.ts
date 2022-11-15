@@ -16,12 +16,18 @@ const initialState: CounterState = {
 }
 
 export const counterSlice = createSlice({
-  name: 'counter',
+  name: 'custom',
 
   initialState,
   reducers: {
     sidebarToggle: (state) => {
       state.sidebarToggle = !state.sidebarToggle
+    },
+    sidebarToggleToFalse: (state) => {
+      state.sidebarToggle = false
+    },
+    sidebarToggleToTrue: (state) => {
+      state.sidebarToggle = true
     },
 
     loadingOverlay: (state, action: PayloadAction<boolean>) => {
@@ -40,8 +46,9 @@ export const counterSlice = createSlice({
   },
 })
 
-export const { sidebarToggle, loadingOverlay, openStack, closeStack, modalIsOpen } = counterSlice.actions
+export const { sidebarToggle, sidebarToggleToFalse, sidebarToggleToTrue, loadingOverlay, openStack, closeStack, modalIsOpen } =
+  counterSlice.actions
 
-export const selectCount = (state: RootState) => state.counter.sidebarToggle
+export const selectCount = (state: RootState) => state.custom.sidebarToggle
 
 export default counterSlice.reducer

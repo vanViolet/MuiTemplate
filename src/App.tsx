@@ -1,64 +1,83 @@
-import { Gluttony } from 'Components/Gluttony'
+import { Box, createTheme, CssBaseline, PaletteMode, ThemeProvider } from '@mui/material'
+import { grey } from '@mui/material/colors'
+import { useAppSelector } from 'Contexts/_hook'
+import { MainLayout } from 'Layouts/MainLayout'
 import NavigationScroll from 'NavigationScroll'
 import { Routes } from 'react-router-dom'
 
 function App() {
-  return (
-    <NavigationScroll>
-      <Routes />
-      {/* <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          background: ColorLibrary('header-light'),
-          height: 50,
-          display: 'flex',
-        }}
-      >
-        <Box sx={{ width: '15%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Monitoring</Box>
-        <Box sx={{ width: '75%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>2</Box>
-        <Box sx={{ width: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>2</Box>
-      </Box>
-      <Box
-        sx={(theme) => ({
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          bottom: 0,
-          width: '15%',
-          marginTop: 6.2,
-          backgroundColor: ColorLibrary('sidebar-light'),
-          [theme.breakpoints.down('sm')]: {
-            backgroundColor: 'black',
-          },
-        })}
-      ></Box> */}
-      <Gluttony
-        DevourArraysObject={[
-          {
-            GridContainer: () => {
-              return [
-                {
-                  Property: { sx: { backgroundColor: 'red' } },
-                  GridItem: () => {
-                    return [
-                      {
-                        WhateverIwantAsChild: 'Hello',
-                        Property: {
-                          sx: (theme) => ({ backgroundColor: 'red', position: 'absolute', left: 0, right: 0, bottom: 0, top: 0 }),
-                        },
-                      },
-                    ]
-                  },
-                },
-              ]
+  const getDesignTokens = (mode: PaletteMode) => ({
+    palette: {
+      mode,
+      text: {
+        ...(mode === 'light'
+          ? {
+              primary: grey[800],
+              secondary: grey[800],
+            }
+          : {
+              primary: '#fff',
+              secondary: grey[500],
+            }),
+      },
+    },
+  })
+  const Theme = useAppSelector((state) => state.darkMode.Theme)
+
+  const darkModeTheme = createTheme({
+    ...getDesignTokens(Theme),
+    breakpoints: {
+      values: {
+        xs: 0,
+        // small
+        sm: 850,
+        // medium
+        md: 900,
+        // large
+        lg: 1200,
+        // extra-large
+        xl: 1536,
+      },
+    },
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          '@global': {
+            '*::-webkit-scrollbar': {
+              width: '2px',
+            },
+            '*::-webkit-scrollbar-track': {
+              background: '#E4EFEF',
+            },
+            '*::-webkit-scrollbar-thumb': {
+              background: '#1D388F61',
+              borderRadius: '2px',
             },
           },
-        ]}
-      />
-    </NavigationScroll>
+        },
+      },
+      MuiTypography: {
+        defaultProps: {
+          fontFamily: 'inherit',
+        },
+      },
+    },
+  })
+
+  return (
+    <Box
+      sx={{
+        colorScheme: darkModeTheme.palette.mode === 'dark' ? 'dark' : 'light',
+      }}
+    >
+      <ThemeProvider theme={darkModeTheme}>
+        <CssBaseline />
+        <NavigationScroll>
+          <Routes />
+          <MainLayout />
+        </NavigationScroll>
+      </ThemeProvider>
+    </Box>
   )
 }
 
