@@ -2,11 +2,10 @@ import { CSSObject } from '@emotion/react'
 import { Gluttony, IFoodForGluttony } from 'Components/Gluttony'
 import { sidebarToggle } from 'Contexts/customizationReducer'
 import { setTheme } from 'Contexts/darkModeReducer'
-import { useAppDispatch, useAppSelector } from 'Contexts/_hook'
-import { COLOR } from 'Libraries/Color'
-import { CSS } from 'Libraries/Css'
-import { ICON } from 'Libraries/Icon'
-import { DekstopView, MobileView } from 'Utilities/MediaQuery'
+import { useAppDispatch, useAppSelector } from 'Contexts/_store'
+import { color } from 'Assets/Color'
+import { css } from 'Assets/css'
+import { icon } from 'Assets/icon'
 
 export const Header = () => {
   const DARK_MODE = useAppSelector((state) => state.darkMode.Theme)
@@ -17,84 +16,64 @@ export const Header = () => {
     return [
       {
         StyleForGluttonyParentRoot: (theme) => ({
-          ...CSS.Header(theme),
+          ...css.HEADER_ROOT(theme),
         }),
 
-        GridContainer: () => [
+        GridContainer: [
           {
-            PropsForThisGridContainer: { height: 'inherit' },
-            GridItem: () => [
+            style: { height: 'inherit' },
+
+            GridItem: [
               {
-                PropsForThisGridItem: {
+                style: (theme) => ({
+                  ...(css.HEADER_BURGER_TOGGLE(theme) as CSSObject),
+                  ...(css.GRID_ITEM_HEADER(theme) as CSSObject),
+                }),
+                props: {
                   xs: 1.5,
                   sm: BURGER_TOGGLE ? 2.3 : 0.5,
-                  sx: (theme) => ({
-                    '& > svg': {
-                      [DekstopView()]: {
-                        display: 'none!important' as 'none',
-                      },
-                    },
-                    '& > :not(svg)': {
-                      [MobileView()]: {
-                        display: 'none!important' as 'none',
-                      },
-                    },
-
-                    ['&:hover']: {
-                      cursor: 'pointer',
-                      backgroundColor:
-                        theme.palette.mode === 'dark' ? COLOR('hover-header-background-dark') : COLOR('hover-header-background-light'),
-                    },
-
-                    '& > ::after': {
-                      content: `'ONITORING'`,
-                      display: BURGER_TOGGLE ? '' : ('none!important' as 'none'),
-                    },
-                    ...(CSS.GridItemForHeader(theme) as CSSObject),
-                  }),
                   onClick: () => {
                     dispatch(sidebarToggle())
                   },
                 },
-                Typography: () => [
+                Box: [
                   {
-                    PropsForThisTypography: {
-                      variant: 'h5',
-                      fontWeight: 700,
-                    },
-                    WhateverIwantAsChild: 'M',
+                    props: { display: 'flex' },
+                    WhateverIwantAsChild: icon('Hamburger', 'HeroSize'),
                   },
                 ],
-                WhateverIwantAsChild: ICON('Toggle', 'HeroSize'),
+                WhateverIwantAsChild: icon('Toggle', 'HeroSize'),
               },
               {
-                PropsForThisGridItem: {
+                style: (theme) => ({
+                  ...(css.GRID_ITEM_HEADER(theme) as CSSObject),
+                }),
+                props: {
                   xs: 9,
                   sm: BURGER_TOGGLE ? 9.2 : 11,
-                  sx: (theme) => ({
-                    ...CSS.GridItemForHeader(theme),
-                  }),
                 },
-                WhateverIwantAsChild: 'Document Monitoring',
+                WhateverIwantAsChild: 'Marketing',
               },
               {
-                PropsForThisGridItem: {
+                style: (theme) => ({
+                  ...(css.GRID_ITEM_HEADER(theme) as CSSObject),
+
+                  '&:hover': {
+                    cursor: 'pointer',
+                    backgroundColor:
+                      theme.palette.mode === 'dark' ? color('hover-header-background-dark') : color('hover-header-background-light'),
+                  },
+                }),
+                props: {
                   xs: 1.5,
                   sm: 0.5,
-                  sx: (theme) => ({
-                    ...(CSS.GridItemForHeader(theme) as CSSObject),
-                    '&:hover': {
-                      cursor: 'pointer',
-                      backgroundColor:
-                        theme.palette.mode === 'dark' ? COLOR('hover-header-background-dark') : COLOR('hover-header-background-light'),
-                    },
-                  }),
+
                   onClick: () => {
                     dispatch(setTheme())
                     localStorage.setItem('THEME', DARK_MODE === 'dark' ? 'light' : 'dark')
                   },
                 },
-                WhateverIwantAsChild: ICON('UserCircle', 'HeroSize'),
+                WhateverIwantAsChild: icon('UserCircle', 'HeroSize'),
               },
             ],
           },

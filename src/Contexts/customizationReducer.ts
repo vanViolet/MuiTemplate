@@ -15,7 +15,7 @@ const initialState: CounterState = {
   modalIsOpen: false,
 }
 
-export const counterSlice = createSlice({
+export const customReducer = createSlice({
   name: 'custom',
 
   initialState,
@@ -47,8 +47,8 @@ export const counterSlice = createSlice({
 })
 
 export const { sidebarToggle, sidebarToggleToFalse, sidebarToggleToTrue, loadingOverlay, openStack, closeStack, modalIsOpen } =
-  counterSlice.actions
+  customReducer.actions
 
 export const selectCount = (state: RootState) => state.custom.sidebarToggle
 
-export default counterSlice.reducer
+export default customReducer.reducer

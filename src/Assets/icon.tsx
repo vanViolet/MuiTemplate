@@ -89,7 +89,7 @@ type IIcon =
 
 type ISize = 'ButtonSize' | 'HeroSize' | 'MenuSize'
 
-export const ICON = (icon: IIcon, size: ISize, color?: string | undefined) => {
+export const icon = (icon: IIcon, size: ISize, color?: string | undefined) => {
   if (icon === 'Plus') return <FaPlusSquare size={size === 'HeroSize' ? 30 : size === 'MenuSize' ? 25 : 20} color={color} />
   if (icon === 'Edit') return <FaEdit size={size === 'HeroSize' ? 30 : size === 'MenuSize' ? 25 : 20} color={color} />
   if (icon === 'Trash') return <FaTrashAlt size={size === 'HeroSize' ? 30 : size === 'MenuSize' ? 25 : 20} color={color} />

@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { authReducer } from './authReducer'
-import { counterSlice } from './customizationReducer'
+import { customReducer } from './customizationReducer'
 import { darkModeReducer } from './darkModeReducer'
 
 export interface IDispatch {
@@ -9,7 +10,7 @@ export interface IDispatch {
 
 export const store = configureStore({
   reducer: {
-    custom: counterSlice.reducer,
+    custom: customReducer.reducer,
     auth: authReducer.reducer,
     darkMode: darkModeReducer.reducer,
   },
@@ -19,3 +20,6 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>
 
 export type AppDispatch = typeof store.dispatch
+
+export const useAppDispatch: () => AppDispatch = useDispatch
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector

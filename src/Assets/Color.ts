@@ -28,8 +28,8 @@ export type IColorLibrary =
   | 'active-bg-light'
   | 'active-bg-dark'
 
-export const COLOR = (color: IColorLibrary) => {
-  if (color === 'header-light') return 'linear-gradient(133deg, rgba(0,112,189,1) 0%, rgba(29,183,235,1) 100%)'
+export const color = (color: IColorLibrary) => {
+  if (color === 'header-light') return 'linear-gradient(155deg, rgba(0,69,200,1) 0%,rgba(29,183,205,1) 30%, rgba(29,183,235,1) 100%)'
   if (color === 'header-dark') return 'rgba(39,39,42,0)'
 
   if (color === 'header-text-light') return 'white'
@@ -56,7 +56,7 @@ export const COLOR = (color: IColorLibrary) => {
   if (color === 'active-text-light') return '#0284c7'
   if (color === 'active-text-dark') return '#0284c7'
 
-  if (color === 'active-bg-light') return 'rgba(30,144,255,0.1)'
+  if (color === 'active-bg-light') return 'rgba(30,144,255,0.2)'
   if (color === 'active-bg-dark') return 'rgba(30,144,255,0.1)'
 
   /**

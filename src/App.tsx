@@ -1,6 +1,6 @@
 import { Box, createTheme, CssBaseline, PaletteMode, ThemeProvider } from '@mui/material'
 import { grey } from '@mui/material/colors'
-import { useAppSelector } from 'Contexts/_hook'
+import { useAppSelector } from 'Contexts/_store'
 import { MainLayout } from 'Layouts/MainLayout'
 import NavigationScroll from 'NavigationScroll'
 import { Routes } from 'react-router-dom'
@@ -30,7 +30,7 @@ function App() {
       values: {
         xs: 0,
         // small
-        sm: 850,
+        sm: 900,
         // medium
         md: 900,
         // large
@@ -40,22 +40,6 @@ function App() {
       },
     },
     components: {
-      MuiCssBaseline: {
-        styleOverrides: {
-          '@global': {
-            '*::-webkit-scrollbar': {
-              width: '2px',
-            },
-            '*::-webkit-scrollbar-track': {
-              background: '#E4EFEF',
-            },
-            '*::-webkit-scrollbar-thumb': {
-              background: '#1D388F61',
-              borderRadius: '2px',
-            },
-          },
-        },
-      },
       MuiTypography: {
         defaultProps: {
           fontFamily: 'inherit',
