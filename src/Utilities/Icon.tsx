@@ -17,6 +17,8 @@ import {
   BsCreditCard2BackFill,
   BsFillKeyFill,
   BsFilterLeft,
+  BsSortAlphaDownAlt,
+  BsSortAlphaUp,
 } from 'react-icons/bs'
 import {
   FaAt,
@@ -42,8 +44,9 @@ import { HiCubeTransparent } from 'react-icons/hi'
 import { RiProductHuntLine } from 'react-icons/ri'
 import { IoDocumentText } from 'react-icons/io5'
 import { HiBellAlert } from 'react-icons/hi2'
+import { BiSort } from 'react-icons/bi'
 
-type IIcon =
+export type IIconLibrary =
   | 'Plus'
   | 'Edit'
   | 'Trash'
@@ -86,10 +89,13 @@ type IIcon =
   | 'Bell'
   | 'DocumentText'
   | 'Toggle'
+  | 'AzSort'
+  | 'ZaSort'
+  | 'NotSort'
 
 type ISize = 'ButtonSize' | 'HeroSize' | 'MenuSize'
 
-export const IconLibrary = (icon: IIcon, size: ISize, color?: string | undefined) => {
+export const IconLibrary = (icon: IIconLibrary, size: ISize, color?: string | undefined) => {
   if (icon === 'Plus') return <FaPlusSquare size={size === 'HeroSize' ? 30 : size === 'MenuSize' ? 25 : 20} color={color} />
   if (icon === 'Edit') return <FaEdit size={size === 'HeroSize' ? 30 : size === 'MenuSize' ? 25 : 20} color={color} />
   if (icon === 'Trash') return <FaTrashAlt size={size === 'HeroSize' ? 30 : size === 'MenuSize' ? 25 : 20} color={color} />
@@ -133,4 +139,7 @@ export const IconLibrary = (icon: IIcon, size: ISize, color?: string | undefined
   if (icon === 'Bell') return <HiBellAlert size={size === 'HeroSize' ? 30 : size === 'MenuSize' ? 25 : 20} color={color} />
   if (icon === 'DocumentText') return <IoDocumentText size={size === 'HeroSize' ? 30 : size === 'MenuSize' ? 25 : 20} color={color} />
   if (icon === 'Toggle') return <GiHamburgerMenu size={size === 'HeroSize' ? 30 : size === 'MenuSize' ? 25 : 20} color={color} />
+  if (icon === 'AzSort') return <BsSortAlphaUp size={size === 'HeroSize' ? 30 : size === 'MenuSize' ? 25 : 20} color={color} />
+  if (icon === 'ZaSort') return <BsSortAlphaDownAlt size={size === 'HeroSize' ? 30 : size === 'MenuSize' ? 25 : 20} color={color} />
+  if (icon === 'NotSort') return <BiSort size={size === 'HeroSize' ? 30 : size === 'MenuSize' ? 25 : 20} color={color} />
 }

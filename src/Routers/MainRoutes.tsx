@@ -10,7 +10,7 @@ const MainRoutes = {
   path: '/',
   element: <MainLayout />,
   children: [
-    { path: '/dashboard', element: <Dashboard /> },
+    { path: '/', element: <Dashboard /> },
 
     { path: '/manajemen-akun', element: <ManajemenAkun /> },
 

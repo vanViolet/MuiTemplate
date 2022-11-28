@@ -71,12 +71,12 @@ interface CommonTypes {
   style?: SxProps<Theme> | undefined
 }
 
-interface IGluttony {
-  FoodForGluttony?: IFoodForGluttony[] | undefined
+interface ICreateElements {
+  Ingredient?: IIngredient[] | undefined
 }
 
-export interface IFoodForGluttony extends Omit<CommonTypes, 'order'> {
-  StyleForGluttonyParentRoot?: SxProps<Theme> | undefined
+export interface IIngredient extends Omit<CommonTypes, 'order'> {
+  styleForParentBox?: SxProps<Theme> | undefined
   DIRECTION?: 'row' | 'column'
 
   /** Layout Interface */
@@ -205,7 +205,7 @@ export interface IPaper extends CommonTypes {
 
   /** Inputs Interface */
   Autocomplete?: IAutocomplete<any>[] | IAutocomplete<any>[] | undefined
-  Button?: IButton[] | IButton[] | undefined
+  Button?: IButton[] | undefined
   IconButton?: IIconButton[] | IIconButton[] | undefined
   ButtonGroup?: IButtonGroup[] | IButtonGroup[] | undefined
   Checkbox?: ICheckbox[] | ICheckbox[] | undefined
@@ -334,15 +334,16 @@ export interface ITableRow extends Omit<CommonTypes, '__CHILD' | 'order'> {
 export interface ITableCell extends Omit<CommonTypes, '__CHILD' | 'order'> {
   props?: TableCellProps
   label?: React.ReactNode | undefined
+  Box?: IBoxNotNested[] | undefined
 }
 
 // Gluttony ===================================================================== Export Gluttony Component
-export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
+export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
   return (
     <>
-      {FoodForGluttony?.map((row, key) => (
+      {Ingredient?.map((row, key) => (
         // Mapping ======================================================= ParentRoot As Devourobject
-        <Box key={key} style={{ display: 'flex', flexDirection: row.DIRECTION || 'column' }} sx={row.StyleForGluttonyParentRoot}>
+        <Box key={key} style={{ display: 'flex', flexDirection: row.DIRECTION || 'column' }} sx={row.styleForParentBox}>
           {row.__CHILD}
 
           {/**  ( Root Parent ============================================================================> Grid )
@@ -605,7 +606,7 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
 
               {row?.ButtonGroup?.map((row, key) => (
                 <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.Button?.map((row, key) => (
+                  {row?.Button?.map((row, key) => (
                     <Button key={key} sx={row.style} {...row.props}>
                       {row.__CHILD}
                     </Button>
@@ -797,7 +798,7 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
 
               {row?.ButtonGroup?.map((row, key) => (
                 <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.Button?.map((row, key) => (
+                  {row?.Button?.map((row, key) => (
                     <Button key={key} sx={row.style} {...row.props}>
                       {row.__CHILD}
                     </Button>
@@ -1037,6 +1038,12 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
                               {...row.props}
                             >
                               {row.label}
+
+                              {row?.Box?.map((row, key) => (
+                                <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                                  {row.__CHILD}
+                                </Box>
+                              ))}
                             </TableCell>
                           ))}
                         </TableRow>
@@ -1059,6 +1066,11 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
                               {...row.props}
                             >
                               {row.label}
+                              {row?.Box?.map((row, key) => (
+                                <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                                  {row.__CHILD}
+                                </Box>
+                              ))}
                             </TableCell>
                           ))}
                         </TableRow>

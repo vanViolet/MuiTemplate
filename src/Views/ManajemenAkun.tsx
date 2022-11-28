@@ -1,135 +1,45 @@
-import { InputAdornment, Pagination } from '@mui/material'
+import { Pagination } from '@mui/material'
 import { IconLibrary } from 'Utilities/Icon'
 import { LottieLibrary } from 'Utilities/Lottie'
-import { Gluttony, IFoodForGluttony } from 'Components/Gluttony'
-import { borderRadius } from 'config'
-import { useAppDispatch } from 'Contexts/_store'
+import { CreateElements, IIngredient } from 'Components/Gluttony'
+import { borderRadius, shadow } from 'config'
 import { FunctionComponent, useState } from 'react'
 import { MobileView } from 'Utilities/MediaQuery'
-import { DummyData, IDummyData } from '__DummyData'
-import { ColorLibrary } from 'Utilities/Color'
+import { IDummyData } from '__DummyData'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from 'Contexts/_store'
+import { TitleTemplate } from 'Template/TitleTemplate'
+import { CrudActionTemplate } from 'Template/CrudActionTemplate'
+import { ButtonCollection } from 'Template/ButtonCollection'
+import { ColorCollection } from 'Utilities/Color'
 
 export const ManajemenAkunPage = () => {
-  const dispatch = useAppDispatch()
-  const [selected, setSelected] = useState<object | null>(null)
-  const [data, setData] = useState<IDummyData[] | null>(DummyData)
-  const [isLoading, setIsloading] = useState(false)
+  const tools = {
+    dispatch: useDispatch() as AppDispatch,
+  }
 
-  function food(): IFoodForGluttony[] {
+  const [state, setState] = useState({
+    data: null as IDummyData[] | null,
+    selected: null as IDummyData | null,
+    isLoading: false as boolean,
+
+    params: {
+      query: undefined as string | undefined,
+      sortDirection: 'asc' as 'asc' | 'desc',
+      sortField: undefined as string | undefined,
+    },
+  })
+
+  function Ingredient(): IIngredient[] {
     return [
       {
         Paper: [
-          {
-            DIRECTION: 'row',
-            style: (theme) => ({
-              padding: '0.7rem',
-              marginBottom: '1rem',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              background: theme.palette.mode === 'dark' ? '' : ColorLibrary('header-light'),
-              color: theme.palette.mode === 'dark' ? '' : 'white',
-              boxShadow: theme.palette.mode === 'dark' ? '0 2px 5px rgba(0,0,0,1)' : '0 2px 5px rgba(0,0,0,0.3)',
-              borderRadius: borderRadius.md,
-              [MobileView()]: {
-                justifyContent: 'center',
-              },
-            }),
-            Box: [
-              {
-                style: () => ({
-                  marginRight: '1rem',
-                  marginTop: '0.25rem',
-                }),
-                __CHILD: IconLibrary('Users', 'HeroSize'),
-              },
-              {
-                style: () => ({
-                  fontWeight: 700,
-                  flexGrow: 1,
-                  [MobileView()]: {
-                    flexGrow: 0,
-                  },
-                }),
-                __CHILD: 'Manajemen Akun',
-              },
-            ],
-            TextField: [
-              {
-                style: () => ({
-                  fontWeight: 700,
-                }),
-
-                props: {
-                  size: 'small',
-                  placeholder: 'Search',
-                  InputProps: {
-                    startAdornment: <InputAdornment position="start">{IconLibrary('Search', 'ButtonSize')}</InputAdornment>,
-                    sx: (theme) => ({
-                      backgroundColor: theme.palette.mode === 'dark' ? '' : 'white',
-                      borderRadius: borderRadius.md,
-                    }),
-                  },
-                },
-              },
-            ],
-          },
-          {
-            DIRECTION: 'row',
-            style: (theme) => ({
-              padding: '0.7rem',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              flexWrap: 'wrap',
-              background: theme.palette.mode === 'dark' ? '' : ColorLibrary('header-light'),
-              borderRadius: `${borderRadius.md} ${borderRadius.md} 0 0 `,
-            }),
-            Button: [
-              {
-                style: (theme) => ({
-                  fontWeight: 700,
-                  margin: '0 0.5rem',
-                  boxShadow: theme.palette.mode === 'dark' ? '0 2px 5px rgba(0,0,0,1)' : '0 2px 5px rgba(0,0,0,0.5)',
-                }),
-                props: {
-                  size: 'small',
-                  color: 'success',
-                  variant: 'contained',
-                  startIcon: IconLibrary('Plus', 'ButtonSize'),
-                },
-                __CHILD: 'ADD',
-              },
-              {
-                style: (theme) => ({
-                  fontWeight: 700,
-                  margin: '0 0.5rem',
-                  boxShadow: theme.palette.mode === 'dark' ? '0 2px 5px rgba(0,0,0,1)' : '0 2px 5px rgba(0,0,0,0.5)',
-                }),
-                props: {
-                  color: 'info',
-                  variant: 'contained',
-                  size: 'small',
-                  startIcon: IconLibrary('Edit', 'ButtonSize'),
-                },
-                __CHILD: 'UPDATE',
-              },
-              {
-                style: (theme) => ({
-                  fontWeight: 700,
-                  margin: '0 0.5rem',
-                  boxShadow: theme.palette.mode === 'dark' ? '0 2px 5px rgba(0,0,0,1)' : '0 2px 5px rgba(0,0,0,0.5)',
-                  color: theme.palette.mode === 'dark' ? 'rgba(0, 0, 0, 0.87)' : '',
-                }),
-                props: {
-                  color: 'error',
-                  variant: 'contained',
-                  size: 'small',
-                  startIcon: IconLibrary('Trash', 'ButtonSize'),
-                },
-                __CHILD: 'Delete',
-              },
-            ],
-          },
+          ...TitleTemplate({ label: 'Manajemen Akun', icon: 'Users', withSearchInput: true }),
+          ...CrudActionTemplate({
+            Button: [ButtonCollection.ADD({}), ButtonCollection.UPDATE({}), ButtonCollection.DELETE({})],
+          }),
         ],
+
         TableContainer: [
           {
             style: () => ({
@@ -150,10 +60,32 @@ export const ManajemenAkunPage = () => {
                             label: 'No',
                           },
                           {
-                            label: 'Nama',
-                            props: {
-                              align: 'center',
-                            },
+                            style: { padding: 0 },
+                            Box: [
+                              {
+                                style: () => ({
+                                  height: '100%',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  padding: '1rem',
+                                  justifyContent: 'space-between',
+                                  '&:hover': {
+                                    background: ColorCollection.bg.hover,
+                                    cursor: 'pointer',
+                                  },
+                                }),
+                                props: {
+                                  onClick: () => {
+                                    setState((v) => ({
+                                      ...v,
+                                      params: { ...state.params, sortDirection: state.params.sortDirection === 'asc' ? 'desc' : 'asc' },
+                                    }))
+                                    console.log(state.params.sortDirection)
+                                  },
+                                },
+                                __CHILD: <>Nama {IconLibrary(state.params.sortDirection === 'asc' ? 'AzSort' : 'ZaSort', 'MenuSize')}</>,
+                              },
+                            ],
                           },
                           {
                             label: 'Username',
@@ -178,7 +110,7 @@ export const ManajemenAkunPage = () => {
                     ],
                   },
                 ],
-                TableBody: !isLoading
+                TableBody: state.isLoading
                   ? [
                       {
                         TableRow: [
@@ -201,7 +133,7 @@ export const ManajemenAkunPage = () => {
                         ],
                       },
                     ]
-                  : !data
+                  : !state.data
                   ? [
                       {
                         TableRow: [
@@ -227,14 +159,14 @@ export const ManajemenAkunPage = () => {
                     ]
                   : [
                       {
-                        TableRow: data?.map((row, key) => ({
+                        TableRow: state.data?.map((row, key) => ({
                           style: () => ({
                             '&:last-child td, &:last-child th': { border: 0 },
-                            backgroundColor: row === selected ? ColorLibrary('active-bg-light') : '',
+                            backgroundColor: row === state.selected ? ColorCollection.bg.active : '',
                           }),
                           props: {
                             onClick: () => {
-                              setSelected(row)
+                              setState((v) => ({ ...v, selected: row }))
                             },
                           },
                           TableCell: [
@@ -243,9 +175,6 @@ export const ManajemenAkunPage = () => {
                             },
                             {
                               label: row.nama,
-                              props: {
-                                align: 'center',
-                              },
                             },
                             {
                               label: row.username,
@@ -282,9 +211,9 @@ export const ManajemenAkunPage = () => {
               position: 'relative',
               padding: '0.7rem',
               justifyContent: 'center',
-              background: theme.palette.mode === 'dark' ? '#121212' : ColorLibrary('header-light'),
+              background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[2] : ColorCollection.bg.light[0],
               borderRadius: `0 0 ${borderRadius.md} ${borderRadius.md}`,
-              boxShadow: theme.palette.mode === 'dark' ? '0 2px 5px rgba(0,0,0,1)' : '0 2px 5px rgba(0,0,0,0.5)',
+              boxShadow: theme.palette.mode === 'dark' ? shadow.dark.sm : shadow.light.sm,
             }),
             Box: [
               {
@@ -292,7 +221,7 @@ export const ManajemenAkunPage = () => {
                   <Pagination
                     sx={{
                       '& .MuiPaginationItem-root': { color: 'white', borderColor: 'white', borderRadius: '0.8rem' },
-                      '& .MuiPaginationItem-root[aria-current]': { backgroundColor: 'white', color: ColorLibrary('active-text-light') },
+                      '& .MuiPaginationItem-root[aria-current]': { backgroundColor: 'white', color: ColorCollection.text.active },
 
                       '& li:first-of-type': {
                         position: 'absolute',
@@ -322,7 +251,7 @@ export const ManajemenAkunPage = () => {
     ]
   }
 
-  return <Gluttony FoodForGluttony={food()} />
+  return <CreateElements Ingredient={Ingredient()} />
 }
 
 export default ManajemenAkunPage as FunctionComponent

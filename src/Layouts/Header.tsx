@@ -1,15 +1,15 @@
 import { CSSObject } from '@emotion/react'
-import { Gluttony, IFoodForGluttony } from 'Components/Gluttony'
+import { CreateElements, IIngredient } from 'Components/Gluttony'
 import { sidebarToggle } from 'Contexts/customizationReducer'
 import { setTheme } from 'Contexts/modeReducer'
 import { useAppDispatch, useAppSelector } from 'Contexts/_store'
-import { css } from 'Assets/css'
+import { css } from 'Assets/style'
 import { IconLibrary } from 'Utilities/Icon'
 import { MobileView } from 'Utilities/MediaQuery'
 import { MuiSwitch } from 'Components/MuiSwitch'
 import React from 'react'
-import { borderRadius } from 'config'
-import { ColorLibrary } from 'Utilities/Color'
+import { borderRadius, shadow } from 'config'
+import { ColorCollection } from 'Utilities/Color'
 
 export const Header = () => {
   const DARK_MODE = useAppSelector((state) => state.mode.Theme)
@@ -18,12 +18,12 @@ export const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
-  function Food(): IFoodForGluttony[] {
+  function Ingredient(): IIngredient[] {
     return [
       {
         DIRECTION: 'row', //Direction Element, ===========> FLex
 
-        StyleForGluttonyParentRoot: (theme) => ({
+        styleForParentBox: (theme) => ({
           ...(css.HEADER_ROOT(theme) as CSSObject),
         }),
         style: { height: 'inherit' },
@@ -126,7 +126,7 @@ export const Header = () => {
                   '& > .MuiPaper-root': {
                     backgroundImage: 'none',
                     width: 300,
-                    boxShadow: theme.palette.mode === 'dark' ? '0 2px 5px rgba(0,0,0,1)' : '0 1px 5px rgba(0,0,0,0.5)',
+                    boxShadow: theme.palette.mode === 'dark' ? shadow.dark.sm : shadow.light.sm,
                     padding: '0.5rem 1.5rem',
                     backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0,0,0,0)' : 'white',
                     backdropFilter: 'blur(25px)',
@@ -162,10 +162,10 @@ export const Header = () => {
                       transitionDuration: '100ms',
                       fontWeight: 500,
                       '&:hover': {
-                        backgroundColor: theme.palette.mode === 'dark' ? ColorLibrary('hover-bg-dark') : ColorLibrary('hover-bg-light'),
+                        backgroundColor: ColorCollection.bg.hover,
                         cursor: 'pointer',
                         borderRadius: borderRadius.md,
-                        color: theme.palette.mode === 'dark' ? ColorLibrary('hover-text-dark') : ColorLibrary('hover-text-light'),
+                        color: ColorCollection.text.hover,
                       } as CSSObject,
                     }),
                     rightIcon: IconLibrary('LogOut', 'MenuSize'),
@@ -180,5 +180,5 @@ export const Header = () => {
     ]
   }
 
-  return <Gluttony FoodForGluttony={Food()} />
+  return <CreateElements Ingredient={Ingredient()} />
 }

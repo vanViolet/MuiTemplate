@@ -1,8 +1,8 @@
 import { CSSObject } from '@emotion/react'
-import { Gluttony, IBox, IBoxNotNested, IFoodForGluttony } from 'Components/Gluttony'
+import { CreateElements, IBox, IBoxNotNested, IIngredient } from 'Components/Gluttony'
 import { useAppDispatch, useAppSelector } from 'Contexts/_store'
 
-import { css } from 'Assets/css'
+import { css } from 'Assets/style'
 import { Link, useLocation } from 'react-router-dom'
 import { DekstopView, MobileView } from 'Utilities/MediaQuery'
 import { MenuItems } from './MenuItems'
@@ -16,10 +16,10 @@ export const Sidebar = () => {
   const BURGER_TOGGLE = useAppSelector((state) => state.custom.sidebarToggle)
   const location = useLocation()
 
-  function Food(): IFoodForGluttony[] {
+  function Ingredient(): IIngredient[] {
     return [
       {
-        StyleForGluttonyParentRoot(theme) {
+        styleForParentBox(theme) {
           return {
             ...(css.SIDEBAR_ROOT(theme) as CSSObject),
             ...(css.CUSTOM_SCROLLBAR(theme) as CSSObject),
@@ -82,7 +82,7 @@ export const Sidebar = () => {
                           content: `"${row.label}"`,
                           marginTop: '0.2rem',
                           fontSize: '0.9rem',
-                          fontWeight: 700,
+                          fontWeight: 500,
                           marginLeft: '0.5rem',
                           display: BURGER_TOGGLE ? '' : 'none',
                         },
@@ -97,5 +97,5 @@ export const Sidebar = () => {
       },
     ]
   }
-  return <Gluttony FoodForGluttony={Food()} />
+  return <CreateElements Ingredient={Ingredient()} />
 }

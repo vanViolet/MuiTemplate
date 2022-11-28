@@ -1,7 +1,7 @@
 import { useMediaQuery } from '@mui/material'
 import { Box } from '@mui/system'
 import { LottieLibrary } from 'Utilities/Lottie'
-import { Gluttony, IFoodForGluttony } from 'Components/Gluttony'
+import { CreateElements, IIngredient } from 'Components/Gluttony'
 import { sidebarToggleToFalse, sidebarToggleToTrue } from 'Contexts/customizationReducer'
 import { useAppDispatch, useAppSelector } from 'Contexts/_store'
 import { useEffect, useState } from 'react'
@@ -14,6 +14,7 @@ export const MainLayout = () => {
   const Mobile = useMediaQuery('(max-width: 850px)')
   const dispatch = useAppDispatch()
   const BURGER_TOGGLE = useAppSelector((state) => state.custom.sidebarToggle)
+  // const DARK_MODE = useAppSelector((state) => state.mode.Theme)
   const [value, setValue] = useState(0)
   useEffect(() => {
     if (Mobile) {
@@ -23,23 +24,25 @@ export const MainLayout = () => {
     }
   }, [Mobile])
 
-  function Food(): IFoodForGluttony[] {
+  function Ingredient(): IIngredient[] {
     return [
       {
         Box: [
           {
             __CHILD: LottieLibrary.WAVE({
-              BoxStyle: () => ({
+              BoxStyle: (theme) => ({
                 width: 700,
-                opacity: 0.7,
+                opacity: 0.3,
                 transform: 'rotateZ(-10deg)',
                 marginTop: '-210px',
+                display: theme.palette.mode === 'light' ? 'none' : '',
                 [MobileView()]: {
                   display: 'none',
                 },
               }),
             }),
           },
+
           {
             Box: [
               {
@@ -51,7 +54,7 @@ export const MainLayout = () => {
                     right: 0,
                     bottom: 0,
                     backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.4)' : '#e3f2fd',
-                    backdropFilter: 'blur(25px)',
+                    backdropFilter: 'blur(5px)',
                   }
                 },
               },
@@ -67,7 +70,7 @@ export const MainLayout = () => {
                   left: 0,
                   bottom: 0,
 
-                  zIndex: '1',
+                  zIndex: '10',
                 }),
                 __CHILD: (
                   <Box
@@ -100,5 +103,5 @@ export const MainLayout = () => {
       },
     ]
   }
-  return <Gluttony FoodForGluttony={Food()} />
+  return <CreateElements Ingredient={Ingredient()} />
 }

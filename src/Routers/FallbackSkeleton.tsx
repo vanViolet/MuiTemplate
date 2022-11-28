@@ -1,9 +1,8 @@
 import { Box, Skeleton } from '@mui/material'
 import { borderRadius } from 'config'
-import { FunctionComponent } from 'react'
 import { ColorCollection } from 'Utilities/Color'
 
-export const DashboardPage = () => {
+export const FallbackSkeleton = () => {
   return (
     <Box>
       <Skeleton
@@ -15,7 +14,7 @@ export const DashboardPage = () => {
           margin: 0,
           padding: 0,
           marginTop: '-1rem',
-          background: theme.palette.mode === 'dark' ? '' : ColorCollection.bg.light[0],
+          background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.light[0],
         })}
       />
       <Box sx={{ display: 'flex', marginTop: '-7rem' }}>
@@ -68,7 +67,7 @@ export const DashboardPage = () => {
             padding: 0,
 
             marginLeft: '1rem',
-            backgroundColor: theme.palette.mode === 'dark' ? 'rgba(	2, 132, 199,0.2)' : 'rgba(	2, 132, 199,0.7)',
+            backgroundColor: ColorCollection.bg.active,
           })}
         />
       </Box>
@@ -81,11 +80,9 @@ export const DashboardPage = () => {
           margin: 0,
           padding: 0,
           marginTop: '-2.5rem',
-          background: theme.palette.mode === 'dark' ? '' : ColorCollection.bg.light[0],
+          background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.light[0],
         })}
       />
     </Box>
   )
 }
-
-export default DashboardPage as FunctionComponent

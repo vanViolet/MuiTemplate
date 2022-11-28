@@ -4,6 +4,7 @@ import wave from 'Assets/Lotties/wave.json'
 import catEmpty from 'Assets/Lotties/cat-empty.json'
 import loadingPaperPlane from 'Assets/Lotties/loading-plane.json'
 import loadingAwesome from 'Assets/Lotties/loading-awesome.json'
+import orbit from 'Assets/Lotties/orbit.json'
 import React, { useState } from 'react'
 
 export const LottieLibrary = {
@@ -20,6 +21,27 @@ export const LottieLibrary = {
           autoplay
           loop
           src={wave}
+          style={args?.LottieStyle}
+          speed={0.5}
+          lottieRef={(instance) => setState({ lottie: instance })}
+          {...args?.LottieProps}
+        ></Player>
+      </Box>
+    )
+  },
+  ORBIT: (args?: {
+    BoxStyle?: SxProps<Theme> | undefined
+    BoxProps?: BoxProps
+    LottieStyle?: React.CSSProperties
+    LottieProps?: IPlayerProps
+  }) => {
+    const [state, setState] = useState({ lottie: null as any })
+    return (
+      <Box sx={args?.BoxStyle} {...args?.BoxProps}>
+        <Player
+          autoplay
+          loop
+          src={orbit}
           style={args?.LottieStyle}
           speed={1}
           lottieRef={(instance) => setState({ lottie: instance })}

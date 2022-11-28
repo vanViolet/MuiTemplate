@@ -1,23 +1,26 @@
+import { ColorCollection } from './../Utilities/Color'
 import { CSSObject, SxProps, Theme } from '@mui/material'
-import { borderRadius } from 'config'
+import { borderRadius, shadow } from 'config'
 import { IMenuChildren } from 'Layouts/MenuItems'
 import { DekstopView, MobileView } from 'Utilities/MediaQuery'
-import { ColorLibrary } from '../Utilities/Color'
+import { commonCss } from './commonCss'
 
 const globalTransition = '200ms'
 
 export const css = {
   HEADER_ROOT: (theme: Theme): SxProps<Theme> => {
     return {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
+      ...commonCss.POSITION_ZERO_FIXED(),
       height: '3rem',
-      background: theme.palette.mode === 'dark' ? ColorLibrary('header-dark') : ColorLibrary('header-light'),
+      background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[0] : ColorCollection.bg.light[0],
       backdropFilter: 'blur(10px)',
-      zIndex: 2,
-      boxShadow: theme.palette.mode === 'dark' ? '0 1px 5px rgba(0,0,0,1)' : '0 1px 5px rgba(0,0,0,0.5)',
+      zIndex: 11,
+      [DekstopView()]: {
+        boxShadow: theme.palette.mode === 'dark' ? '250px 4px 10px rgba(0,0,0,1)' : '0 1px 5px rgba(0,0,0,0.5)',
+      },
+      [MobileView()]: {
+        boxShadow: theme.palette.mode === 'dark' ? '0px 4px 10px rgba(0,0,0,1)' : '0 1px 5px rgba(0,0,0,0.5)',
+      },
     } as CSSObject
   },
 
@@ -37,17 +40,15 @@ export const css = {
 
       ['&:hover']: {
         cursor: 'pointer',
-        backgroundColor:
-          theme.palette.mode === 'dark' ? ColorLibrary('hover-header-background-dark') : ColorLibrary('hover-header-background-light'),
+        backgroundColor: ColorCollection.bg.hoverWhite,
       },
     } as CSSObject
   },
 
   HEADER_ITEM: (theme: Theme): SxProps<Theme> => {
     return {
+      ...commonCss.TO_CENTER({}),
       height: 'inherit',
-      alignItems: 'center',
-      justifyContent: 'center',
       color: theme.palette.mode === 'dark' ? '' : 'white',
       transitionDuration: globalTransition,
     }
@@ -57,24 +58,20 @@ export const css = {
     return {
       '&:hover': {
         cursor: 'pointer',
-        backgroundColor:
-          theme.palette.mode === 'dark' ? ColorLibrary('hover-header-background-dark') : ColorLibrary('hover-header-background-light'),
+        backgroundColor: ColorCollection.bg.hoverWhite,
       },
     }
   },
 
   SIDEBAR_ROOT: (theme: Theme): SxProps<Theme> => {
     return {
+      ...commonCss.POSITION_ZERO_FIXED({ Omit: ['right'] }),
       overflowY: 'auto',
       overflowX: 'hidden',
-      position: 'fixed',
-      left: 0,
-      top: 0,
-      bottom: 0,
-      zIndex: 2,
-      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.2)' : 'white',
+      zIndex: 12,
       backdropFilter: 'blur(15px)',
-      boxShadow: theme.palette.mode === 'dark' ? '2px 5px 5px rgba(0,0,0,0.5)' : '2px 5px 5px rgba(0,0,0,0.2)',
+      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(18,18,18,0.5)' : 'white',
+      boxShadow: theme.palette.mode === 'dark' ? '5px 5px 10px rgba(0,0,0,0.5)' : '2px 5px 5px rgba(0,0,0,0.2)',
     }
   },
 
@@ -82,27 +79,24 @@ export const css = {
     const interaction =
       pathname === row?.path
         ? {
-            backgroundColor: theme.palette.mode === 'dark' ? ColorLibrary('active-bg-dark') : ColorLibrary('active-bg-light'),
+            backgroundColor: ColorCollection.bg.active,
             borderRadius: borderRadius.md,
-            color: theme.palette.mode === 'dark' ? ColorLibrary('active-text-dark') : ColorLibrary('active-text-light'),
+            color: ColorCollection.text.active,
           }
         : {
             '&:hover': {
-              backgroundColor: theme.palette.mode === 'dark' ? ColorLibrary('hover-bg-dark') : ColorLibrary('hover-bg-light'),
+              backgroundColor: ColorCollection.bg.hover,
               cursor: 'pointer',
               borderRadius: borderRadius.md,
-              color: theme.palette.mode === 'dark' ? ColorLibrary('hover-text-dark') : ColorLibrary('hover-text-light'),
+              color: ColorCollection.text.hover,
             } as CSSObject,
           }
     return {
+      ...commonCss.TO_CENTER(),
       borderRadius: '10rem',
       color: theme.palette.mode === 'dark' ? theme.palette.text.primary : theme.palette.text.primary,
       textDecoration: 'none',
       height: '3rem',
-      widht: 'inherit',
-      display: 'flex',
-      zIndex: 1,
-      alignItems: 'center',
       transitionDuration: '100ms',
       ...interaction,
     }
@@ -121,9 +115,25 @@ export const css = {
       },
       '::-webkit-scrollbar-thumb': {
         borderRadius: borderRadius.md,
-        boxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
+        boxShadow: 'inset 0 0 6px rgba(0,0,0,0.3)',
         backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'rgba(0,0,0,0)',
         paddingTop: 20,
+      },
+    }
+  },
+
+  TITLE_TEMPLATE: (theme: Theme): SxProps<Theme> => {
+    return {
+      padding: '0.7rem',
+      marginBottom: '1rem',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.light[0],
+      color: 'white',
+      boxShadow: theme.palette.mode === 'dark' ? shadow.dark.sm : shadow.light.sm,
+      borderRadius: borderRadius.md,
+      [MobileView()]: {
+        justifyContent: 'center',
       },
     }
   },

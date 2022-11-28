@@ -1,5 +1,5 @@
-import { CircularProgress } from '@mui/material'
 import { Suspense } from 'react'
+import { FallbackSkeleton } from './FallbackSkeleton'
 
 // project imports
 
@@ -7,7 +7,7 @@ import { Suspense } from 'react'
 
 const Loadable = (Component: any) => (props: any) =>
   (
-    <Suspense fallback={<CircularProgress />}>
+    <Suspense fallback={<FallbackSkeleton />}>
       <Component {...props} />
     </Suspense>
   )
