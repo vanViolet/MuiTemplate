@@ -1,9 +1,8 @@
 import { Box, createTheme, CssBaseline, PaletteMode, ThemeProvider } from '@mui/material'
 import { grey } from '@mui/material/colors'
 import { useAppSelector } from 'Contexts/_store'
-import { MainLayout } from 'Layouts/MainLayout'
 import NavigationScroll from 'NavigationScroll'
-import { Routes } from 'react-router-dom'
+import { Routes } from 'Routers/Routes'
 
 function App() {
   const getDesignTokens = (mode: PaletteMode) => ({
@@ -22,10 +21,15 @@ function App() {
       },
     },
   })
-  const Theme = useAppSelector((state) => state.darkMode.Theme)
+  const Theme = useAppSelector((state) => state.mode.Theme)
 
   const darkModeTheme = createTheme({
     ...getDesignTokens(Theme),
+
+    typography: {
+      fontFamily:
+        "Poppins,system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+    },
     breakpoints: {
       values: {
         xs: 0,
@@ -58,7 +62,6 @@ function App() {
         <CssBaseline />
         <NavigationScroll>
           <Routes />
-          <MainLayout />
         </NavigationScroll>
       </ThemeProvider>
     </Box>

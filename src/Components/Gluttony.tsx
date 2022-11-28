@@ -25,6 +25,11 @@ import {
   GridProps,
   IconButton,
   IconButtonProps,
+  InputAdornment,
+  Menu,
+  MenuItem,
+  MenuItemProps,
+  MenuProps,
   Paper,
   PaperProps,
   Radio,
@@ -34,6 +39,17 @@ import {
   Switch,
   SwitchProps,
   SxProps,
+  Table,
+  TableBody,
+  TableCell,
+  TableCellProps,
+  TableContainer,
+  TableContainerProps,
+  TableHead,
+  TableHeadProps,
+  TableProps,
+  TableRow,
+  TableRowProps,
   TextField,
   TextFieldProps,
   Theme,
@@ -41,7 +57,8 @@ import {
   Typography,
   TypographyProps,
 } from '@mui/material'
-import { DataGridProps, GridColDef, GridRowsProp } from '@mui/x-data-grid'
+import { DataGridProps } from '@mui/x-data-grid'
+import { borderRadius } from 'config'
 import React from 'react'
 
 export type ConvertToOptional<A> = {
@@ -49,7 +66,7 @@ export type ConvertToOptional<A> = {
 }
 
 interface CommonTypes {
-  WhateverIwantAsChild?: React.ReactNode | JSX.Element | JSX.Element[] | undefined | undefined
+  __CHILD?: React.ReactNode | JSX.Element | JSX.Element[] | undefined | undefined
   order?: number | undefined
   style?: SxProps<Theme> | undefined
 }
@@ -60,6 +77,7 @@ interface IGluttony {
 
 export interface IFoodForGluttony extends Omit<CommonTypes, 'order'> {
   StyleForGluttonyParentRoot?: SxProps<Theme> | undefined
+  DIRECTION?: 'row' | 'column'
 
   /** Layout Interface */
   GridContainer?: IGridContainer[] | IGridContainer[] | undefined
@@ -86,6 +104,10 @@ export interface IFoodForGluttony extends Omit<CommonTypes, 'order'> {
   RadioButton?: IRadioButton[] | IRadioButton[] | undefined
   Switch?: ISwitch[] | ISwitch[] | undefined
   TextField?: ITextField[] | ITextField[] | undefined
+
+  /** New */
+  Menu?: IMenu[] | undefined
+  TableContainer?: ITableContainer[] | undefined
 }
 
 export interface IGridContainer extends CommonTypes {
@@ -119,14 +141,18 @@ export interface IGridItem extends Omit<CommonTypes, 'order'> {
   RadioButton?: IRadioButton[] | IRadioButton[] | undefined
   Switch?: ISwitch[] | ISwitch[] | undefined
   TextField?: ITextField[] | ITextField[] | undefined
+
+  /** New */
+  Menu?: IMenu[] | undefined
 }
 
 // Layout ============================================================================== Layout Interface
 
-export type IBoxNotNested = Pick<IBox, 'props' | 'WhateverIwantAsChild' | 'order' | 'style'>
+export type IBoxNotNested = Pick<IBox, 'props' | '__CHILD' | 'order' | 'style'>
 
 export interface IBox extends CommonTypes {
   props?: BoxProps
+  DIRECTION?: 'row' | 'column'
   Box?: IBoxNotNested[]
   Container?: IContainer[] | IContainer[] | undefined
   Stack?: IStack[] | IStack[] | undefined
@@ -149,6 +175,9 @@ export interface IBox extends CommonTypes {
   RadioButton?: IRadioButton[] | IRadioButton[] | undefined
   Switch?: ISwitch[] | ISwitch[] | undefined
   TextField?: ITextField[] | ITextField[] | undefined
+
+  /** New */
+  Menu?: IMenu[] | undefined
 }
 export interface IContainer extends CommonTypes {
   props?: ContainerProps
@@ -160,6 +189,7 @@ export interface IStack extends CommonTypes {
 // Surface ============================================================================== Surface Interface
 export interface IPaper extends CommonTypes {
   props?: PaperProps
+  DIRECTION?: 'row' | 'column'
   Box?: IBoxNotNested[]
   Container?: IContainer[] | IContainer[] | undefined
   Stack?: IStack[] | IStack[] | undefined
@@ -182,6 +212,9 @@ export interface IPaper extends CommonTypes {
   RadioButton?: IRadioButton[] | IRadioButton[] | undefined
   Switch?: ISwitch[] | ISwitch[] | undefined
   TextField?: ITextField[] | ITextField[] | undefined
+
+  /** New */
+  Menu?: IMenu[] | undefined
 }
 
 // Data Display ================================================================== Data Display Interface
@@ -191,7 +224,7 @@ export interface ITypography extends CommonTypes {
 export interface IDivider extends CommonTypes {
   props?: DividerProps
 }
-export interface IChip extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
+export interface IChip extends Omit<CommonTypes, '__CHILD'> {
   props?: ChipProps
 }
 
@@ -200,12 +233,6 @@ export interface IAvatar extends CommonTypes {
 }
 export interface IBadge extends CommonTypes {
   props?: BadgeProps
-}
-
-export interface ITable extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
-  props?: DataGridProps
-  COLUMNS?: GridColDef[]
-  ROWS?: GridRowsProp
 }
 
 export interface ITooltip extends CommonTypes {
@@ -220,7 +247,7 @@ export interface IAutocomplete<
   DisableClearable extends boolean | undefined = undefined,
   FreeSolo extends boolean | undefined = undefined,
   ChipComponent extends React.ElementType = ChipTypeMap['defaultComponent']
-> extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
+> extends Omit<CommonTypes, '__CHILD'> {
   props?: AutocompleteProps<T, Multiple, DisableClearable, FreeSolo, ChipComponent>
   option: ReadonlyArray<T>
   label?: string
@@ -239,26 +266,74 @@ export interface IButtonGroup extends CommonTypes {
   Button?: IButton[] | undefined
 }
 
-export interface ICheckbox extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
+export interface ICheckbox extends Omit<CommonTypes, '__CHILD'> {
   props?: CheckboxProps
   FromControlLabelProperty?: FormControlLabelProps
   label?: React.ReactNode | undefined
 }
 
-export interface IRadioButton extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
+export interface IRadioButton extends Omit<CommonTypes, '__CHILD'> {
   props?: RadioProps
   FromControlLabelProperty?: FormControlLabelProps
   label?: React.ReactNode | undefined
 }
 
-export interface ISwitch extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
+export interface ISwitch extends Omit<CommonTypes, '__CHILD'> {
   props?: SwitchProps
   FromControlLabelProperty?: FormControlLabelProps
   label?: React.ReactNode | undefined
 }
 
-export interface ITextField extends Omit<CommonTypes, 'WhateverIwantAsChild'> {
+export interface ITextField extends Omit<CommonTypes, '__CHILD'> {
   props?: TextFieldProps
+  icon?: React.ReactNode | undefined
+}
+
+export interface IMenu extends CommonTypes {
+  props?: MenuProps
+  open: boolean
+  anchorEl?: Element | ((element: Element) => Element) | null | undefined
+  onClose?: () => void
+  MenuItem?: IMenuItem[] | undefined
+  Typography?: ITypography[] | ITypography[] | undefined
+  Divider?: IDivider[] | IDivider[] | undefined
+}
+
+export interface IMenuItem extends Omit<CommonTypes, '__CHILD'> {
+  props?: MenuItemProps
+  rightIcon?: React.ReactNode | undefined
+  label?: React.ReactNode | undefined
+}
+
+export interface ITableContainer extends Omit<CommonTypes, '__CHILD' | 'order'> {
+  props?: TableContainerProps
+  Table?: ITable[] | undefined
+}
+
+export interface ITable extends Omit<CommonTypes, '__CHILD' | 'order'> {
+  props?: TableProps
+  TableHead?: ITableHead[] | undefined
+  TableBody?: ITableBody[] | undefined
+}
+
+export interface ITableHead extends Omit<CommonTypes, '__CHILD' | 'order'> {
+  props?: TableHeadProps
+  TableRow?: ITableRow[] | undefined
+}
+
+export interface ITableBody extends Omit<CommonTypes, '__CHILD' | 'order'> {
+  props?: TableHeadProps
+  TableRow?: ITableRow[] | undefined
+}
+
+export interface ITableRow extends Omit<CommonTypes, '__CHILD' | 'order'> {
+  props?: TableRowProps
+  TableCell?: ITableCell[] | undefined
+}
+
+export interface ITableCell extends Omit<CommonTypes, '__CHILD' | 'order'> {
+  props?: TableCellProps
+  label?: React.ReactNode | undefined
 }
 
 // Gluttony ===================================================================== Export Gluttony Component
@@ -267,8 +342,8 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
     <>
       {FoodForGluttony?.map((row, key) => (
         // Mapping ======================================================= ParentRoot As Devourobject
-        <Box key={key} style={{ display: 'flex', flexDirection: 'column' }} sx={row.StyleForGluttonyParentRoot}>
-          {row.WhateverIwantAsChild}
+        <Box key={key} style={{ display: 'flex', flexDirection: row.DIRECTION || 'column' }} sx={row.StyleForGluttonyParentRoot}>
+          {row.__CHILD}
 
           {/**  ( Root Parent ============================================================================> Grid )
 
@@ -276,46 +351,46 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
           {row?.GridContainer?.map((row, key) => (
             // Mapping ==================================================== Grid Container
             <Grid container key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-              {row.WhateverIwantAsChild}
+              {row.__CHILD}
 
               {row?.GridItem?.map((row, key) => (
                 // Mapping ==================================================== Grid Item
                 <Grid item key={key} style={{ display: 'flex', flexDirection: 'column' }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
 
                   {row?.Box?.map((row, key) => (
                     <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.WhateverIwantAsChild}
+                      {row.__CHILD}
                     </Box>
                   ))}
 
                   {row?.Container?.map((row, key) => (
                     <Container key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.WhateverIwantAsChild}
+                      {row.__CHILD}
                     </Container>
                   ))}
 
                   {row?.Stack?.map((row, key) => (
                     <Stack key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.WhateverIwantAsChild}
+                      {row.__CHILD}
                     </Stack>
                   ))}
 
                   {row?.Paper?.map((row, key) => (
                     <Paper key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.WhateverIwantAsChild}
+                      {row.__CHILD}
                     </Paper>
                   ))}
 
                   {row?.Typography?.map((row, key) => (
                     <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.WhateverIwantAsChild}
+                      {row.__CHILD}
                     </Typography>
                   ))}
 
                   {row?.Divider?.map((row, key) => (
                     <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.WhateverIwantAsChild}
+                      {row.__CHILD}
                     </Divider>
                   ))}
 
@@ -325,7 +400,7 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
 
                   {row?.Avatar?.map((row, key) => (
                     <Avatar key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.WhateverIwantAsChild}
+                      {row.__CHILD}
                     </Avatar>
                   ))}
 
@@ -343,7 +418,9 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
                   ))}
 
                   {row?.Button?.map((row, key) => (
-                    <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+                    <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                      {row.__CHILD}
+                    </Button>
                   ))}
 
                   {row?.IconButton?.map((row, key) => (
@@ -354,7 +431,7 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
                     <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
                       {row.Button?.map((row, key) => (
                         <Button key={key} sx={row.style} {...row.props}>
-                          {row.WhateverIwantAsChild}
+                          {row.__CHILD}
                         </Button>
                       ))}
                     </ButtonGroup>
@@ -394,7 +471,45 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
                   ))}
 
                   {row?.TextField?.map((row, key) => (
-                    <TextField key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+                    <TextField
+                      key={key}
+                      style={{ order: row.order }}
+                      sx={row.style}
+                      InputProps={{ startAdornment: <InputAdornment position="start">{row.icon}</InputAdornment> }}
+                      {...row.props}
+                    />
+                  ))}
+
+                  {row?.Menu?.map((row, key) => (
+                    <Menu
+                      key={key}
+                      open={row.open}
+                      anchorEl={row.anchorEl}
+                      onClose={() => row?.onClose?.()}
+                      style={{ order: row.order }}
+                      sx={row.style}
+                      {...row.props}
+                    >
+                      {row?.Typography?.map((row, key) => (
+                        <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                          {row.__CHILD}
+                        </Typography>
+                      ))}
+
+                      {row?.Divider?.map((row, key) => (
+                        <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                          {row.__CHILD}
+                        </Divider>
+                      ))}
+
+                      {row?.MenuItem?.map((row, key) => (
+                        <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                          <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
+                          {row.label}
+                        </MenuItem>
+                      ))}
+                      {row.__CHILD}
+                    </Menu>
                   ))}
                 </Grid>
               ))}
@@ -411,42 +526,47 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
            *
            */}
           {row?.Box?.map((row, key) => (
-            <Box key={key} style={{ order: row.order, display: 'flex', flexDirection: 'column' }} sx={row.style} {...row.props}>
-              {row.WhateverIwantAsChild}
+            <Box
+              key={key}
+              style={{ order: row.order, display: 'flex', flexDirection: row.DIRECTION || 'column' }}
+              sx={row.style}
+              {...row.props}
+            >
+              {row.__CHILD}
 
               {row?.Box?.map((row, key) => (
                 <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Box>
               ))}
 
               {row?.Container?.map((row, key) => (
                 <Container key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Container>
               ))}
 
               {row?.Stack?.map((row, key) => (
                 <Stack key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Stack>
               ))}
 
               {row?.Paper?.map((row, key) => (
                 <Paper key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Paper>
               ))}
 
               {row?.Typography?.map((row, key) => (
                 <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Typography>
               ))}
 
               {row?.Divider?.map((row, key) => (
                 <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Divider>
               ))}
 
@@ -456,7 +576,7 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
 
               {row?.Avatar?.map((row, key) => (
                 <Avatar key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Avatar>
               ))}
 
@@ -474,7 +594,9 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
               ))}
 
               {row?.Button?.map((row, key) => (
-                <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+                <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                  {row.__CHILD}
+                </Button>
               ))}
 
               {row?.IconButton?.map((row, key) => (
@@ -485,7 +607,7 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
                 <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
                   {row.Button?.map((row, key) => (
                     <Button key={key} sx={row.style} {...row.props}>
-                      {row.WhateverIwantAsChild}
+                      {row.__CHILD}
                     </Button>
                   ))}
                 </ButtonGroup>
@@ -525,7 +647,45 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
               ))}
 
               {row?.TextField?.map((row, key) => (
-                <TextField key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+                <TextField
+                  key={key}
+                  style={{ order: row.order }}
+                  sx={row.style}
+                  InputProps={{ startAdornment: <InputAdornment position="start">{row.icon}</InputAdornment> }}
+                  {...row.props}
+                />
+              ))}
+
+              {row?.Menu?.map((row, key) => (
+                <Menu
+                  key={key}
+                  open={row.open}
+                  anchorEl={row.anchorEl}
+                  onClose={() => row?.onClose?.()}
+                  style={{ order: row.order }}
+                  sx={row.style}
+                  {...row.props}
+                >
+                  {row?.Typography?.map((row, key) => (
+                    <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                      {row.__CHILD}
+                    </Typography>
+                  ))}
+
+                  {row?.Divider?.map((row, key) => (
+                    <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                      {row.__CHILD}
+                    </Divider>
+                  ))}
+
+                  {row?.MenuItem?.map((row, key) => (
+                    <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                      <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
+                      {row.label}
+                    </MenuItem>
+                  ))}
+                  {row.__CHILD}
+                </Menu>
               ))}
             </Box>
           ))}
@@ -538,12 +698,12 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
            */}
           {row?.Container?.map((row, key) => (
             <Container key={key} style={{ order: row.order }} {...row.props}>
-              {row.WhateverIwantAsChild}
+              {row.__CHILD}
             </Container>
           ))}
           {row?.Stack?.map((row, key) => (
             <Stack key={key} style={{ order: row.order }} {...row.props}>
-              {row.WhateverIwantAsChild}
+              {row.__CHILD}
             </Stack>
           ))}
 
@@ -558,42 +718,47 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
            */}
 
           {row?.Paper?.map((row, key) => (
-            <Paper key={key} style={{ order: row.order, display: 'flex', flexDirection: 'column' }} sx={row.style} {...row.props}>
-              {row.WhateverIwantAsChild}
+            <Paper
+              key={key}
+              style={{ order: row.order, display: 'flex', flexDirection: row.DIRECTION || 'column' }}
+              sx={row.style}
+              {...row.props}
+            >
+              {row.__CHILD}
 
               {row?.Box?.map((row, key) => (
                 <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Box>
               ))}
 
               {row?.Container?.map((row, key) => (
                 <Container key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Container>
               ))}
 
               {row?.Stack?.map((row, key) => (
                 <Stack key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Stack>
               ))}
 
               {row?.Paper?.map((row, key) => (
                 <Paper key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Paper>
               ))}
 
               {row?.Typography?.map((row, key) => (
                 <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Typography>
               ))}
 
               {row?.Divider?.map((row, key) => (
                 <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Divider>
               ))}
 
@@ -603,7 +768,7 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
 
               {row?.Avatar?.map((row, key) => (
                 <Avatar key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Avatar>
               ))}
 
@@ -621,7 +786,9 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
               ))}
 
               {row?.Button?.map((row, key) => (
-                <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+                <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                  {row.__CHILD}
+                </Button>
               ))}
 
               {row?.IconButton?.map((row, key) => (
@@ -632,7 +799,7 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
                 <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
                   {row.Button?.map((row, key) => (
                     <Button key={key} sx={row.style} {...row.props}>
-                      {row.WhateverIwantAsChild}
+                      {row.__CHILD}
                     </Button>
                   ))}
                 </ButtonGroup>
@@ -672,20 +839,63 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
               ))}
 
               {row?.TextField?.map((row, key) => (
-                <TextField key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+                <TextField
+                  key={key}
+                  style={{ order: row.order }}
+                  sx={row.style}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">{row.icon}</InputAdornment>,
+                    sx: () => ({
+                      borderRadius: borderRadius.md,
+                    }),
+                  }}
+                  {...row.props}
+                />
+              ))}
+
+              {row?.Menu?.map((row, key) => (
+                <Menu
+                  key={key}
+                  open={row.open}
+                  anchorEl={row.anchorEl}
+                  onClose={() => row?.onClose?.()}
+                  style={{ order: row.order }}
+                  sx={row.style}
+                  {...row.props}
+                >
+                  {row?.Typography?.map((row, key) => (
+                    <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                      {row.__CHILD}
+                    </Typography>
+                  ))}
+
+                  {row?.Divider?.map((row, key) => (
+                    <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                      {row.__CHILD}
+                    </Divider>
+                  ))}
+
+                  {row?.MenuItem?.map((row, key) => (
+                    <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                      <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
+                      {row.label}
+                    </MenuItem>
+                  ))}
+                  {row.__CHILD}
+                </Menu>
               ))}
             </Paper>
           ))}
 
           {row?.Typography?.map((row, key) => (
             <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-              {row.WhateverIwantAsChild}
+              {row.__CHILD}
             </Typography>
           ))}
 
           {row?.Divider?.map((row, key) => (
             <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-              {row.WhateverIwantAsChild}
+              {row.__CHILD}
             </Divider>
           ))}
 
@@ -695,7 +905,7 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
 
           {row?.Avatar?.map((row, key) => (
             <Avatar key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-              {row.WhateverIwantAsChild}
+              {row.__CHILD}
             </Avatar>
           ))}
 
@@ -713,7 +923,9 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
           ))}
 
           {row?.Button?.map((row, key) => (
-            <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+            <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+              {row.__CHILD}
+            </Button>
           ))}
 
           {row?.IconButton?.map((row, key) => (
@@ -724,7 +936,7 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
             <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
               {row.Button?.map((row, key) => (
                 <Button key={key} sx={row.style} {...row.props}>
-                  {row.WhateverIwantAsChild}
+                  {row.__CHILD}
                 </Button>
               ))}
             </ButtonGroup>
@@ -764,7 +976,98 @@ export const Gluttony = ({ FoodForGluttony }: IGluttony) => {
           ))}
 
           {row?.TextField?.map((row, key) => (
-            <TextField key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+            <TextField
+              key={key}
+              style={{ order: row.order }}
+              sx={row.style}
+              InputProps={{ startAdornment: <InputAdornment position="start">{row.icon}</InputAdornment> }}
+              {...row.props}
+            />
+          ))}
+
+          {row?.Menu?.map((row, key) => (
+            <Menu
+              key={key}
+              open={row.open}
+              anchorEl={row.anchorEl}
+              onClose={() => row?.onClose?.()}
+              style={{ order: row.order }}
+              sx={row.style}
+              {...row.props}
+            >
+              {row?.Typography?.map((row, key) => (
+                <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                  {row.__CHILD}
+                </Typography>
+              ))}
+
+              {row?.Divider?.map((row, key) => (
+                <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                  {row.__CHILD}
+                </Divider>
+              ))}
+
+              {row?.MenuItem?.map((row, key) => (
+                <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                  <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
+                  {row.label}
+                </MenuItem>
+              ))}
+              {row.__CHILD}
+            </Menu>
+          ))}
+
+          {row?.TableContainer?.map((row, key) => (
+            <TableContainer key={key} component={Paper} sx={row.style} {...row.props}>
+              {row?.Table?.map((row, key) => (
+                <Table key={key} sx={row.style} {...row.props}>
+                  {row?.TableHead?.map((row, key) => (
+                    <TableHead key={key} sx={row.style} {...row.props}>
+                      {row?.TableRow?.map((row, key) => (
+                        <TableRow key={key} sx={row.style} {...row.props}>
+                          {row?.TableCell?.map((row, key) => (
+                            <TableCell
+                              key={key}
+                              style={{
+                                fontWeight: 700,
+                                fontFamily:
+                                  "Poppins,system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+                              }}
+                              sx={row.style}
+                              {...row.props}
+                            >
+                              {row.label}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))}
+                    </TableHead>
+                  ))}
+
+                  {row?.TableBody?.map((row, key) => (
+                    <TableBody key={key} sx={row.style} {...row.props}>
+                      {row?.TableRow?.map((row, key) => (
+                        <TableRow key={key} sx={row.style} {...row.props}>
+                          {row?.TableCell?.map((row, key) => (
+                            <TableCell
+                              key={key}
+                              style={{
+                                fontFamily:
+                                  "Poppins,system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+                              }}
+                              sx={row.style}
+                              {...row.props}
+                            >
+                              {row.label}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  ))}
+                </Table>
+              ))}
+            </TableContainer>
           ))}
         </Box>
       ))}
@@ -839,8 +1142,8 @@ export interface MuiProps {
   // Drawer: DrawerProps
   // SwipeableDrawer: SwipeableDrawerProps
   // Link: LinkProps
-  // Menu: ConvertToOptional<MenuProps>
-  // MenuItem: MenuItemProps
+  Menu: ConvertToOptional<MenuProps>
+  MenuItem: MenuItemProps
   // Pagination: PaginationProps
   // PaginationItem: PaginationItemProps
   // SpeedDial: SpeedDialProps

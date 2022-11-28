@@ -1,7 +1,8 @@
 import { CSSObject, SxProps, Theme } from '@mui/material'
+import { borderRadius } from 'config'
 import { IMenuChildren } from 'Layouts/MenuItems'
 import { DekstopView, MobileView } from 'Utilities/MediaQuery'
-import { color } from './Color'
+import { ColorLibrary } from '../Utilities/Color'
 
 const globalTransition = '200ms'
 
@@ -13,9 +14,9 @@ export const css = {
       left: 0,
       right: 0,
       height: '3rem',
-      background: theme.palette.mode === 'dark' ? color('header-dark') : color('header-light'),
+      background: theme.palette.mode === 'dark' ? ColorLibrary('header-dark') : ColorLibrary('header-light'),
       backdropFilter: 'blur(10px)',
-
+      zIndex: 2,
       boxShadow: theme.palette.mode === 'dark' ? '0 1px 5px rgba(0,0,0,1)' : '0 1px 5px rgba(0,0,0,0.5)',
     } as CSSObject
   },
@@ -36,15 +37,15 @@ export const css = {
 
       ['&:hover']: {
         cursor: 'pointer',
-        backgroundColor: theme.palette.mode === 'dark' ? color('hover-header-background-dark') : color('hover-header-background-light'),
+        backgroundColor:
+          theme.palette.mode === 'dark' ? ColorLibrary('hover-header-background-dark') : ColorLibrary('hover-header-background-light'),
       },
     } as CSSObject
   },
 
-  GRID_ITEM_HEADER: (theme: Theme): SxProps<Theme> => {
+  HEADER_ITEM: (theme: Theme): SxProps<Theme> => {
     return {
       height: 'inherit',
-      display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       color: theme.palette.mode === 'dark' ? '' : 'white',
@@ -52,14 +53,27 @@ export const css = {
     }
   },
 
+  HEADER_USER_MENU_BUTTON: (theme: Theme): SxProps<Theme> => {
+    return {
+      '&:hover': {
+        cursor: 'pointer',
+        backgroundColor:
+          theme.palette.mode === 'dark' ? ColorLibrary('hover-header-background-dark') : ColorLibrary('hover-header-background-light'),
+      },
+    }
+  },
+
   SIDEBAR_ROOT: (theme: Theme): SxProps<Theme> => {
     return {
       overflowY: 'auto',
+      overflowX: 'hidden',
       position: 'fixed',
       left: 0,
       top: 0,
       bottom: 0,
+      zIndex: 2,
       backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.2)' : 'white',
+      backdropFilter: 'blur(15px)',
       boxShadow: theme.palette.mode === 'dark' ? '2px 5px 5px rgba(0,0,0,0.5)' : '2px 5px 5px rgba(0,0,0,0.2)',
     }
   },
@@ -68,21 +82,20 @@ export const css = {
     const interaction =
       pathname === row?.path
         ? {
-            backgroundColor: theme.palette.mode === 'dark' ? color('active-bg-dark') : color('active-bg-light'),
-            borderRadius: '0.5rem',
-            color: theme.palette.mode === 'dark' ? color('active-text-dark') : color('active-text-light'),
+            backgroundColor: theme.palette.mode === 'dark' ? ColorLibrary('active-bg-dark') : ColorLibrary('active-bg-light'),
+            borderRadius: borderRadius.md,
+            color: theme.palette.mode === 'dark' ? ColorLibrary('active-text-dark') : ColorLibrary('active-text-light'),
           }
         : {
             '&:hover': {
-              backgroundColor: theme.palette.mode === 'dark' ? color('hover-bg-dark') : color('hover-bg-light'),
+              backgroundColor: theme.palette.mode === 'dark' ? ColorLibrary('hover-bg-dark') : ColorLibrary('hover-bg-light'),
               cursor: 'pointer',
-              borderRadius: '0.5rem',
-              color: theme.palette.mode === 'dark' ? color('hover-text-dark') : color('hover-text-light'),
+              borderRadius: borderRadius.md,
+              color: theme.palette.mode === 'dark' ? ColorLibrary('hover-text-dark') : ColorLibrary('hover-text-light'),
             } as CSSObject,
           }
     return {
       borderRadius: '10rem',
-
       color: theme.palette.mode === 'dark' ? theme.palette.text.primary : theme.palette.text.primary,
       textDecoration: 'none',
       height: '3rem',
@@ -100,14 +113,14 @@ export const css = {
       '::-webkit-scrollbar': {
         width: '5px',
         backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.1)' : '#fff',
-        borderRadius: '15px',
+        borderRadius: borderRadius.md,
       },
       '::-webkit-scrollbar-track': {
         boxShadow: 'inset 0 0 6px rgba(0,0,0,0.3)',
-        borderRadius: '10px',
+        borderRadius: borderRadius.md,
       },
       '::-webkit-scrollbar-thumb': {
-        borderRadius: '5px',
+        borderRadius: borderRadius.md,
         boxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
         backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'rgba(0,0,0,0)',
         paddingTop: 20,

@@ -1,9 +1,10 @@
 // Define a type for the slice state
 
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface IInitialState {
   Theme: 'dark' | 'light'
+  FontFamily: string
 }
 
 export const darkModeControl = () => {
@@ -13,9 +14,11 @@ export const darkModeControl = () => {
 
 const initialState: IInitialState = {
   Theme: darkModeControl(),
+  FontFamily:
+    "font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;",
 }
 
-export const darkModeReducer = createSlice({
+export const modeReducer = createSlice({
   name: 'Theme',
 
   initialState,
@@ -31,9 +34,13 @@ export const darkModeReducer = createSlice({
     toDark: (state) => {
       state.Theme = 'dark'
     },
+
+    setFontFamily: (state, action: PayloadAction<string>) => {
+      state.FontFamily = action.payload
+    },
   },
 })
 
-export const { setTheme, toLight } = darkModeReducer.actions
+export const { setTheme, toLight, toDark, setFontFamily } = modeReducer.actions
 
-export default darkModeReducer.reducer
+export default modeReducer.reducer
