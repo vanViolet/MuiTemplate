@@ -1,5 +1,5 @@
 import { CSSObject } from '@emotion/react'
-import { CreateElements, IIngredient } from 'Components/Gluttony'
+import { CreateElements, IIngredient } from 'Components/CreateElements'
 import { sidebarToggle } from 'Contexts/customizationReducer'
 import { setTheme } from 'Contexts/modeReducer'
 import { useAppDispatch, useAppSelector } from 'Contexts/_store'

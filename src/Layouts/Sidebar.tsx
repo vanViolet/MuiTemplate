@@ -1,5 +1,5 @@
 import { CSSObject } from '@emotion/react'
-import { CreateElements, IBox, IBoxNotNested, IIngredient } from 'Components/Gluttony'
+import { CreateElements, IBox, IBoxNotNested, IIngredient } from 'Components/CreateElements'
 import { useAppDispatch, useAppSelector } from 'Contexts/_store'
 
 import { css } from 'Assets/style'

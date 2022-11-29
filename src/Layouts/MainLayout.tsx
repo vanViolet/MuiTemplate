@@ -1,7 +1,7 @@
 import { useMediaQuery } from '@mui/material'
 import { Box } from '@mui/system'
 import { LottieLibrary } from 'Utilities/Lottie'
-import { CreateElements, IIngredient } from 'Components/Gluttony'
+import { CreateElements, IIngredient } from 'Components/CreateElements'
 import { sidebarToggleToFalse, sidebarToggleToTrue } from 'Contexts/customizationReducer'
 import { useAppDispatch, useAppSelector } from 'Contexts/_store'
 import { useEffect, useState } from 'react'

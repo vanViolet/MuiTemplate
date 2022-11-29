@@ -418,11 +418,13 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
                     />
                   ))}
 
-                  {row?.Button?.map((row, key) => (
-                    <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Button>
-                  ))}
+                  {row?.Button?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Button>
+                    )
+                  )}
 
                   {row?.IconButton?.map((row, key) => (
                     <IconButton key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
@@ -594,11 +596,13 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
                 />
               ))}
 
-              {row?.Button?.map((row, key) => (
-                <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.__CHILD}
-                </Button>
-              ))}
+              {row?.Button?.map((row, key) =>
+                row === undefined ? undefined : (
+                  <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                    {row.__CHILD}
+                  </Button>
+                )
+              )}
 
               {row?.IconButton?.map((row, key) => (
                 <IconButton key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
@@ -786,11 +790,13 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
                 />
               ))}
 
-              {row?.Button?.map((row, key) => (
-                <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.__CHILD}
-                </Button>
-              ))}
+              {row?.Button?.map((row, key) =>
+                row === undefined ? undefined : (
+                  <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                    {row.__CHILD}
+                  </Button>
+                )
+              )}
 
               {row?.IconButton?.map((row, key) => (
                 <IconButton key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
@@ -923,11 +929,13 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
             />
           ))}
 
-          {row?.Button?.map((row, key) => (
-            <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-              {row.__CHILD}
-            </Button>
-          ))}
+          {row?.Button?.map((row, key) =>
+            row === undefined ? undefined : (
+              <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                {row.__CHILD}
+              </Button>
+            )
+          )}
 
           {row?.IconButton?.map((row, key) => (
             <IconButton key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
@@ -1033,6 +1041,7 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
                                 fontWeight: 700,
                                 fontFamily:
                                   "Poppins,system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+                                position: 'relative!important' as 'relative',
                               }}
                               sx={row.style}
                               {...row.props}

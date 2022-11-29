@@ -1,7 +1,7 @@
 import { CSSObject } from '@emotion/react'
 import { InputAdornment } from '@mui/material'
 import { css } from 'Assets/style'
-import { IPaper } from 'Components/Gluttony'
+import { IPaper } from 'Components/CreateElements'
 import { borderRadius } from 'config'
 import React from 'react'
 import { IconLibrary, IIconLibrary } from 'Utilities/Icon'
@@ -25,6 +25,7 @@ export function TitleTemplate(args?: { label?: React.ReactNode | undefined; icon
         {
           style: () => ({
             fontWeight: 700,
+            marginRight: '1rem',
             flexGrow: 1,
             [MobileView()]: {
               flexGrow: 0,

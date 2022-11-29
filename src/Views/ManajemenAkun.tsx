@@ -1,7 +1,7 @@
 import { Pagination } from '@mui/material'
 import { IconLibrary } from 'Utilities/Icon'
 import { LottieLibrary } from 'Utilities/Lottie'
-import { CreateElements, IIngredient } from 'Components/Gluttony'
+import { CreateElements, IButton, IIngredient } from 'Components/CreateElements'
 import { borderRadius, shadow } from 'config'
 import { FunctionComponent, useState } from 'react'
 import { MobileView } from 'Utilities/MediaQuery'
@@ -36,7 +36,7 @@ export const ManajemenAkunPage = () => {
         Paper: [
           ...TitleTemplate({ label: 'Manajemen Akun', icon: 'Users', withSearchInput: true }),
           ...CrudActionTemplate({
-            Button: [ButtonCollection.ADD({}), ButtonCollection.UPDATE({}), ButtonCollection.DELETE({})],
+            Button: [ButtonCollection.ADD({}) as IButton, ButtonCollection.UPDATE({}), ButtonCollection.DELETE({})],
           }),
         ],
 
@@ -60,30 +60,29 @@ export const ManajemenAkunPage = () => {
                             label: 'No',
                           },
                           {
-                            style: { padding: 0 },
+                            style: () => ({
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              '&:hover': {
+                                background: ColorCollection.bg.hover,
+                                cursor: 'pointer',
+                              },
+                            }),
+                            props: {
+                              onClick: () => {
+                                setState((v) => ({
+                                  ...v,
+                                  params: { ...state.params, sortDirection: state.params.sortDirection === 'asc' ? 'desc' : 'asc' },
+                                }))
+                                console.log(state.params.sortDirection)
+                              },
+                            },
+                            label: 'Nama',
                             Box: [
                               {
-                                style: () => ({
-                                  height: '100%',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  padding: '1rem',
-                                  justifyContent: 'space-between',
-                                  '&:hover': {
-                                    background: ColorCollection.bg.hover,
-                                    cursor: 'pointer',
-                                  },
-                                }),
-                                props: {
-                                  onClick: () => {
-                                    setState((v) => ({
-                                      ...v,
-                                      params: { ...state.params, sortDirection: state.params.sortDirection === 'asc' ? 'desc' : 'asc' },
-                                    }))
-                                    console.log(state.params.sortDirection)
-                                  },
-                                },
-                                __CHILD: <>Nama {IconLibrary(state.params.sortDirection === 'asc' ? 'AzSort' : 'ZaSort', 'MenuSize')}</>,
+                                style: { marginTop: '0.4rem' },
+                                __CHILD: IconLibrary(state.params.sortDirection === 'asc' ? 'AzSort' : 'ZaSort', 'MenuSize'),
                               },
                             ],
                           },
