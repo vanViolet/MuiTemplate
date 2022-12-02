@@ -45,11 +45,11 @@ const Validator = {
     return this
   },
   max(limit: number) {
-    this.Yup = this.Yup.max(limit, `${this.labelName} maksimal ${limit}`)
+    this.Yup = this.Yup.max(limit, `${this.labelName} maksimal ${limit} karakter`)
     return this
   },
   min(limit: number) {
-    this.Yup = this.Yup.min(limit, `${this.labelName} minimal ${limit}`)
+    this.Yup = this.Yup.min(limit, `${this.labelName} minimal ${limit} karakter`)
     return this
   },
   same(field: any, label: string) {

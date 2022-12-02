@@ -1,16 +1,15 @@
 import { ITableCell, ITableContainer, ITableRow } from 'Components/CreateElements'
-import { ColorCollection } from 'Utilities/Color'
-import { LottieLibrary } from 'Utilities/Lottie'
+import { ColorCollection } from 'Utilities/ColorCollection'
+import { LottieCollection } from 'Utilities/LottieCollection'
 
 interface ITableBodyRow {
   TableCell?: ITableCell[]
   isActive?: boolean
   setSelected?: () => void
 }
-export const TableTemplate = <T>(args?: {
-  isLoading?: boolean | undefined
+export const TableTemplate = <T>(args: {
+  isLoading: boolean
   data?: T[] | null
-
   TableHeadRow?: ITableRow[]
   TableBodyRow?: ITableBodyRow[]
 }): ITableContainer[] => {
@@ -24,13 +23,15 @@ export const TableTemplate = <T>(args?: {
         {
           props: {
             stickyHeader: true,
+            size: 'medium',
+            padding: 'normal',
           },
           TableHead: [
             {
               TableRow: args?.TableHeadRow,
             },
           ],
-          TableBody: args?.isLoading
+          TableBody: args.isLoading
             ? [
                 {
                   TableRow: [
@@ -38,7 +39,7 @@ export const TableTemplate = <T>(args?: {
                       TableCell: [
                         {
                           props: { colSpan: 99 },
-                          label: LottieLibrary.LOADING_SQUARE({
+                          label: LottieCollection.LOADING_SQUARE({
                             BoxStyle: () => ({
                               display: 'flex',
                               flexDirection: 'column',
@@ -61,7 +62,7 @@ export const TableTemplate = <T>(args?: {
                       TableCell: [
                         {
                           props: { colSpan: 99 },
-                          label: LottieLibrary.EMPTY_CAT({
+                          label: LottieCollection.EMPTY_CAT({
                             BoxStyle: () => ({
                               display: 'flex',
                               flexDirection: 'column',
@@ -83,12 +84,16 @@ export const TableTemplate = <T>(args?: {
                     style: () => ({
                       '&:last-child td, &:last-child th': { border: 0 },
                       backgroundColor: row?.isActive ? ColorCollection.bg.active : '',
+                      '&:hover': {
+                        backgroundColor: !row?.isActive ? ColorCollection.bg.hoverWhite : '',
+                      },
                     }),
                     props: {
                       onClick: () => {
                         row?.setSelected?.()
                       },
                     },
+
                     TableCell: row?.TableCell,
                   })),
                 },

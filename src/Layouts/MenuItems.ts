@@ -1,4 +1,4 @@
-import { IconLibrary } from 'Utilities/Icon'
+import { IconCollection } from 'Utilities/IconCollection'
 
 export interface IMenuItems {
   label?: React.ReactNode | string | undefined
@@ -24,7 +24,7 @@ export const MenuItems: IMenuItems[] = [
     children: [
       {
         label: 'Dashboard',
-        icon: IconLibrary('Dashboard', 'MenuSize'),
+        icon: IconCollection('Dashboard', 'MenuSize'),
         path: '/',
       },
     ],
@@ -34,7 +34,7 @@ export const MenuItems: IMenuItems[] = [
     children: [
       {
         label: 'Manajemen Akun',
-        icon: IconLibrary('Users', 'MenuSize'),
+        icon: IconCollection('Users', 'MenuSize'),
         path: '/manajemen-akun',
       },
 

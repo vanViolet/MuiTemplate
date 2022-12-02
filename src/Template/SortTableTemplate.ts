@@ -1,6 +1,6 @@
 import React from 'react'
-import { ColorCollection } from 'Utilities/Color'
-import { IconLibrary } from 'Utilities/Icon'
+import { ColorCollection } from 'Utilities/ColorCollection'
+import { IconCollection } from 'Utilities/IconCollection'
 
 export const SortTableTemplate = (args?: {
   name?: string
@@ -8,6 +8,7 @@ export const SortTableTemplate = (args?: {
   onClick?: () => void
   sortField?: string
   sortDirection?: 'asc' | 'desc'
+  disabledSortable?: boolean | undefined
 }) => {
   return {
     style: { padding: 0, margin: 0 },
@@ -22,15 +23,19 @@ export const SortTableTemplate = (args?: {
           height: '4rem',
           padding: '0 1rem',
           justifyContent: 'space-between',
-          '&:hover': {
-            background: ColorCollection.bg.hover,
-            cursor: 'pointer',
-          },
+          '&:hover': args?.disabledSortable
+            ? {}
+            : {
+                background: ColorCollection.bg.hover,
+                cursor: 'pointer',
+              },
           '&::before': {
             content: `"${args?.label}"`,
           },
         }),
-        __CHILD: IconLibrary(args?.name === args?.sortField ? 'NotSort' : args?.sortDirection === 'asc' ? 'AzSort' : 'ZaSort', 'MenuSize'),
+        __CHILD: args?.disabledSortable
+          ? undefined
+          : IconCollection(args?.name !== args?.sortField ? 'NotSort' : args?.sortDirection === 'asc' ? 'AzSort' : 'ZaSort', 'MenuSize'),
       },
     ],
   }

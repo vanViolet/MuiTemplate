@@ -4,12 +4,10 @@ import { sidebarToggle } from 'Contexts/customizationReducer'
 import { setTheme } from 'Contexts/modeReducer'
 import { useAppDispatch, useAppSelector } from 'Contexts/_store'
 import { css } from 'Assets/style'
-import { IconLibrary } from 'Utilities/Icon'
-import { MobileView } from 'Utilities/MediaQuery'
+import { IconCollection } from 'Utilities/IconCollection'
+import { DekstopView, MobileView } from 'Utilities/MediaQuery'
 import { MuiSwitch } from 'Components/MuiSwitch'
 import React from 'react'
-import { borderRadius, shadow } from 'config'
-import { ColorCollection } from 'Utilities/Color'
 
 export const Header = () => {
   const DARK_MODE = useAppSelector((state) => state.mode.Theme)
@@ -25,6 +23,16 @@ export const Header = () => {
 
         styleForParentBox: (theme) => ({
           ...(css.HEADER_ROOT(theme) as CSSObject),
+          [DekstopView()]: {
+            transitionDuration: '200ms',
+            boxShadow: BURGER_TOGGLE
+              ? theme.palette.mode === 'dark'
+                ? '250px 4px 10px rgba(0,0,0,1)'
+                : '0 1px 5px rgba(0,0,0,0.5)'
+              : theme.palette.mode === 'dark'
+              ? '50px 4px 10px rgba(0,0,0,1)'
+              : '0 1px 5px rgba(0,0,0,0.5)',
+          },
         }),
         style: { height: 'inherit' },
         Box: [
@@ -46,10 +54,10 @@ export const Header = () => {
             Box: [
               {
                 props: { display: 'flex' },
-                __CHILD: IconLibrary('Hamburger', 'HeroSize'),
+                __CHILD: IconCollection('Hamburger', 'HeroSize'),
               },
             ],
-            __CHILD: IconLibrary('Toggle', 'HeroSize'),
+            __CHILD: IconCollection('Toggle', 'HeroSize'),
           },
 
           // Title  <====================================================
@@ -109,7 +117,7 @@ export const Header = () => {
                 setAnchorEl(e.currentTarget)
               },
             },
-            __CHILD: IconLibrary('UserCircle', 'HeroSize'),
+            __CHILD: IconCollection('UserCircle', 'HeroSize'),
           },
 
           // User Menu Dropdown <====================================================
@@ -123,18 +131,7 @@ export const Header = () => {
                 },
 
                 style: (theme) => ({
-                  '& > .MuiPaper-root': {
-                    backgroundImage: 'none',
-                    width: 300,
-                    boxShadow: theme.palette.mode === 'dark' ? shadow.dark.sm : shadow.light.sm,
-                    padding: '0.5rem 1.5rem',
-                    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0,0,0,0)' : 'white',
-                    backdropFilter: 'blur(25px)',
-                    [MobileView()]: {
-                      backgroundColor: theme.palette.mode === 'dark' ? 'background.paper' : 'white',
-                    },
-                    marginTop: '0.2rem',
-                  },
+                  ...css.HEADER_USER_MENU_PAPER(theme),
                 }),
 
                 Typography: [
@@ -158,17 +155,9 @@ export const Header = () => {
                 MenuItem: [
                   {
                     style: (theme) => ({
-                      borderRadius: '10rem',
-                      transitionDuration: '100ms',
-                      fontWeight: 500,
-                      '&:hover': {
-                        backgroundColor: ColorCollection.bg.hover,
-                        cursor: 'pointer',
-                        borderRadius: borderRadius.md,
-                        color: ColorCollection.text.hover,
-                      } as CSSObject,
+                      ...css.HEADER_USER_MENU_ITEM(theme),
                     }),
-                    rightIcon: IconLibrary('LogOut', 'MenuSize'),
+                    rightIcon: IconCollection('LogOut', 'MenuSize'),
                     label: 'Logout',
                   },
                 ],

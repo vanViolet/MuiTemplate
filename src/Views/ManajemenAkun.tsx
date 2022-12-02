@@ -1,17 +1,17 @@
-import { Pagination } from '@mui/material'
-import { IconLibrary } from 'Utilities/Icon'
-import { LottieLibrary } from 'Utilities/Lottie'
 import { CreateElements, IButton, IIngredient } from 'Components/CreateElements'
-import { borderRadius, shadow } from 'config'
 import { FunctionComponent, useState } from 'react'
-import { MobileView } from 'Utilities/MediaQuery'
-import { IDummyData } from '__DummyData'
+import { DummyData, IDummyData } from '__DummyData'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from 'Contexts/_store'
 import { TitleTemplate } from 'Template/TitleTemplate'
-import { CrudActionTemplate } from 'Template/CrudActionTemplate'
-import { ButtonCollection } from 'Template/ButtonCollection'
-import { ColorCollection } from 'Utilities/Color'
+import { TableTemplate } from 'Template/TableTemplate'
+import { SortTableTemplate } from 'Template/SortTableTemplate'
+import { PaginationTemplate } from 'Template/PaginationTemplate'
+import { ButtonCollection } from 'Utilities/ButtonCollection'
+import { css } from 'Assets/style'
+import { ManajemenAkunFormDialog } from 'Dialog/ManajemenAkunFormDialog'
+import { commonCss } from 'Assets/commonCss'
+import { convertToLabel } from 'Utilities/General'
 
 export const ManajemenAkunPage = () => {
   const tools = {
@@ -19,233 +19,78 @@ export const ManajemenAkunPage = () => {
   }
 
   const [state, setState] = useState({
-    data: null as IDummyData[] | null,
-    selected: null as IDummyData | null,
-    isLoading: false as boolean,
-
     params: {
       query: undefined as string | undefined,
       sortDirection: 'asc' as 'asc' | 'desc',
       sortField: undefined as string | undefined,
     },
+    data: DummyData as IDummyData[] | null,
+    selected: null as IDummyData | null,
+    isLoading: false as boolean,
   })
+
+  const CrudAction: IButton[] = [{ ...ButtonCollection.ADD({ whichDialog: <ManajemenAkunFormDialog />, disabled: !state.selected }) }]
+
+  const OBJECT_DATA = [{ key: 'no' }, { key: 'nama' }, { key: 'username' }, { key: 'email' }, { key: 'levelJabatan' }]
 
   function Ingredient(): IIngredient[] {
     return [
       {
+        styleForParentBox: () => ({ alignItems: 'flex-end' }),
         Paper: [
           ...TitleTemplate({ label: 'Manajemen Akun', icon: 'Users', withSearchInput: true }),
-          ...CrudActionTemplate({
-            Button: [ButtonCollection.ADD({}) as IButton, ButtonCollection.UPDATE({}), ButtonCollection.DELETE({})],
+          { DIRECTION: 'row', style: (theme) => ({ ...css.CRUD_ACTION(theme) }), Button: CrudAction },
+        ],
+        TableContainer: [
+          ...TableTemplate({
+            data: state.data,
+            isLoading: state.isLoading,
+            TableHeadRow: [
+              {
+                TableCell: OBJECT_DATA.map((row) => ({
+                  ...SortTableTemplate({
+                    disabledSortable: row.key === 'no',
+                    name: row.key,
+                    label: convertToLabel(row.key),
+                    sortDirection: state.params.sortDirection,
+                    sortField: state.params.sortField,
+                    onClick: () =>
+                      setState((v) => ({
+                        ...v,
+                        params: {
+                          ...state.params,
+                          sortDirection: state.params.sortDirection === 'asc' ? 'desc' : 'asc',
+                          sortField: row.key,
+                        },
+                      })),
+                  }),
+                })),
+              },
+            ],
+            TableBodyRow: state.data?.map((row, key) => ({
+              isActive: row === state.selected,
+              setSelected: () => {
+                setState((v) => ({ ...v, selected: row as IDummyData }))
+              },
+              TableCell: [
+                {
+                  label: key + 1,
+                },
+                { label: row.nama },
+                {
+                  label: row.username,
+                  style: () => ({
+                    ...commonCss.DONT_TOUCH_THE_LETTERS(),
+                  }),
+                },
+                { label: row.email },
+                { label: row.levelJabatan, props: { align: 'center' } },
+              ],
+            })),
           }),
         ],
 
-        TableContainer: [
-          {
-            style: () => ({
-              maxHeight: 'calc(100vh - 270px)',
-              borderRadius: 0,
-            }),
-            Table: [
-              {
-                props: {
-                  stickyHeader: true,
-                },
-                TableHead: [
-                  {
-                    TableRow: [
-                      {
-                        TableCell: [
-                          {
-                            label: 'No',
-                          },
-                          {
-                            style: () => ({
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              '&:hover': {
-                                background: ColorCollection.bg.hover,
-                                cursor: 'pointer',
-                              },
-                            }),
-                            props: {
-                              onClick: () => {
-                                setState((v) => ({
-                                  ...v,
-                                  params: { ...state.params, sortDirection: state.params.sortDirection === 'asc' ? 'desc' : 'asc' },
-                                }))
-                                console.log(state.params.sortDirection)
-                              },
-                            },
-                            label: 'Nama',
-                            Box: [
-                              {
-                                style: { marginTop: '0.4rem' },
-                                __CHILD: IconLibrary(state.params.sortDirection === 'asc' ? 'AzSort' : 'ZaSort', 'MenuSize'),
-                              },
-                            ],
-                          },
-                          {
-                            label: 'Username',
-                            props: {
-                              align: 'center',
-                            },
-                          },
-                          {
-                            label: 'Email',
-                            props: {
-                              align: 'center',
-                            },
-                          },
-                          {
-                            label: 'Level Jabatan',
-                            props: {
-                              align: 'center',
-                            },
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-                TableBody: state.isLoading
-                  ? [
-                      {
-                        TableRow: [
-                          {
-                            TableCell: [
-                              {
-                                props: { colSpan: 99 },
-                                label: LottieLibrary.LOADING_SQUARE({
-                                  BoxStyle: () => ({
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    WebkitJustifyContent: 'center',
-                                    alignItems: 'center',
-                                  }),
-                                  LottieStyle: { width: 100 },
-                                }),
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    ]
-                  : !state.data
-                  ? [
-                      {
-                        TableRow: [
-                          {
-                            TableCell: [
-                              {
-                                props: { colSpan: 99 },
-                                label: LottieLibrary.EMPTY_CAT({
-                                  BoxStyle: () => ({
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    WebkitJustifyContent: 'center',
-                                    alignItems: 'center',
-                                  }),
-                                  LottieStyle: { width: 200, marginTop: '-2.5rem' },
-                                  label: 'Belum ada data . . .',
-                                }),
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    ]
-                  : [
-                      {
-                        TableRow: state.data?.map((row, key) => ({
-                          style: () => ({
-                            '&:last-child td, &:last-child th': { border: 0 },
-                            backgroundColor: row === state.selected ? ColorCollection.bg.active : '',
-                          }),
-                          props: {
-                            onClick: () => {
-                              setState((v) => ({ ...v, selected: row }))
-                            },
-                          },
-                          TableCell: [
-                            {
-                              label: key + 1,
-                            },
-                            {
-                              label: row.nama,
-                            },
-                            {
-                              label: row.username,
-
-                              props: {
-                                align: 'center',
-                              },
-                            },
-                            {
-                              label: row.email,
-                              props: {
-                                align: 'center',
-                              },
-                            },
-                            {
-                              label: row.levelJabatan,
-                              props: {
-                                align: 'center',
-                              },
-                            },
-                          ],
-                        })),
-                      },
-                    ],
-              },
-            ],
-          },
-        ],
-        Box: [
-          {
-            order: 3,
-            DIRECTION: 'row',
-            style: (theme) => ({
-              position: 'relative',
-              padding: '0.7rem',
-              justifyContent: 'center',
-              background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[2] : ColorCollection.bg.light[0],
-              borderRadius: `0 0 ${borderRadius.md} ${borderRadius.md}`,
-              boxShadow: theme.palette.mode === 'dark' ? shadow.dark.sm : shadow.light.sm,
-            }),
-            Box: [
-              {
-                __CHILD: (
-                  <Pagination
-                    sx={{
-                      '& .MuiPaginationItem-root': { color: 'white', borderColor: 'white', borderRadius: '0.8rem' },
-                      '& .MuiPaginationItem-root[aria-current]': { backgroundColor: 'white', color: ColorCollection.text.active },
-
-                      '& li:first-of-type': {
-                        position: 'absolute',
-                        left: 10,
-                        [MobileView()]: {
-                          display: 'none',
-                        },
-                      },
-                      '& li:last-child': {
-                        position: 'absolute',
-                        right: 10,
-                        [MobileView()]: {
-                          display: 'none',
-                        },
-                      },
-                    }}
-                    count={100}
-                    variant="outlined"
-                    shape="rounded"
-                  />
-                ),
-              },
-            ],
-          },
-        ],
+        ...PaginationTemplate(),
       },
     ]
   }

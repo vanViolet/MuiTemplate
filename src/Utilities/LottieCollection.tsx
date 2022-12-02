@@ -5,9 +5,10 @@ import catEmpty from 'Assets/Lotties/cat-empty.json'
 import loadingPaperPlane from 'Assets/Lotties/loading-plane.json'
 import loadingAwesome from 'Assets/Lotties/loading-awesome.json'
 import orbit from 'Assets/Lotties/orbit.json'
+import crm from 'Assets/Lotties/crm.json'
 import React, { useState } from 'react'
 
-export const LottieLibrary = {
+export const LottieCollection = {
   WAVE: (args?: {
     BoxStyle?: SxProps<Theme> | undefined
     BoxProps?: BoxProps
@@ -22,7 +23,7 @@ export const LottieLibrary = {
           loop
           src={wave}
           style={args?.LottieStyle}
-          speed={0.5}
+          speed={1}
           lottieRef={(instance) => setState({ lottie: instance })}
           {...args?.LottieProps}
         ></Player>
@@ -114,6 +115,30 @@ export const LottieLibrary = {
           src={loadingAwesome}
           style={args?.LottieStyle}
           speed={2}
+          lottieRef={(instance) => setState({ lottie: instance })}
+          {...args?.LottieProps}
+        ></Player>
+        {/* <Box sx={{ width: 'fit-content', marginTop: '-2rem' }}>{args?.label}</Box> */}
+      </Box>
+    )
+  },
+
+  CUSTOMER_CRM: (args?: {
+    BoxStyle?: SxProps<Theme> | undefined
+    BoxProps?: BoxProps
+    LottieStyle?: React.CSSProperties
+    LottieProps?: IPlayerProps
+    label?: React.ReactNode | undefined
+  }) => {
+    const [state, setState] = useState({ lottie: null as any })
+    return (
+      <Box sx={args?.BoxStyle} {...args?.BoxProps}>
+        <Player
+          autoplay
+          loop
+          src={crm}
+          style={args?.LottieStyle}
+          speed={1}
           lottieRef={(instance) => setState({ lottie: instance })}
           {...args?.LottieProps}
         ></Player>

@@ -1,20 +1,22 @@
-import { useMediaQuery } from '@mui/material'
+import { Backdrop, useMediaQuery } from '@mui/material'
 import { Box } from '@mui/system'
-import { LottieLibrary } from 'Utilities/Lottie'
+import { LottieCollection } from 'Utilities/LottieCollection'
 import { CreateElements, IIngredient } from 'Components/CreateElements'
-import { sidebarToggleToFalse, sidebarToggleToTrue } from 'Contexts/customizationReducer'
+import { sidebarToggleToTrue, sidebarToggleToFalse } from 'Contexts/customizationReducer'
 import { useAppDispatch, useAppSelector } from 'Contexts/_store'
 import { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { MobileView } from 'Utilities/MediaQuery'
 import { Header } from './Header'
 import { Sidebar } from './Sidebar'
+import { commonCss } from 'Assets/commonCss'
 
 export const MainLayout = () => {
   const Mobile = useMediaQuery('(max-width: 850px)')
   const dispatch = useAppDispatch()
   const BURGER_TOGGLE = useAppSelector((state) => state.custom.sidebarToggle)
-  // const DARK_MODE = useAppSelector((state) => state.mode.Theme)
+  const LOADING_OVERLAY = useAppSelector((state) => state.custom.loadingOverlay)
+  const DIALOG = useAppSelector((state) => state.custom.openStack)
   const [value, setValue] = useState(0)
   useEffect(() => {
     if (Mobile) {
@@ -29,12 +31,29 @@ export const MainLayout = () => {
       {
         Box: [
           {
-            __CHILD: LottieLibrary.WAVE({
+            __CHILD: LottieCollection.WAVE({
               BoxStyle: (theme) => ({
                 width: 700,
                 opacity: 0.3,
                 transform: 'rotateZ(-10deg)',
-                marginTop: '-210px',
+                marginTop: '-220px',
+                display: theme.palette.mode === 'light' ? 'none' : '',
+                [MobileView()]: {
+                  display: 'none',
+                },
+              }),
+            }),
+          },
+          {
+            __CHILD: LottieCollection.WAVE({
+              BoxStyle: (theme) => ({
+                position: 'fixed',
+                top: 0,
+                right: 0,
+                zIndex: -1,
+                opacity: 0.3,
+                transform: 'rotateZ(10deg)',
+                marginTop: '-220px',
                 display: theme.palette.mode === 'light' ? 'none' : '',
                 [MobileView()]: {
                   display: 'none',
@@ -48,13 +67,9 @@ export const MainLayout = () => {
               {
                 style(theme) {
                   return {
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.4)' : '#e3f2fd',
-                    backdropFilter: 'blur(5px)',
+                    ...commonCss.POSITION_ZERO_FIXED(),
+                    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.5)' : '#e3f2fd',
+                    backdropFilter: 'blur(10px)',
                   }
                 },
               },
@@ -64,12 +79,7 @@ export const MainLayout = () => {
             Box: [
               {
                 style: () => ({
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  left: 0,
-                  bottom: 0,
-
+                  ...commonCss.POSITION_ZERO_ABSOLUTE(),
                   zIndex: '10',
                 }),
                 __CHILD: (
@@ -78,7 +88,7 @@ export const MainLayout = () => {
                       transitionDuration: '200ms',
                       marginTop: '4rem',
                       marginRight: '1rem',
-                      marginLeft: BURGER_TOGGLE ? '16.6rem' : '4rem',
+                      marginLeft: BURGER_TOGGLE ? '16.6rem' : '4.6rem',
                       [MobileView()]: {
                         marginLeft: '1rem',
                         paddingBottom: '1rem',
@@ -94,6 +104,30 @@ export const MainLayout = () => {
                   <Box>
                     <Header />
                     <Sidebar />
+                  </Box>
+                ),
+              },
+
+              LOADING_OVERLAY
+                ? {
+                    __CHILD: (
+                      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+                        {LottieCollection.LOADING_SQUARE({
+                          BoxStyle: () => ({
+                            width: 200,
+                          }),
+                        })}
+                      </Backdrop>
+                    ),
+                  }
+                : undefined,
+
+              {
+                __CHILD: (
+                  <Box>
+                    {DIALOG.map((row: JSX.Element | JSX.Element[], key: number) => (
+                      <Box key={key}>{row}</Box>
+                    ))}
                   </Box>
                 ),
               },

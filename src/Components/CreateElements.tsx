@@ -25,7 +25,6 @@ import {
   GridProps,
   IconButton,
   IconButtonProps,
-  InputAdornment,
   Menu,
   MenuItem,
   MenuItemProps,
@@ -58,7 +57,6 @@ import {
   TypographyProps,
 } from '@mui/material'
 import { DataGridProps } from '@mui/x-data-grid'
-import { borderRadius } from 'config'
 import React from 'react'
 
 export type ConvertToOptional<A> = {
@@ -119,7 +117,7 @@ export interface IGridItem extends Omit<CommonTypes, 'order'> {
   props?: Omit<GridProps, 'item' | 'container'>
 
   /** Layout Interface */
-  Box?: IBoxNotNested[] | undefined | undefined
+  Box?: IBoxNotNested[] | undefined | undefined | undefined
   Container?: IContainer[] | IContainer[] | undefined
   Stack?: IStack[] | IStack[] | undefined
 
@@ -148,12 +146,12 @@ export interface IGridItem extends Omit<CommonTypes, 'order'> {
 
 // Layout ============================================================================== Layout Interface
 
-export type IBoxNotNested = Pick<IBox, 'props' | '__CHILD' | 'order' | 'style'>
+export type IBoxNotNested = Pick<IBox, 'props' | '__CHILD' | 'order' | 'style'> | undefined
 
 export interface IBox extends CommonTypes {
   props?: BoxProps
   DIRECTION?: 'row' | 'column'
-  Box?: IBoxNotNested[]
+  Box?: IBoxNotNested[] | undefined
   Container?: IContainer[] | IContainer[] | undefined
   Stack?: IStack[] | IStack[] | undefined
 
@@ -190,7 +188,7 @@ export interface IStack extends CommonTypes {
 export interface IPaper extends CommonTypes {
   props?: PaperProps
   DIRECTION?: 'row' | 'column'
-  Box?: IBoxNotNested[]
+  Box?: IBoxNotNested[] | undefined
   Container?: IContainer[] | IContainer[] | undefined
   Stack?: IStack[] | IStack[] | undefined
 
@@ -287,6 +285,7 @@ export interface ISwitch extends Omit<CommonTypes, '__CHILD'> {
 export interface ITextField extends Omit<CommonTypes, '__CHILD'> {
   props?: TextFieldProps
   icon?: React.ReactNode | undefined
+  MenuItem?: IMenuItem[] | undefined
 }
 
 export interface IMenu extends CommonTypes {
@@ -300,7 +299,7 @@ export interface IMenu extends CommonTypes {
 }
 
 export interface IMenuItem extends Omit<CommonTypes, '__CHILD'> {
-  props?: MenuItemProps
+  props?: ConvertToOptional<MenuItemProps>
   rightIcon?: React.ReactNode | undefined
   label?: React.ReactNode | undefined
 }
@@ -334,89 +333,330 @@ export interface ITableRow extends Omit<CommonTypes, '__CHILD' | 'order'> {
 export interface ITableCell extends Omit<CommonTypes, '__CHILD' | 'order'> {
   props?: TableCellProps
   label?: React.ReactNode | undefined
-  Box?: IBoxNotNested[] | undefined
+  Box?: IBoxNotNested[] | undefined | undefined
 }
 
 // Gluttony ===================================================================== Export Gluttony Component
 export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
   return (
     <>
-      {Ingredient?.map((row, key) => (
-        // Mapping ======================================================= ParentRoot As Devourobject
-        <Box key={key} style={{ display: 'flex', flexDirection: row.DIRECTION || 'column' }} sx={row.styleForParentBox}>
-          {row.__CHILD}
+      {Ingredient?.map((row, key) =>
+        row === undefined ? undefined : (
+          // Mapping ======================================================= ParentRoot As Devourobject
+          <Box key={key} style={{ display: 'flex', flexDirection: row.DIRECTION || 'column' }} sx={row.styleForParentBox}>
+            {row.__CHILD}
 
-          {/**  ( Root Parent ============================================================================> Grid )
+            {/**  ( Root Parent ============================================================================> Grid )
 
            */}
-          {row?.GridContainer?.map((row, key) => (
-            // Mapping ==================================================== Grid Container
-            <Grid container key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-              {row.__CHILD}
-
-              {row?.GridItem?.map((row, key) => (
-                // Mapping ==================================================== Grid Item
-                <Grid item key={key} style={{ display: 'flex', flexDirection: 'column' }} sx={row.style} {...row.props}>
+            {row?.GridContainer?.map((row, key) =>
+              row === undefined ? undefined : (
+                // Mapping ==================================================== Grid Container
+                <Grid container key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
                   {row.__CHILD}
 
-                  {row?.Box?.map((row, key) => (
-                    <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Box>
-                  ))}
+                  {row?.GridItem?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      // Mapping ==================================================== Grid Item
+                      <Grid item key={key} style={{ display: 'flex', flexDirection: 'column' }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
 
-                  {row?.Container?.map((row, key) => (
-                    <Container key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Container>
-                  ))}
+                        {row?.Box?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Box>
+                          )
+                        )}
 
-                  {row?.Stack?.map((row, key) => (
-                    <Stack key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Stack>
-                  ))}
+                        {row?.Container?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Container key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Container>
+                          )
+                        )}
 
-                  {row?.Paper?.map((row, key) => (
-                    <Paper key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Paper>
-                  ))}
+                        {row?.Stack?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Stack key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Stack>
+                          )
+                        )}
 
-                  {row?.Typography?.map((row, key) => (
-                    <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Typography>
-                  ))}
+                        {row?.Paper?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Paper key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Paper>
+                          )
+                        )}
 
-                  {row?.Divider?.map((row, key) => (
-                    <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Divider>
-                  ))}
+                        {row?.Typography?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Typography>
+                          )
+                        )}
 
-                  {row?.Chip?.map((row, key) => (
-                    <Chip key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
-                  ))}
+                        {row?.Divider?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Divider>
+                          )
+                        )}
 
-                  {row?.Avatar?.map((row, key) => (
-                    <Avatar key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Avatar>
-                  ))}
+                        {row?.Chip?.map((row, key) =>
+                          row === undefined ? undefined : <Chip key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+                        )}
+
+                        {row?.Avatar?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Avatar key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Avatar>
+                          )
+                        )}
+
+                        {/**  Root Parent  =============================================== Inputs*/}
+                        {row?.Autocomplete?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Autocomplete
+                              key={key}
+                              disablePortal
+                              style={{ order: row.order }}
+                              sx={row.style}
+                              options={row.option}
+                              renderInput={(params) => <TextField {...params} label={row.label} />}
+                              {...row.props}
+                            />
+                          )
+                        )}
+
+                        {row?.Button?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Button>
+                          )
+                        )}
+
+                        {row?.IconButton?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <IconButton key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+                          )
+                        )}
+
+                        {row?.ButtonGroup?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row.Button?.map((row, key) =>
+                                row === undefined ? undefined : (
+                                  <Button key={key} sx={row.style} {...row.props}>
+                                    {row.__CHILD}
+                                  </Button>
+                                )
+                              )}
+                            </ButtonGroup>
+                          )
+                        )}
+
+                        {row?.Checkbox?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <FormControlLabel
+                              key={key}
+                              style={{ order: row.order }}
+                              sx={row.style}
+                              control={<Checkbox {...row.props} />}
+                              label={row.label}
+                              {...row.FromControlLabelProperty}
+                            />
+                          )
+                        )}
+
+                        {row?.RadioButton?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <FormControlLabel
+                              key={key}
+                              style={{ order: row.order }}
+                              sx={row.style}
+                              control={<Radio {...row.props} />}
+                              label={row.label}
+                              {...row.FromControlLabelProperty}
+                            />
+                          )
+                        )}
+
+                        {row?.Switch?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <FormControlLabel
+                              key={key}
+                              style={{ order: row.order }}
+                              sx={row.style}
+                              control={<Switch {...row.props} />}
+                              label={row.label}
+                              {...row.FromControlLabelProperty}
+                            />
+                          )
+                        )}
+
+                        {row?.TextField?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <TextField key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row?.MenuItem?.map((row, key) =>
+                                row === undefined ? undefined : (
+                                  <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                                    <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
+                                    {row.label}
+                                  </MenuItem>
+                                )
+                              )}
+                            </TextField>
+                          )
+                        )}
+
+                        {row?.Menu?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Menu
+                              key={key}
+                              open={row.open}
+                              anchorEl={row.anchorEl}
+                              onClose={() => row?.onClose?.()}
+                              style={{ order: row.order }}
+                              sx={row.style}
+                              {...row.props}
+                            >
+                              {row?.Typography?.map((row, key) =>
+                                row === undefined ? undefined : (
+                                  <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                                    {row.__CHILD}
+                                  </Typography>
+                                )
+                              )}
+
+                              {row?.Divider?.map((row, key) =>
+                                row === undefined ? undefined : (
+                                  <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                                    {row.__CHILD}
+                                  </Divider>
+                                )
+                              )}
+
+                              {row?.MenuItem?.map((row, key) =>
+                                row === undefined ? undefined : (
+                                  <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                                    <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
+                                    {row.label}
+                                  </MenuItem>
+                                )
+                              )}
+                              {row.__CHILD}
+                            </Menu>
+                          )
+                        )}
+                      </Grid>
+                    )
+                  )}
+                </Grid>
+              )
+            )}
+
+            {/** The Parent Gluttony ========================================= Depends ON Mapping( RootParent )*/}
+
+            {/**  ( Root Parent ============================================================================> Box )
+             *
+             *
+             *
+             *
+             *
+             */}
+            {row?.Box?.map((row, key) =>
+              row === undefined ? undefined : (
+                <Box
+                  key={key}
+                  style={{ order: row.order, display: 'flex', flexDirection: row.DIRECTION || 'column' }}
+                  sx={row.style}
+                  {...row.props}
+                >
+                  {row.__CHILD}
+
+                  {row?.Box?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Box>
+                    )
+                  )}
+
+                  {row?.Container?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Container key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Container>
+                    )
+                  )}
+
+                  {row?.Stack?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Stack key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Stack>
+                    )
+                  )}
+
+                  {row?.Paper?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Paper key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Paper>
+                    )
+                  )}
+
+                  {row?.Typography?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Typography>
+                    )
+                  )}
+
+                  {row?.Divider?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Divider>
+                    )
+                  )}
+
+                  {row?.Chip?.map((row, key) =>
+                    row === undefined ? undefined : <Chip key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+                  )}
+
+                  {row?.Avatar?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Avatar key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Avatar>
+                    )
+                  )}
 
                   {/**  Root Parent  =============================================== Inputs*/}
-                  {row?.Autocomplete?.map((row, key) => (
-                    <Autocomplete
-                      key={key}
-                      disablePortal
-                      style={{ order: row.order }}
-                      sx={row.style}
-                      options={row.option}
-                      renderInput={(params) => <TextField {...params} label={row.label} />}
-                      {...row.props}
-                    />
-                  ))}
+                  {row?.Autocomplete?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Autocomplete
+                        key={key}
+                        disablePortal
+                        style={{ order: row.order }}
+                        sx={row.style}
+                        options={row.option}
+                        renderInput={(params) => <TextField {...params} label={row.label} />}
+                        {...row.props}
+                      />
+                    )
+                  )}
 
                   {row?.Button?.map((row, key) =>
                     row === undefined ? undefined : (
@@ -426,165 +666,391 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
                     )
                   )}
 
-                  {row?.IconButton?.map((row, key) => (
-                    <IconButton key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
-                  ))}
+                  {row?.IconButton?.map((row, key) =>
+                    row === undefined ? undefined : <IconButton key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+                  )}
 
-                  {row?.ButtonGroup?.map((row, key) => (
-                    <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.Button?.map((row, key) => (
-                        <Button key={key} sx={row.style} {...row.props}>
-                          {row.__CHILD}
-                        </Button>
-                      ))}
-                    </ButtonGroup>
-                  ))}
+                  {row?.ButtonGroup?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row?.Button?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Button key={key} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Button>
+                          )
+                        )}
+                      </ButtonGroup>
+                    )
+                  )}
 
-                  {row?.Checkbox?.map((row, key) => (
-                    <FormControlLabel
-                      key={key}
-                      style={{ order: row.order }}
-                      sx={row.style}
-                      control={<Checkbox {...row.props} />}
-                      label={row.label}
-                      {...row.FromControlLabelProperty}
-                    />
-                  ))}
+                  {row?.Checkbox?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <FormControlLabel
+                        key={key}
+                        style={{ order: row.order }}
+                        sx={row.style}
+                        control={<Checkbox {...row.props} />}
+                        label={row.label}
+                        {...row.FromControlLabelProperty}
+                      />
+                    )
+                  )}
 
-                  {row?.RadioButton?.map((row, key) => (
-                    <FormControlLabel
-                      key={key}
-                      style={{ order: row.order }}
-                      sx={row.style}
-                      control={<Radio {...row.props} />}
-                      label={row.label}
-                      {...row.FromControlLabelProperty}
-                    />
-                  ))}
+                  {row?.RadioButton?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <FormControlLabel
+                        key={key}
+                        style={{ order: row.order }}
+                        sx={row.style}
+                        control={<Radio {...row.props} />}
+                        label={row.label}
+                        {...row.FromControlLabelProperty}
+                      />
+                    )
+                  )}
 
-                  {row?.Switch?.map((row, key) => (
-                    <FormControlLabel
-                      key={key}
-                      style={{ order: row.order }}
-                      sx={row.style}
-                      control={<Switch {...row.props} />}
-                      label={row.label}
-                      {...row.FromControlLabelProperty}
-                    />
-                  ))}
+                  {row?.Switch?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <FormControlLabel
+                        key={key}
+                        style={{ order: row.order }}
+                        sx={row.style}
+                        control={<Switch {...row.props} />}
+                        label={row.label}
+                        {...row.FromControlLabelProperty}
+                      />
+                    )
+                  )}
 
-                  {row?.TextField?.map((row, key) => (
-                    <TextField
-                      key={key}
-                      style={{ order: row.order }}
-                      sx={row.style}
-                      InputProps={{ startAdornment: <InputAdornment position="start">{row.icon}</InputAdornment> }}
-                      {...row.props}
-                    />
-                  ))}
+                  {row?.TextField?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <TextField key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row?.MenuItem?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
+                              {row.label}
+                            </MenuItem>
+                          )
+                        )}
+                      </TextField>
+                    )
+                  )}
 
-                  {row?.Menu?.map((row, key) => (
-                    <Menu
-                      key={key}
-                      open={row.open}
-                      anchorEl={row.anchorEl}
-                      onClose={() => row?.onClose?.()}
-                      style={{ order: row.order }}
-                      sx={row.style}
-                      {...row.props}
-                    >
-                      {row?.Typography?.map((row, key) => (
-                        <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                          {row.__CHILD}
-                        </Typography>
-                      ))}
+                  {row?.Menu?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Menu
+                        key={key}
+                        open={row.open}
+                        anchorEl={row.anchorEl}
+                        onClose={() => row?.onClose?.()}
+                        style={{ order: row.order }}
+                        sx={row.style}
+                        {...row.props}
+                      >
+                        {row?.Typography?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Typography>
+                          )
+                        )}
 
-                      {row?.Divider?.map((row, key) => (
-                        <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                          {row.__CHILD}
-                        </Divider>
-                      ))}
+                        {row?.Divider?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Divider>
+                          )
+                        )}
 
-                      {row?.MenuItem?.map((row, key) => (
-                        <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                          <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
-                          {row.label}
-                        </MenuItem>
-                      ))}
-                      {row.__CHILD}
-                    </Menu>
-                  ))}
-                </Grid>
-              ))}
-            </Grid>
-          ))}
-
-          {/** The Parent Gluttony ========================================= Depends ON Mapping( RootParent )*/}
-
-          {/**  ( Root Parent ============================================================================> Box )
-           *
-           *
-           *
-           *
-           *
-           */}
-          {row?.Box?.map((row, key) => (
-            <Box
-              key={key}
-              style={{ order: row.order, display: 'flex', flexDirection: row.DIRECTION || 'column' }}
-              sx={row.style}
-              {...row.props}
-            >
-              {row.__CHILD}
-
-              {row?.Box?.map((row, key) => (
-                <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.__CHILD}
+                        {row?.MenuItem?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
+                              {row.label}
+                            </MenuItem>
+                          )
+                        )}
+                        {row.__CHILD}
+                      </Menu>
+                    )
+                  )}
                 </Box>
-              ))}
+              )
+            )}
 
-              {row?.Container?.map((row, key) => (
-                <Container key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+            {/**  ( RootParent )
+             *
+             *
+             *
+             *
+             */}
+            {row?.Container?.map((row, key) =>
+              row === undefined ? undefined : (
+                <Container key={key} style={{ order: row.order }} {...row.props}>
                   {row.__CHILD}
                 </Container>
-              ))}
-
-              {row?.Stack?.map((row, key) => (
-                <Stack key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+              )
+            )}
+            {row?.Stack?.map((row, key) =>
+              row === undefined ? undefined : (
+                <Stack key={key} style={{ order: row.order }} {...row.props}>
                   {row.__CHILD}
                 </Stack>
-              ))}
+              )
+            )}
 
-              {row?.Paper?.map((row, key) => (
-                <Paper key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+            {/** The Parent Gluttony ========================================= Depends ON Mapping( RootParent )*/}
+
+            {/**  ( Root Parent ============================================================================> Box )
+             *
+             *
+             *
+             *
+             *
+             */}
+
+            {row?.Paper?.map((row, key) =>
+              row === undefined ? undefined : (
+                <Paper
+                  key={key}
+                  style={{ order: row.order, display: 'flex', flexDirection: row.DIRECTION || 'column' }}
+                  sx={row.style}
+                  {...row.props}
+                >
                   {row.__CHILD}
-                </Paper>
-              ))}
 
-              {row?.Typography?.map((row, key) => (
+                  {row?.Box?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Box>
+                    )
+                  )}
+
+                  {row?.Container?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Container key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Container>
+                    )
+                  )}
+
+                  {row?.Stack?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Stack key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Stack>
+                    )
+                  )}
+
+                  {row?.Paper?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Paper key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Paper>
+                    )
+                  )}
+
+                  {row?.Typography?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Typography>
+                    )
+                  )}
+
+                  {row?.Divider?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Divider>
+                    )
+                  )}
+
+                  {row?.Chip?.map((row, key) =>
+                    row === undefined ? undefined : <Chip key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+                  )}
+
+                  {row?.Avatar?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Avatar key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Avatar>
+                    )
+                  )}
+
+                  {/**  Root Parent  =============================================== Inputs*/}
+                  {row?.Autocomplete?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Autocomplete
+                        key={key}
+                        disablePortal
+                        style={{ order: row.order }}
+                        sx={row.style}
+                        options={row.option}
+                        renderInput={(params) => <TextField {...params} label={row.label} />}
+                        {...row.props}
+                      />
+                    )
+                  )}
+
+                  {row?.Button?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Button>
+                    )
+                  )}
+
+                  {row?.IconButton?.map((row, key) =>
+                    row === undefined ? undefined : <IconButton key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+                  )}
+
+                  {row?.ButtonGroup?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row?.Button?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Button key={key} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Button>
+                          )
+                        )}
+                      </ButtonGroup>
+                    )
+                  )}
+
+                  {row?.Checkbox?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <FormControlLabel
+                        key={key}
+                        style={{ order: row.order }}
+                        sx={row.style}
+                        control={<Checkbox {...row.props} />}
+                        label={row.label}
+                        {...row.FromControlLabelProperty}
+                      />
+                    )
+                  )}
+
+                  {row?.RadioButton?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <FormControlLabel
+                        key={key}
+                        style={{ order: row.order }}
+                        sx={row.style}
+                        control={<Radio {...row.props} />}
+                        label={row.label}
+                        {...row.FromControlLabelProperty}
+                      />
+                    )
+                  )}
+
+                  {row?.Switch?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <FormControlLabel
+                        key={key}
+                        style={{ order: row.order }}
+                        sx={row.style}
+                        control={<Switch {...row.props} />}
+                        label={row.label}
+                        {...row.FromControlLabelProperty}
+                      />
+                    )
+                  )}
+
+                  {row?.TextField?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <TextField key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row?.MenuItem?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
+                              {row.label}
+                            </MenuItem>
+                          )
+                        )}
+                      </TextField>
+                    )
+                  )}
+
+                  {row?.Menu?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Menu
+                        key={key}
+                        open={row.open}
+                        anchorEl={row.anchorEl}
+                        onClose={() => row?.onClose?.()}
+                        style={{ order: row.order }}
+                        sx={row.style}
+                        {...row.props}
+                      >
+                        {row?.Typography?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Typography>
+                          )
+                        )}
+
+                        {row?.Divider?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              {row.__CHILD}
+                            </Divider>
+                          )
+                        )}
+
+                        {row?.MenuItem?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                              <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
+                              {row.label}
+                            </MenuItem>
+                          )
+                        )}
+                        {row.__CHILD}
+                      </Menu>
+                    )
+                  )}
+                </Paper>
+              )
+            )}
+
+            {row?.Typography?.map((row, key) =>
+              row === undefined ? undefined : (
                 <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
                   {row.__CHILD}
                 </Typography>
-              ))}
+              )
+            )}
 
-              {row?.Divider?.map((row, key) => (
+            {row?.Divider?.map((row, key) =>
+              row === undefined ? undefined : (
                 <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
                   {row.__CHILD}
                 </Divider>
-              ))}
+              )
+            )}
 
-              {row?.Chip?.map((row, key) => (
-                <Chip key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
-              ))}
+            {row?.Chip?.map((row, key) =>
+              row === undefined ? undefined : <Chip key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+            )}
 
-              {row?.Avatar?.map((row, key) => (
+            {row?.Avatar?.map((row, key) =>
+              row === undefined ? undefined : (
                 <Avatar key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
                   {row.__CHILD}
                 </Avatar>
-              ))}
+              )
+            )}
 
-              {/**  Root Parent  =============================================== Inputs*/}
-              {row?.Autocomplete?.map((row, key) => (
+            {/**  Root Parent  =============================================== Inputs*/}
+            {row?.Autocomplete?.map((row, key) =>
+              row === undefined ? undefined : (
                 <Autocomplete
                   key={key}
                   disablePortal
@@ -594,504 +1060,217 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
                   renderInput={(params) => <TextField {...params} label={row.label} />}
                   {...row.props}
                 />
-              ))}
+              )
+            )}
 
-              {row?.Button?.map((row, key) =>
-                row === undefined ? undefined : (
-                  <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                    {row.__CHILD}
-                  </Button>
-                )
-              )}
-
-              {row?.IconButton?.map((row, key) => (
-                <IconButton key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
-              ))}
-
-              {row?.ButtonGroup?.map((row, key) => (
-                <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row?.Button?.map((row, key) => (
-                    <Button key={key} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Button>
-                  ))}
-                </ButtonGroup>
-              ))}
-
-              {row?.Checkbox?.map((row, key) => (
-                <FormControlLabel
-                  key={key}
-                  style={{ order: row.order }}
-                  sx={row.style}
-                  control={<Checkbox {...row.props} />}
-                  label={row.label}
-                  {...row.FromControlLabelProperty}
-                />
-              ))}
-
-              {row?.RadioButton?.map((row, key) => (
-                <FormControlLabel
-                  key={key}
-                  style={{ order: row.order }}
-                  sx={row.style}
-                  control={<Radio {...row.props} />}
-                  label={row.label}
-                  {...row.FromControlLabelProperty}
-                />
-              ))}
-
-              {row?.Switch?.map((row, key) => (
-                <FormControlLabel
-                  key={key}
-                  style={{ order: row.order }}
-                  sx={row.style}
-                  control={<Switch {...row.props} />}
-                  label={row.label}
-                  {...row.FromControlLabelProperty}
-                />
-              ))}
-
-              {row?.TextField?.map((row, key) => (
-                <TextField
-                  key={key}
-                  style={{ order: row.order }}
-                  sx={row.style}
-                  InputProps={{ startAdornment: <InputAdornment position="start">{row.icon}</InputAdornment> }}
-                  {...row.props}
-                />
-              ))}
-
-              {row?.Menu?.map((row, key) => (
-                <Menu
-                  key={key}
-                  open={row.open}
-                  anchorEl={row.anchorEl}
-                  onClose={() => row?.onClose?.()}
-                  style={{ order: row.order }}
-                  sx={row.style}
-                  {...row.props}
-                >
-                  {row?.Typography?.map((row, key) => (
-                    <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Typography>
-                  ))}
-
-                  {row?.Divider?.map((row, key) => (
-                    <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Divider>
-                  ))}
-
-                  {row?.MenuItem?.map((row, key) => (
-                    <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
-                      {row.label}
-                    </MenuItem>
-                  ))}
-                  {row.__CHILD}
-                </Menu>
-              ))}
-            </Box>
-          ))}
-
-          {/**  ( RootParent )
-           *
-           *
-           *
-           *
-           */}
-          {row?.Container?.map((row, key) => (
-            <Container key={key} style={{ order: row.order }} {...row.props}>
-              {row.__CHILD}
-            </Container>
-          ))}
-          {row?.Stack?.map((row, key) => (
-            <Stack key={key} style={{ order: row.order }} {...row.props}>
-              {row.__CHILD}
-            </Stack>
-          ))}
-
-          {/** The Parent Gluttony ========================================= Depends ON Mapping( RootParent )*/}
-
-          {/**  ( Root Parent ============================================================================> Box )
-           *
-           *
-           *
-           *
-           *
-           */}
-
-          {row?.Paper?.map((row, key) => (
-            <Paper
-              key={key}
-              style={{ order: row.order, display: 'flex', flexDirection: row.DIRECTION || 'column' }}
-              sx={row.style}
-              {...row.props}
-            >
-              {row.__CHILD}
-
-              {row?.Box?.map((row, key) => (
-                <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.__CHILD}
-                </Box>
-              ))}
-
-              {row?.Container?.map((row, key) => (
-                <Container key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.__CHILD}
-                </Container>
-              ))}
-
-              {row?.Stack?.map((row, key) => (
-                <Stack key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.__CHILD}
-                </Stack>
-              ))}
-
-              {row?.Paper?.map((row, key) => (
-                <Paper key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.__CHILD}
-                </Paper>
-              ))}
-
-              {row?.Typography?.map((row, key) => (
-                <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.__CHILD}
-                </Typography>
-              ))}
-
-              {row?.Divider?.map((row, key) => (
-                <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.__CHILD}
-                </Divider>
-              ))}
-
-              {row?.Chip?.map((row, key) => (
-                <Chip key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
-              ))}
-
-              {row?.Avatar?.map((row, key) => (
-                <Avatar key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.__CHILD}
-                </Avatar>
-              ))}
-
-              {/**  Root Parent  =============================================== Inputs*/}
-              {row?.Autocomplete?.map((row, key) => (
-                <Autocomplete
-                  key={key}
-                  disablePortal
-                  style={{ order: row.order }}
-                  sx={row.style}
-                  options={row.option}
-                  renderInput={(params) => <TextField {...params} label={row.label} />}
-                  {...row.props}
-                />
-              ))}
-
-              {row?.Button?.map((row, key) =>
-                row === undefined ? undefined : (
-                  <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                    {row.__CHILD}
-                  </Button>
-                )
-              )}
-
-              {row?.IconButton?.map((row, key) => (
-                <IconButton key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
-              ))}
-
-              {row?.ButtonGroup?.map((row, key) => (
-                <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row?.Button?.map((row, key) => (
-                    <Button key={key} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Button>
-                  ))}
-                </ButtonGroup>
-              ))}
-
-              {row?.Checkbox?.map((row, key) => (
-                <FormControlLabel
-                  key={key}
-                  style={{ order: row.order }}
-                  sx={row.style}
-                  control={<Checkbox {...row.props} />}
-                  label={row.label}
-                  {...row.FromControlLabelProperty}
-                />
-              ))}
-
-              {row?.RadioButton?.map((row, key) => (
-                <FormControlLabel
-                  key={key}
-                  style={{ order: row.order }}
-                  sx={row.style}
-                  control={<Radio {...row.props} />}
-                  label={row.label}
-                  {...row.FromControlLabelProperty}
-                />
-              ))}
-
-              {row?.Switch?.map((row, key) => (
-                <FormControlLabel
-                  key={key}
-                  style={{ order: row.order }}
-                  sx={row.style}
-                  control={<Switch {...row.props} />}
-                  label={row.label}
-                  {...row.FromControlLabelProperty}
-                />
-              ))}
-
-              {row?.TextField?.map((row, key) => (
-                <TextField
-                  key={key}
-                  style={{ order: row.order }}
-                  sx={row.style}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">{row.icon}</InputAdornment>,
-                    sx: () => ({
-                      borderRadius: borderRadius.md,
-                    }),
-                  }}
-                  {...row.props}
-                />
-              ))}
-
-              {row?.Menu?.map((row, key) => (
-                <Menu
-                  key={key}
-                  open={row.open}
-                  anchorEl={row.anchorEl}
-                  onClose={() => row?.onClose?.()}
-                  style={{ order: row.order }}
-                  sx={row.style}
-                  {...row.props}
-                >
-                  {row?.Typography?.map((row, key) => (
-                    <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Typography>
-                  ))}
-
-                  {row?.Divider?.map((row, key) => (
-                    <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      {row.__CHILD}
-                    </Divider>
-                  ))}
-
-                  {row?.MenuItem?.map((row, key) => (
-                    <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                      <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
-                      {row.label}
-                    </MenuItem>
-                  ))}
-                  {row.__CHILD}
-                </Menu>
-              ))}
-            </Paper>
-          ))}
-
-          {row?.Typography?.map((row, key) => (
-            <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-              {row.__CHILD}
-            </Typography>
-          ))}
-
-          {row?.Divider?.map((row, key) => (
-            <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-              {row.__CHILD}
-            </Divider>
-          ))}
-
-          {row?.Chip?.map((row, key) => (
-            <Chip key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
-          ))}
-
-          {row?.Avatar?.map((row, key) => (
-            <Avatar key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-              {row.__CHILD}
-            </Avatar>
-          ))}
-
-          {/**  Root Parent  =============================================== Inputs*/}
-          {row?.Autocomplete?.map((row, key) => (
-            <Autocomplete
-              key={key}
-              disablePortal
-              style={{ order: row.order }}
-              sx={row.style}
-              options={row.option}
-              renderInput={(params) => <TextField {...params} label={row.label} />}
-              {...row.props}
-            />
-          ))}
-
-          {row?.Button?.map((row, key) =>
-            row === undefined ? undefined : (
-              <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                {row.__CHILD}
-              </Button>
-            )
-          )}
-
-          {row?.IconButton?.map((row, key) => (
-            <IconButton key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
-          ))}
-
-          {row?.ButtonGroup?.map((row, key) => (
-            <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-              {row.Button?.map((row, key) => (
-                <Button key={key} sx={row.style} {...row.props}>
+            {row?.Button?.map((row, key) =>
+              row === undefined ? undefined : (
+                <Button key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
                   {row.__CHILD}
                 </Button>
-              ))}
-            </ButtonGroup>
-          ))}
+              )
+            )}
 
-          {row?.Checkbox?.map((row, key) => (
-            <FormControlLabel
-              key={key}
-              style={{ order: row.order }}
-              sx={row.style}
-              control={<Checkbox {...row.props} />}
-              label={row.label}
-              {...row.FromControlLabelProperty}
-            />
-          ))}
+            {row?.IconButton?.map((row, key) =>
+              row === undefined ? undefined : <IconButton key={key} style={{ order: row.order }} sx={row.style} {...row.props} />
+            )}
 
-          {row?.RadioButton?.map((row, key) => (
-            <FormControlLabel
-              key={key}
-              style={{ order: row.order }}
-              sx={row.style}
-              control={<Radio {...row.props} />}
-              label={row.label}
-              {...row.FromControlLabelProperty}
-            />
-          ))}
+            {row?.ButtonGroup?.map((row, key) =>
+              row === undefined ? undefined : (
+                <ButtonGroup key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                  {row.Button?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Button key={key} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Button>
+                    )
+                  )}
+                </ButtonGroup>
+              )
+            )}
 
-          {row?.Switch?.map((row, key) => (
-            <FormControlLabel
-              key={key}
-              style={{ order: row.order }}
-              sx={row.style}
-              control={<Switch {...row.props} />}
-              label={row.label}
-              {...row.FromControlLabelProperty}
-            />
-          ))}
+            {row?.Checkbox?.map((row, key) =>
+              row === undefined ? undefined : (
+                <FormControlLabel
+                  key={key}
+                  style={{ order: row.order }}
+                  sx={row.style}
+                  control={<Checkbox {...row.props} />}
+                  label={row.label}
+                  {...row.FromControlLabelProperty}
+                />
+              )
+            )}
 
-          {row?.TextField?.map((row, key) => (
-            <TextField
-              key={key}
-              style={{ order: row.order }}
-              sx={row.style}
-              InputProps={{ startAdornment: <InputAdornment position="start">{row.icon}</InputAdornment> }}
-              {...row.props}
-            />
-          ))}
+            {row?.RadioButton?.map((row, key) =>
+              row === undefined ? undefined : (
+                <FormControlLabel
+                  key={key}
+                  style={{ order: row.order }}
+                  sx={row.style}
+                  control={<Radio {...row.props} />}
+                  label={row.label}
+                  {...row.FromControlLabelProperty}
+                />
+              )
+            )}
 
-          {row?.Menu?.map((row, key) => (
-            <Menu
-              key={key}
-              open={row.open}
-              anchorEl={row.anchorEl}
-              onClose={() => row?.onClose?.()}
-              style={{ order: row.order }}
-              sx={row.style}
-              {...row.props}
-            >
-              {row?.Typography?.map((row, key) => (
-                <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+            {row?.Switch?.map((row, key) =>
+              row === undefined ? undefined : (
+                <FormControlLabel
+                  key={key}
+                  style={{ order: row.order }}
+                  sx={row.style}
+                  control={<Switch {...row.props} />}
+                  label={row.label}
+                  {...row.FromControlLabelProperty}
+                />
+              )
+            )}
+
+            {row?.TextField?.map((row, key) =>
+              row === undefined ? undefined : (
+                <TextField key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                  {row?.MenuItem?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
+                        {row.label}
+                      </MenuItem>
+                    )
+                  )}
+                </TextField>
+              )
+            )}
+
+            {row?.Menu?.map((row, key) =>
+              row === undefined ? undefined : (
+                <Menu
+                  key={key}
+                  open={row.open}
+                  anchorEl={row.anchorEl}
+                  onClose={() => row?.onClose?.()}
+                  style={{ order: row.order }}
+                  sx={row.style}
+                  {...row.props}
+                >
+                  {row?.Typography?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Typography key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Typography>
+                    )
+                  )}
+
+                  {row?.Divider?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        {row.__CHILD}
+                      </Divider>
+                    )
+                  )}
+
+                  {row?.MenuItem?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                        <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
+                        {row.label}
+                      </MenuItem>
+                    )
+                  )}
                   {row.__CHILD}
-                </Typography>
-              ))}
+                </Menu>
+              )
+            )}
 
-              {row?.Divider?.map((row, key) => (
-                <Divider key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  {row.__CHILD}
-                </Divider>
-              ))}
+            {row?.TableContainer?.map((row, key) =>
+              row === undefined ? undefined : (
+                <TableContainer key={key} component={Paper} sx={row.style} {...row.props}>
+                  {row?.Table?.map((row, key) =>
+                    row === undefined ? undefined : (
+                      <Table key={key} sx={row.style} {...row.props}>
+                        {row?.TableHead?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <TableHead key={key} sx={row.style} {...row.props}>
+                              {row?.TableRow?.map((row, key) =>
+                                row === undefined ? undefined : (
+                                  <TableRow key={key} sx={row.style} {...row.props}>
+                                    {row?.TableCell?.map((row, key) =>
+                                      row === undefined ? undefined : (
+                                        <TableCell
+                                          key={key}
+                                          style={{
+                                            fontWeight: 700,
+                                            fontFamily:
+                                              "Poppins,system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+                                            position: 'relative!important' as 'relative',
+                                          }}
+                                          sx={row.style}
+                                          {...row.props}
+                                        >
+                                          {row.label}
 
-              {row?.MenuItem?.map((row, key) => (
-                <MenuItem key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                  <span style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>{row.rightIcon}</span>
-                  {row.label}
-                </MenuItem>
-              ))}
-              {row.__CHILD}
-            </Menu>
-          ))}
+                                          {row?.Box?.map((row, key) =>
+                                            row === undefined ? undefined : (
+                                              <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                                                {row.__CHILD}
+                                              </Box>
+                                            )
+                                          )}
+                                        </TableCell>
+                                      )
+                                    )}
+                                  </TableRow>
+                                )
+                              )}
+                            </TableHead>
+                          )
+                        )}
 
-          {row?.TableContainer?.map((row, key) => (
-            <TableContainer key={key} component={Paper} sx={row.style} {...row.props}>
-              {row?.Table?.map((row, key) => (
-                <Table key={key} sx={row.style} {...row.props}>
-                  {row?.TableHead?.map((row, key) => (
-                    <TableHead key={key} sx={row.style} {...row.props}>
-                      {row?.TableRow?.map((row, key) => (
-                        <TableRow key={key} sx={row.style} {...row.props}>
-                          {row?.TableCell?.map((row, key) => (
-                            <TableCell
-                              key={key}
-                              style={{
-                                fontWeight: 700,
-                                fontFamily:
-                                  "Poppins,system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
-                                position: 'relative!important' as 'relative',
-                              }}
-                              sx={row.style}
-                              {...row.props}
-                            >
-                              {row.label}
-
-                              {row?.Box?.map((row, key) => (
-                                <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                                  {row.__CHILD}
-                                </Box>
-                              ))}
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      ))}
-                    </TableHead>
-                  ))}
-
-                  {row?.TableBody?.map((row, key) => (
-                    <TableBody key={key} sx={row.style} {...row.props}>
-                      {row?.TableRow?.map((row, key) => (
-                        <TableRow key={key} sx={row.style} {...row.props}>
-                          {row?.TableCell?.map((row, key) => (
-                            <TableCell
-                              key={key}
-                              style={{
-                                fontFamily:
-                                  "Poppins,system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
-                              }}
-                              sx={row.style}
-                              {...row.props}
-                            >
-                              {row.label}
-                              {row?.Box?.map((row, key) => (
-                                <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
-                                  {row.__CHILD}
-                                </Box>
-                              ))}
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  ))}
-                </Table>
-              ))}
-            </TableContainer>
-          ))}
-        </Box>
-      ))}
+                        {row?.TableBody?.map((row, key) =>
+                          row === undefined ? undefined : (
+                            <TableBody key={key} sx={row.style} {...row.props}>
+                              {row?.TableRow?.map((row, key) =>
+                                row === undefined ? undefined : (
+                                  <TableRow key={key} sx={row.style} {...row.props}>
+                                    {row?.TableCell?.map((row, key) =>
+                                      row === undefined ? undefined : (
+                                        <TableCell
+                                          key={key}
+                                          style={{
+                                            fontFamily:
+                                              "Poppins,system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+                                            padding: '1.5rem 1rem',
+                                          }}
+                                          sx={row.style}
+                                          {...row.props}
+                                        >
+                                          {row.label}
+                                          {row?.Box?.map((row, key) =>
+                                            row === undefined ? undefined : (
+                                              <Box key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
+                                                {row.__CHILD}
+                                              </Box>
+                                            )
+                                          )}
+                                        </TableCell>
+                                      )
+                                    )}
+                                  </TableRow>
+                                )
+                              )}
+                            </TableBody>
+                          )
+                        )}
+                      </Table>
+                    )
+                  )}
+                </TableContainer>
+              )
+            )}
+          </Box>
+        )
+      )}
     </>
   )
 }

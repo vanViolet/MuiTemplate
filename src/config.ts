@@ -12,3 +12,9 @@ export const shadow = {
     sm: '0 1px 5px rgba(0,0,0,0.5)',
   },
 }
+
+export const iconSize = {
+  HeroSize: 30,
+  MenuSize: 25,
+  ButtonSize: 20,
+}

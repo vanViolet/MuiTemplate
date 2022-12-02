@@ -4,10 +4,14 @@ import { css } from 'Assets/style'
 import { IPaper } from 'Components/CreateElements'
 import { borderRadius } from 'config'
 import React from 'react'
-import { IconLibrary, IIconLibrary } from 'Utilities/Icon'
+import { IconCollection, IIconCollection } from 'Utilities/IconCollection'
 import { MobileView } from 'Utilities/MediaQuery'
 
-export function TitleTemplate(args?: { label?: React.ReactNode | undefined; icon?: IIconLibrary; withSearchInput?: boolean | undefined }) {
+export function TitleTemplate(args?: {
+  label?: React.ReactNode | undefined
+  icon?: IIconCollection
+  withSearchInput?: boolean | undefined
+}) {
   return [
     {
       DIRECTION: 'row',
@@ -20,7 +24,7 @@ export function TitleTemplate(args?: { label?: React.ReactNode | undefined; icon
             marginRight: '1rem',
             marginTop: '0.25rem',
           }),
-          __CHILD: IconLibrary(args?.icon ? (args.icon as IIconLibrary) : 'Hamburger', 'HeroSize'),
+          __CHILD: IconCollection(args?.icon ? (args.icon as IIconCollection) : 'Hamburger', 'HeroSize'),
         },
         {
           style: () => ({
@@ -46,7 +50,7 @@ export function TitleTemplate(args?: { label?: React.ReactNode | undefined; icon
                 size: 'small',
                 placeholder: 'Search',
                 InputProps: {
-                  startAdornment: <InputAdornment position="start">{IconLibrary('Search', 'ButtonSize')}</InputAdornment>,
+                  startAdornment: <InputAdornment position="start">{IconCollection('Search', 'ButtonSize')}</InputAdornment>,
                   sx: (theme) => ({
                     backgroundColor: theme.palette.mode === 'dark' ? '' : 'white',
                     borderRadius: borderRadius.md,

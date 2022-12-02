@@ -1,6 +1,6 @@
 import { Box, Skeleton } from '@mui/material'
 import { borderRadius } from 'config'
-import { ColorCollection } from 'Utilities/Color'
+import { ColorCollection } from 'Utilities/ColorCollection'
 
 export const FallbackSkeleton = () => {
   return (
@@ -27,7 +27,7 @@ export const FallbackSkeleton = () => {
             margin: 0,
             padding: 0,
 
-            backgroundColor: ColorCollection.bg.active,
+            background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.active,
           })}
         />
         <Skeleton
@@ -40,7 +40,8 @@ export const FallbackSkeleton = () => {
             padding: 0,
 
             marginLeft: '1rem',
-            backgroundColor: ColorCollection.bg.active,
+
+            background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.active,
           })}
         />
       </Box>
@@ -54,7 +55,7 @@ export const FallbackSkeleton = () => {
             margin: 0,
             padding: 0,
 
-            backgroundColor: ColorCollection.bg.active,
+            background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.active,
           })}
         />
         <Skeleton
@@ -67,7 +68,8 @@ export const FallbackSkeleton = () => {
             padding: 0,
 
             marginLeft: '1rem',
-            backgroundColor: ColorCollection.bg.active,
+
+            background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.active,
           })}
         />
       </Box>

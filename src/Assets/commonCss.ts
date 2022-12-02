@@ -47,4 +47,15 @@ export const commonCss = {
     }
     return value
   },
+
+  DONT_TOUCH_THE_LETTERS: () => {
+    const value: CSSObject = {
+      WebkitUserSelect: 'none',
+      userSelect: 'none',
+      WebkitTouchCallout: 'none',
+      MozUserSelect: 'none',
+      msUserSelect: 'none',
+    }
+    return value
+  },
 }

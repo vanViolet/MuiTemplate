@@ -4,5 +4,5 @@ import { LoginPage } from 'Views/Auth/LoginPage'
 export const AuthRoutes = {
   path: '/',
   element: <MinimalLayout />,
-  children: [{ path: '/', element: <LoginPage /> }],
+  children: [{ path: '/login', element: <LoginPage /> }],
 }

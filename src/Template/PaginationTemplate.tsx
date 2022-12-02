@@ -1,7 +1,7 @@
 import { Pagination } from '@mui/material'
 import { IIngredient } from 'Components/CreateElements'
 import { borderRadius, shadow } from 'config'
-import { ColorCollection } from 'Utilities/Color'
+import { ColorCollection } from 'Utilities/ColorCollection'
 import { MobileView } from 'Utilities/MediaQuery'
 
 export const PaginationTemplate = (): IIngredient => {
@@ -17,6 +17,7 @@ export const PaginationTemplate = (): IIngredient => {
           background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[2] : ColorCollection.bg.light[0],
           borderRadius: `0 0 ${borderRadius.md} ${borderRadius.md}`,
           boxShadow: theme.palette.mode === 'dark' ? shadow.dark.sm : shadow.light.sm,
+          width: '100%',
         }),
         Box: [
           {

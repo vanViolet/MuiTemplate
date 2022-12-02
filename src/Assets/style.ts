@@ -1,4 +1,4 @@
-import { ColorCollection } from './../Utilities/Color'
+import { ColorCollection } from '../Utilities/ColorCollection'
 import { CSSObject, SxProps, Theme } from '@mui/material'
 import { borderRadius, shadow } from 'config'
 import { IMenuChildren } from 'Layouts/MenuItems'
@@ -15,9 +15,7 @@ export const css = {
       background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[0] : ColorCollection.bg.light[0],
       backdropFilter: 'blur(10px)',
       zIndex: 11,
-      [DekstopView()]: {
-        boxShadow: theme.palette.mode === 'dark' ? '250px 4px 10px rgba(0,0,0,1)' : '0 1px 5px rgba(0,0,0,0.5)',
-      },
+
       [MobileView()]: {
         boxShadow: theme.palette.mode === 'dark' ? '0px 4px 10px rgba(0,0,0,1)' : '0 1px 5px rgba(0,0,0,0.5)',
       },
@@ -63,6 +61,37 @@ export const css = {
     }
   },
 
+  HEADER_USER_MENU_PAPER: (theme: Theme): SxProps<Theme> => {
+    return {
+      '& > .MuiPaper-root': {
+        backgroundImage: 'none',
+        width: 300,
+        boxShadow: theme.palette.mode === 'dark' ? shadow.dark.sm : shadow.light.sm,
+        padding: '0.5rem 1.5rem',
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0,0,0,0)' : 'white',
+        backdropFilter: 'blur(25px)',
+        [MobileView()]: {
+          backgroundColor: theme.palette.mode === 'dark' ? 'background.paper' : 'white',
+        },
+        marginTop: '0.2rem',
+      },
+    }
+  },
+
+  HEADER_USER_MENU_ITEM: (theme: Theme): SxProps<Theme> => {
+    return {
+      borderRadius: '10rem',
+      transitionDuration: '100ms',
+      fontWeight: 500,
+      '&:hover': {
+        backgroundColor: ColorCollection.bg.hover,
+        cursor: 'pointer',
+        borderRadius: borderRadius.md,
+        color: ColorCollection.text.hover,
+      } as CSSObject,
+    }
+  },
+
   SIDEBAR_ROOT: (theme: Theme): SxProps<Theme> => {
     return {
       ...commonCss.POSITION_ZERO_FIXED({ Omit: ['right'] }),
@@ -70,7 +99,7 @@ export const css = {
       overflowX: 'hidden',
       zIndex: 12,
       backdropFilter: 'blur(15px)',
-      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(18,18,18,0.5)' : 'white',
+      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(30,30,30,0.5)' : 'white',
       boxShadow: theme.palette.mode === 'dark' ? '5px 5px 10px rgba(0,0,0,0.5)' : '2px 5px 5px rgba(0,0,0,0.2)',
     }
   },
@@ -124,6 +153,7 @@ export const css = {
 
   TITLE_TEMPLATE: (theme: Theme): SxProps<Theme> => {
     return {
+      width: '100%',
       padding: '0.7rem',
       marginBottom: '1rem',
       alignItems: 'center',
@@ -135,6 +165,17 @@ export const css = {
       [MobileView()]: {
         justifyContent: 'center',
       },
+    }
+  },
+
+  CRUD_ACTION: (theme: Theme): SxProps<Theme> => {
+    return {
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      flexWrap: 'wrap',
+      paddingRight: '1rem',
+      background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.light[0],
+      borderRadius: `${borderRadius.md} ${borderRadius.md} 0 0 `,
     }
   },
 }

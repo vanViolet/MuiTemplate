@@ -1,93 +1,93 @@
-import { CreateElements, IButton, IIngredient, ITableCell } from 'Components/CreateElements'
-import { FunctionComponent, useState } from 'react'
-import { DummyData, IDummyData } from '__DummyData'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from 'Contexts/_store'
-import { TitleTemplate } from 'Template/TitleTemplate'
-import { CrudActionTemplate } from 'Template/CrudActionTemplate'
-import { ButtonCollection } from 'Template/ButtonCollection'
-import { TableTemplate } from 'Template/TableTemplate'
-import { SortTableTemplate } from 'Template/SortTableTemplate'
-import { PaginationTemplate } from 'Template/PaginationTemplate'
+import { Box, Skeleton } from '@mui/material'
+import { borderRadius } from 'config'
+import { FunctionComponent } from 'react'
+import { ColorCollection } from 'Utilities/ColorCollection'
 
 export const DashboardPage = () => {
-  const tools = {
-    dispatch: useDispatch() as AppDispatch,
-  }
+  return (
+    <Box>
+      <Skeleton
+        width="100%"
+        height="6rem"
+        animation="pulse"
+        sx={(theme) => ({
+          borderRadius: borderRadius.md,
+          margin: 0,
+          padding: 0,
+          marginTop: '-1rem',
+          background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.light[0],
+        })}
+      />
+      <Box sx={{ display: 'flex', marginTop: '-7rem' }}>
+        <Skeleton
+          width="20%"
+          height="30rem"
+          animation="pulse"
+          sx={(theme) => ({
+            borderRadius: borderRadius.md,
+            margin: 0,
+            padding: 0,
 
-  const [state, setState] = useState({
-    data: DummyData as IDummyData[] | null,
-    selected: null as IDummyData | null,
-    isLoading: false as boolean,
+            background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.active,
+          })}
+        />
+        <Skeleton
+          width="80%"
+          height="30rem"
+          animation="pulse"
+          sx={(theme) => ({
+            borderRadius: borderRadius.md,
+            margin: 0,
+            padding: 0,
 
-    params: {
-      query: undefined as string | undefined,
-      sortDirection: 'asc' as 'asc' | 'desc',
-      sortField: undefined as string | undefined,
-    },
-  })
+            marginLeft: '1rem',
 
-  function Ingredient(): IIngredient[] {
-    return [
-      {
-        Paper: [
-          ...TitleTemplate({ label: 'Manajemen Akun', icon: 'Users', withSearchInput: true }),
-          ...CrudActionTemplate({
-            Button: [
-              ButtonCollection.ADD({ Authorization: true, props: { onClick: () => console.log('Hello') } }) as IButton,
-              ButtonCollection.UPDATE({}),
-              ButtonCollection.DELETE({}),
-            ],
-          }),
-        ],
+            background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.active,
+          })}
+        />
+      </Box>
+      <Box sx={{ display: 'flex', marginTop: '-7rem' }}>
+        <Skeleton
+          width="50%"
+          height="10rem"
+          animation="pulse"
+          sx={(theme) => ({
+            borderRadius: borderRadius.md,
+            margin: 0,
+            padding: 0,
 
-        TableContainer: [
-          ...TableTemplate({
-            data: state.data,
-            isLoading: state.isLoading,
-            TableHeadRow: [
-              {
-                TableCell: [
-                  { label: 'No' },
-                  SortTableTemplate({
-                    name: 'nama',
-                    label: 'Nama',
-                    sortDirection: state.params.sortDirection,
-                    sortField: undefined,
-                    onClick: () =>
-                      setState((v) => ({
-                        ...v,
-                        params: { ...state.params, sortDirection: state.params.sortDirection === 'asc' ? 'desc' : 'asc' },
-                      })),
-                  }) as ITableCell,
-                  { label: 'Username' },
-                  { label: 'Email' },
-                  { label: 'LevelJabatan', props: { align: 'center' } },
-                ],
-              },
-            ],
-            TableBodyRow: state.data?.map((row, key) => ({
-              isActive: row === state.selected,
-              setSelected: () => {
-                setState((v) => ({ ...v, selected: row as IDummyData }))
-              },
-              TableCell: [
-                { label: key + 1 },
-                { label: row.nama },
-                { label: row.username },
-                { label: row.email },
-                { label: row.levelJabatan, props: { align: 'center' } },
-              ],
-            })),
-          }),
-        ],
+            background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.active,
+          })}
+        />
+        <Skeleton
+          width="50%"
+          height="10rem"
+          animation="pulse"
+          sx={(theme) => ({
+            borderRadius: borderRadius.md,
+            margin: 0,
+            padding: 0,
 
-        ...PaginationTemplate(),
-      },
-    ]
-  }
+            marginLeft: '1rem',
 
-  return <CreateElements Ingredient={Ingredient()} />
+            background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.active,
+          })}
+        />
+      </Box>
+      <Skeleton
+        width="100%"
+        height="6rem"
+        animation="pulse"
+        sx={(theme) => ({
+          borderRadius: borderRadius.md,
+          margin: 0,
+          padding: 0,
+          marginTop: '-2.5rem',
+          background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.light[0],
+        })}
+      />
+    </Box>
+  )
 }
 
 export default DashboardPage as FunctionComponent

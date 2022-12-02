@@ -23,3 +23,9 @@ export const setUrlQuery = (name: any, value: any, resetAll = 0) => {
   }
   return searchParams.toString()
 }
+
+export function convertToLabel(row: string) {
+  const capitalize = row.charAt(0).toUpperCase() + row.slice(1)
+  const giveSpaceBeforeUppercaseChar = capitalize.replace(/([a-z])([A-Z])/g, '$1 $2')
+  return giveSpaceBeforeUppercaseChar
+}
