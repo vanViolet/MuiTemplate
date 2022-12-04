@@ -3,7 +3,7 @@ import { IButton } from 'Components/CreateElements'
 import { shadow } from 'config'
 import { openStack } from 'Contexts/customizationReducer'
 import { useAppDispatch } from 'Contexts/_store'
-import { IconCollection } from 'Utilities/IconCollection'
+import { IconCollection } from 'Collections/IconCollection'
 
 export const ButtonCollection = {
   ADD: (args?: {

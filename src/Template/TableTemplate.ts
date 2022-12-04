@@ -1,6 +1,7 @@
+import { useSearchParams } from 'react-router-dom'
 import { ITableCell, ITableContainer, ITableRow } from 'Components/CreateElements'
-import { ColorCollection } from 'Utilities/ColorCollection'
-import { LottieCollection } from 'Utilities/LottieCollection'
+import { ColorCollection } from 'Collections/ColorCollection'
+import { LottieCollection } from 'Collections/LottieCollection'
 
 interface ITableBodyRow {
   TableCell?: ITableCell[]
@@ -13,10 +14,11 @@ export const TableTemplate = <T>(args: {
   TableHeadRow?: ITableRow[]
   TableBodyRow?: ITableBodyRow[]
 }): ITableContainer[] => {
+  const [searchParams] = useSearchParams()
   return [
     {
       style: () => ({
-        maxHeight: 'calc(100vh - 280px)',
+        maxHeight: 'calc(100vh - 290px)',
         borderRadius: 0,
       }),
       Table: [
@@ -54,7 +56,7 @@ export const TableTemplate = <T>(args: {
                   ],
                 },
               ]
-            : !args?.data
+            : !args?.data?.length
             ? [
                 {
                   TableRow: [
@@ -62,16 +64,28 @@ export const TableTemplate = <T>(args: {
                       TableCell: [
                         {
                           props: { colSpan: 99 },
-                          label: LottieCollection.EMPTY_CAT({
-                            BoxStyle: () => ({
-                              display: 'flex',
-                              flexDirection: 'column',
-                              WebkitJustifyContent: 'center',
-                              alignItems: 'center',
-                            }),
-                            LottieStyle: { width: 200, marginTop: '-2.5rem' },
-                            label: 'Belum ada data . . .',
-                          }),
+                          label: searchParams.get('search')
+                            ? LottieCollection.EMPTY_SEARCH({
+                                BoxStyle: (theme) => ({
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  WebkitJustifyContent: 'center',
+                                  alignItems: 'center',
+                                  filter: theme.palette.mode === 'dark' ? 'grayscale(100%)' : '',
+                                }),
+                                LottieStyle: { width: 200, marginTop: '-2.5rem' },
+                                label: `Data dengan kata kunci " ${searchParams.get('search')} " tidak ditemukan `,
+                              })
+                            : LottieCollection.EMPTY_CAT({
+                                BoxStyle: () => ({
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  WebkitJustifyContent: 'center',
+                                  alignItems: 'center',
+                                }),
+                                LottieStyle: { width: 200, marginTop: '-2.5rem' },
+                                label: 'Belum ada data . . .',
+                              }),
                         },
                       ],
                     },

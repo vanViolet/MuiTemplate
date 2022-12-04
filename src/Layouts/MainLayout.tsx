@@ -1,6 +1,6 @@
 import { Backdrop, useMediaQuery } from '@mui/material'
 import { Box } from '@mui/system'
-import { LottieCollection } from 'Utilities/LottieCollection'
+import { LottieCollection } from 'Collections/LottieCollection'
 import { CreateElements, IIngredient } from 'Components/CreateElements'
 import { sidebarToggleToTrue, sidebarToggleToFalse } from 'Contexts/customizationReducer'
 import { useAppDispatch, useAppSelector } from 'Contexts/_store'
@@ -111,7 +111,7 @@ export const MainLayout = () => {
               LOADING_OVERLAY
                 ? {
                     __CHILD: (
-                      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+                      <Backdrop sx={{ color: '#fff', zIndex: (theme) => 1301 }} open={true}>
                         {LottieCollection.LOADING_SQUARE({
                           BoxStyle: () => ({
                             width: 200,

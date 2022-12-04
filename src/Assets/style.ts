@@ -1,4 +1,4 @@
-import { ColorCollection } from '../Utilities/ColorCollection'
+import { ColorCollection } from '../Collections/ColorCollection'
 import { CSSObject, SxProps, Theme } from '@mui/material'
 import { borderRadius, shadow } from 'config'
 import { IMenuChildren } from 'Layouts/MenuItems'
@@ -170,12 +170,26 @@ export const css = {
 
   CRUD_ACTION: (theme: Theme): SxProps<Theme> => {
     return {
+      width: '70%',
+      marginLeft: '0.6rem',
       alignItems: 'center',
       justifyContent: 'flex-end',
       flexWrap: 'wrap',
       paddingRight: '1rem',
       background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.light[0],
       borderRadius: `${borderRadius.md} ${borderRadius.md} 0 0 `,
+    }
+  },
+
+  FILTER_ACTION: (theme: Theme): SxProps<Theme> => {
+    return {
+      width: '29%',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      flexWrap: 'wrap',
+      paddingRight: '1rem',
+      background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[2] : 'white',
+      borderRadius: `${borderRadius.sm} ${borderRadius.sm} 0 0 `,
     }
   },
 }

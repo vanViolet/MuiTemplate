@@ -1,4 +1,4 @@
-import { IconCollection } from 'Utilities/IconCollection'
+import { IconCollection } from 'Collections/IconCollection'
 
 export interface IMenuItems {
   label?: React.ReactNode | string | undefined

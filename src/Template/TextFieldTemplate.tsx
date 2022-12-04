@@ -1,7 +1,7 @@
 import { InputAdornment, SxProps, TextFieldProps, Theme } from '@mui/material'
 import { IIngredient, IMenuItem, ITextField } from 'Components/CreateElements'
 import { useState } from 'react'
-import { IconCollection, IIconCollection } from 'Utilities/IconCollection'
+import { IconCollection, IIconCollection } from 'Collections/IconCollection'
 
 export function TextFieldTemplate<V extends Record<string, unknown>>(args?: {
   type?: 'TextField' | 'NumberInput' | 'PasswordInput' | 'CurrencyInput' | 'Autocomplete'

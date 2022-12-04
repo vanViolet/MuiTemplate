@@ -2,8 +2,10 @@ import { CreateElements, IIngredient } from 'Components/CreateElements'
 import { AppDialog } from 'Components/Dialog'
 import { useFormik } from 'formik'
 import { TextFieldTemplate } from 'Template/TextFieldTemplate'
-import { convertToLabel } from 'Utilities/General'
+import { convertToLabel } from 'Utilities/__General'
 import Validator from 'Utilities/Validator'
+import { useDispatch } from 'react-redux'
+import { loadingOverlay } from 'Contexts/customizationReducer'
 
 const levelJabatan = [
   { label: 'MANAGER MARKETING', value: 'MANAGER_MARKETING' },
@@ -13,6 +15,9 @@ const levelJabatan = [
   { label: 'SALES', value: 'SALES' },
 ]
 export const ManajemenAkunFormDialog = () => {
+  const { dispatch } = {
+    dispatch: useDispatch(),
+  }
   const { errors, values, handleChange, handleBlur, touched, handleSubmit } = useFormik({
     initialValues: {
       nama: '' as string,
@@ -21,7 +26,9 @@ export const ManajemenAkunFormDialog = () => {
       password: '' as string,
       levelJabatan: 'MANAGER_MARKETING',
     },
-    onSubmit: (v) => console.log(v),
+    onSubmit: (v) => {
+      dispatch(loadingOverlay(true))
+    },
     validationSchema: Validator.object({
       nama: Validator.string('Nama').required().min(4).Yup,
       username: Validator.string('Username').required().min(4).Yup,

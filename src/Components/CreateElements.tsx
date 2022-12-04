@@ -75,6 +75,7 @@ interface ICreateElements {
 
 export interface IIngredient extends Omit<CommonTypes, 'order'> {
   styleForParentBox?: SxProps<Theme> | undefined
+  propsForParentBox?: BoxProps
   DIRECTION?: 'row' | 'column'
 
   /** Layout Interface */
@@ -343,7 +344,12 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
       {Ingredient?.map((row, key) =>
         row === undefined ? undefined : (
           // Mapping ======================================================= ParentRoot As Devourobject
-          <Box key={key} style={{ display: 'flex', flexDirection: row.DIRECTION || 'column' }} sx={row.styleForParentBox}>
+          <Box
+            key={key}
+            style={{ display: 'flex', flexDirection: row.DIRECTION || 'column' }}
+            sx={row.styleForParentBox}
+            {...row.propsForParentBox}
+          >
             {row.__CHILD}
 
             {/**  ( Root Parent ============================================================================> Grid )

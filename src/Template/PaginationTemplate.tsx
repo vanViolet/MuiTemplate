@@ -1,7 +1,7 @@
 import { Pagination } from '@mui/material'
 import { IIngredient } from 'Components/CreateElements'
 import { borderRadius, shadow } from 'config'
-import { ColorCollection } from 'Utilities/ColorCollection'
+import { ColorCollection } from 'Collections/ColorCollection'
 import { MobileView } from 'Utilities/MediaQuery'
 
 export const PaginationTemplate = (): IIngredient => {

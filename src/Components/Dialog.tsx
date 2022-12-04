@@ -3,8 +3,8 @@ import { borderRadius, shadow } from 'config'
 import { closeStack } from 'Contexts/customizationReducer'
 import { useAppDispatch } from 'Contexts/_store'
 import React from 'react'
-import { ColorCollection } from 'Utilities/ColorCollection'
-import { IconCollection, IIconCollection } from 'Utilities/IconCollection'
+import { ColorCollection } from 'Collections/ColorCollection'
+import { IconCollection, IIconCollection } from 'Collections/IconCollection'
 
 interface IAppDialog {
   title?: React.ReactNode | undefined

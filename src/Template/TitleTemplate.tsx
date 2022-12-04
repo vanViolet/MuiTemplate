@@ -3,15 +3,20 @@ import { InputAdornment } from '@mui/material'
 import { css } from 'Assets/style'
 import { IPaper } from 'Components/CreateElements'
 import { borderRadius } from 'config'
-import React from 'react'
-import { IconCollection, IIconCollection } from 'Utilities/IconCollection'
+import React, { useState } from 'react'
+import { IconCollection, IIconCollection } from 'Collections/IconCollection'
 import { MobileView } from 'Utilities/MediaQuery'
+import { useSearchParams } from 'react-router-dom'
+import { setUrlQuery } from 'Utilities/__General'
 
 export function TitleTemplate(args?: {
   label?: React.ReactNode | undefined
   icon?: IIconCollection
   withSearchInput?: boolean | undefined
+  setSearch?: (value: string) => void
 }) {
+  const [value, setValue] = useState<string>('')
+  const [searchParams, setSearchParams] = useSearchParams()
   return [
     {
       DIRECTION: 'row',
@@ -55,6 +60,14 @@ export function TitleTemplate(args?: {
                     backgroundColor: theme.palette.mode === 'dark' ? '' : 'white',
                     borderRadius: borderRadius.md,
                   }),
+                  onChange: (e) => setValue(e.target.value),
+
+                  onKeyDown: (e) => {
+                    if (e.key === 'Enter') {
+                      args?.setSearch?.(value)
+                      setSearchParams(setUrlQuery('search', value ? value : null))
+                    }
+                  },
                 },
               },
             },

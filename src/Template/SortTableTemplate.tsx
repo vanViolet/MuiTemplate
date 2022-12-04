@@ -1,6 +1,6 @@
 import React from 'react'
-import { ColorCollection } from 'Utilities/ColorCollection'
-import { IconCollection } from 'Utilities/IconCollection'
+import { ColorCollection } from 'Collections/ColorCollection'
+import { IconCollection } from 'Collections/IconCollection'
 
 export const SortTableTemplate = (args?: {
   name?: string

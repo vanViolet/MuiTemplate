@@ -8,6 +8,7 @@ import { DekstopView, MobileView } from 'Utilities/MediaQuery'
 import { MenuItems } from './MenuItems'
 import { useMediaQuery, useTheme } from '@mui/material'
 import { sidebarToggleToFalse } from 'Contexts/customizationReducer'
+import { useClickOutside } from 'Utilities/_UseClickOutside'
 
 export const Sidebar = () => {
   const theme = useTheme()
@@ -15,10 +16,12 @@ export const Sidebar = () => {
   const dispatch = useAppDispatch()
   const BURGER_TOGGLE = useAppSelector((state) => state.custom.sidebarToggle)
   const location = useLocation()
+  const ref = useClickOutside(() => dispatch(sidebarToggleToFalse()))
 
   function Ingredient(): IIngredient[] {
     return [
       {
+        propsForParentBox: { ref: isMobileView ? ref : undefined },
         styleForParentBox(theme) {
           return {
             ...(css.SIDEBAR_ROOT(theme) as CSSObject),

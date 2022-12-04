@@ -1,7 +1,7 @@
 import { Box, Skeleton } from '@mui/material'
 import { borderRadius } from 'config'
 import { FunctionComponent } from 'react'
-import { ColorCollection } from 'Utilities/ColorCollection'
+import { ColorCollection } from 'Collections/ColorCollection'
 
 export const DashboardPage = () => {
   return (
