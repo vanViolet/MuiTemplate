@@ -43,6 +43,7 @@ export function TitleTemplate(args?: {
           __CHILD: args?.label,
         },
       ],
+
       TextField: !args?.withSearchInput
         ? undefined
         : [

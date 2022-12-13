@@ -170,10 +170,10 @@ export const css = {
 
   CRUD_ACTION: (theme: Theme): SxProps<Theme> => {
     return {
-      width: '70%',
-      marginLeft: '0.6rem',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
+      width: '69%',
+      marginLeft: '2%',
+      alignItems: 'flex-end',
+      justifyContent: 'center',
       flexWrap: 'wrap',
       paddingRight: '1rem',
       background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.light[0],

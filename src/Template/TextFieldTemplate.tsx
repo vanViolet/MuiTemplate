@@ -1,9 +1,9 @@
 import { InputAdornment, SxProps, TextFieldProps, Theme } from '@mui/material'
-import { IIngredient, IMenuItem, ITextField } from 'Components/CreateElements'
+import { IMenuItem, ITextField } from 'Components/CreateElements'
 import { useState } from 'react'
 import { IconCollection, IIconCollection } from 'Collections/IconCollection'
 
-export function TextFieldTemplate<V extends Record<string, unknown>>(args?: {
+export function TextFieldTemplate<V extends Record<any, any>>(args?: {
   type?: 'TextField' | 'NumberInput' | 'PasswordInput' | 'CurrencyInput' | 'Autocomplete'
   style?: SxProps<Theme>
   icon?: IIconCollection
@@ -20,10 +20,10 @@ export function TextFieldTemplate<V extends Record<string, unknown>>(args?: {
   order?: number | undefined
 
   MenuItem?: IMenuItem[] | undefined
-}): IIngredient {
+}): ITextField {
   const [visibility, setVisibility] = useState(false)
 
-  const Material: ITextField = {
+  return {
     style: args?.style,
     icon: IconCollection(args?.icon ? args?.icon : undefined, 'ButtonSize'),
     props: {
@@ -94,8 +94,5 @@ export function TextFieldTemplate<V extends Record<string, unknown>>(args?: {
           }))
         : undefined,
     order: args?.order,
-  }
-  return {
-    ...Material,
   }
 }
