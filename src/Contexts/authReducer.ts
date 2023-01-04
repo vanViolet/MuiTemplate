@@ -1,22 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import jwt_decode from 'jwt-decode'
+import { ILevelJabatan } from 'Common/Types'
+import { parseJwt } from 'Utilities/__General'
+// import { UserPayload } from 'Utilities/GeneratedApi'
 
 // Define a type for the slice state
 
-export interface IAuthUser {
-  name: string
+interface UserPayload {
+  id: string
+  nama: string
+  email: string
   username: string
-  statusAktif: boolean
-  role: string
-  createdAt: Date
-  updateAt: Date
-  uuid: string
-  iat: number
+  levelJabatan: ILevelJabatan
+  unit?: string | null | undefined
+  status: 1 | 0 | boolean
+  created_at: Date
+  updated_at: Date
 }
-
 export interface IAuthReducer {
   Authorization: string
-  user: IAuthUser
+  user: UserPayload
 }
 
 interface IInitialState {
@@ -24,13 +26,13 @@ interface IInitialState {
 }
 
 export const authControl = (): IAuthReducer | null => {
-  if (!localStorage.getItem('role')) return null
-
-  const login = JSON.parse(localStorage.getItem('login') || '')
+  const token = localStorage.getItem('token')
+  if (!token) return null
 
   try {
-    const decoded = jwt_decode(login.Authorization) as IAuthUser
-    return { Authorization: login.Authorization, user: { ...decoded } }
+    const splitted = token.split(' ')[1]
+    const decoded = parseJwt(splitted) as UserPayload
+    return { Authorization: splitted, user: { ...decoded } }
   } catch (error) {
     return null
   }
@@ -45,14 +47,15 @@ export const authReducer = createSlice({
 
   initialState,
   reducers: {
-    getUser: (state, token: PayloadAction<any>) => {
+    getUser: (state, token: PayloadAction<string>) => {
       if (!token.payload) {
         state.auth = null
+        console.log('asdf')
       }
+      const splitted = token.payload.split(' ')[1]
 
-      const decoded = jwt_decode(token.payload) as IAuthUser
-
-      state.auth = { Authorization: token.payload, user: { ...decoded } }
+      const decoded = parseJwt(splitted) as UserPayload
+      state.auth = { Authorization: splitted, user: { ...decoded } }
     },
   },
 })

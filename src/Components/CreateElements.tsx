@@ -25,6 +25,7 @@ import {
   GridProps,
   IconButton,
   IconButtonProps,
+  InputAdornment,
   Menu,
   MenuItem,
   MenuItemProps,
@@ -57,6 +58,7 @@ import {
   TypographyProps,
 } from '@mui/material'
 import { DataGridProps } from '@mui/x-data-grid'
+import { IconCollection, IIconCollection } from 'Collections/IconCollection'
 import React from 'react'
 
 export type ConvertToOptional<A> = {
@@ -70,7 +72,7 @@ interface CommonTypes {
 }
 
 interface ICreateElements {
-  Ingredient?: IIngredient[] | undefined
+  Ingredient?: IIngredient[] | undefined | undefined[]
 }
 
 export interface IIngredient extends Omit<CommonTypes, 'order'> {
@@ -80,45 +82,45 @@ export interface IIngredient extends Omit<CommonTypes, 'order'> {
 
   /** Layout Interface */
   GridContainer?: IGridContainer[] | IGridContainer[] | undefined
-  Box?: IBox[] | IBox[] | undefined | undefined
-  Container?: IContainer[] | IContainer[] | undefined
-  Stack?: IStack[] | IStack[] | undefined
+  Box?: IBox[] | IBox[] | undefined | undefined | undefined[]
+  Container?: IContainer[] | IContainer[] | undefined | undefined[]
+  Stack?: IStack[] | IStack[] | undefined | undefined[]
 
   /** Surfaces Interface */
-  Paper?: IPaper[] | IPaper[] | undefined
+  Paper?: IPaper[] | IPaper[] | undefined | undefined[]
 
   /** Data Display Interface */
   Typography?: ITypography[] | ITypography[] | undefined
-  Divider?: IDivider[] | IDivider[] | undefined
-  Chip?: IChip[] | IChip[] | undefined
-  Avatar?: IAvatar[] | IAvatar[] | undefined
-  Badge?: IBadge[] | IBadge[] | undefined
+  Divider?: IDivider[] | IDivider[] | undefined | undefined[]
+  Chip?: IChip[] | IChip[] | undefined | undefined[]
+  Avatar?: IAvatar[] | IAvatar[] | undefined | undefined[]
+  Badge?: IBadge[] | IBadge[] | undefined | undefined[]
 
   /** Inputs Interface */
   Autocomplete?: IAutocomplete<any>[] | IAutocomplete<any>[] | undefined
-  Button?: IButton[] | IButton[] | undefined
-  IconButton?: IIconButton[] | IIconButton[] | undefined
-  ButtonGroup?: IButtonGroup[] | IButtonGroup[] | undefined
-  Checkbox?: ICheckbox[] | ICheckbox[] | undefined
-  RadioButton?: IRadioButton[] | IRadioButton[] | undefined
-  Switch?: ISwitch[] | ISwitch[] | undefined
-  TextField?: ITextField[] | ITextField[] | undefined
+  Button?: IButton[] | IButton[] | undefined | undefined[]
+  IconButton?: IIconButton[] | IIconButton[] | undefined | undefined[]
+  ButtonGroup?: IButtonGroup[] | IButtonGroup[] | undefined | undefined[]
+  Checkbox?: ICheckbox[] | ICheckbox[] | undefined | undefined[]
+  RadioButton?: IRadioButton[] | undefined | undefined[]
+  Switch?: ISwitch[] | undefined | undefined[]
+  TextField?: ITextField[] | undefined | undefined[]
 
   /** New */
-  Menu?: IMenu[] | undefined
-  TableContainer?: ITableContainer[] | undefined
+  Menu?: IMenu[] | undefined | undefined[]
+  TableContainer?: ITableContainer[] | undefined | undefined[]
 }
 
 export interface IGridContainer extends CommonTypes {
   props?: Omit<GridProps, 'item' | 'container'>
-  GridItem?: IGridItem[] | undefined
+  GridItem?: IGridItem[] | undefined | undefined[]
 }
 
 export interface IGridItem extends Omit<CommonTypes, 'order'> {
   props?: Omit<GridProps, 'item' | 'container'>
 
   /** Layout Interface */
-  Box?: IBoxNotNested[] | undefined | undefined | undefined
+  Box?: IBoxNotNested[] | undefined | undefined | undefined | undefined[]
   Container?: IContainer[] | IContainer[] | undefined
   Stack?: IStack[] | IStack[] | undefined
 
@@ -126,23 +128,23 @@ export interface IGridItem extends Omit<CommonTypes, 'order'> {
   Paper?: IPaper[] | IPaper[] | undefined
 
   /** Data Display Interface */
-  Typography?: ITypography[] | ITypography[] | undefined
-  Divider?: IDivider[] | IDivider[] | undefined
-  Chip?: IChip[] | IChip[] | undefined
-  Avatar?: IAvatar[] | IAvatar[] | undefined
+  Typography?: ITypography[] | ITypography[] | undefined | undefined[]
+  Divider?: IDivider[] | IDivider[] | undefined | undefined[]
+  Chip?: IChip[] | IChip[] | undefined | undefined[]
+  Avatar?: IAvatar[] | IAvatar[] | undefined | undefined[]
 
   /** Inputs Interface */
-  Autocomplete?: IAutocomplete<any>[] | IAutocomplete<any>[] | undefined
-  Button?: IButton[] | IButton[] | undefined
-  IconButton?: IIconButton[] | IIconButton[] | undefined
-  ButtonGroup?: IButtonGroup[] | IButtonGroup[] | undefined
-  Checkbox?: ICheckbox[] | ICheckbox[] | undefined
-  RadioButton?: IRadioButton[] | IRadioButton[] | undefined
-  Switch?: ISwitch[] | ISwitch[] | undefined
-  TextField?: ITextField[] | ITextField[] | undefined
+  Autocomplete?: IAutocomplete<any>[] | IAutocomplete<any>[] | undefined | undefined[]
+  Button?: IButton[] | IButton[] | undefined | undefined[]
+  IconButton?: IIconButton[] | IIconButton[] | undefined | undefined[]
+  ButtonGroup?: IButtonGroup[] | IButtonGroup[] | undefined | undefined[]
+  Checkbox?: ICheckbox[] | ICheckbox[] | undefined | undefined[]
+  RadioButton?: IRadioButton[] | IRadioButton[] | undefined | undefined[]
+  Switch?: ISwitch[] | ISwitch[] | undefined | undefined[]
+  TextField?: ITextField[] | ITextField[] | undefined | undefined[]
 
   /** New */
-  Menu?: IMenu[] | undefined
+  Menu?: IMenu[] | undefined | undefined[]
 }
 
 // Layout ============================================================================== Layout Interface
@@ -152,31 +154,31 @@ export type IBoxNotNested = Pick<IBox, 'props' | '__CHILD' | 'order' | 'style'> 
 export interface IBox extends CommonTypes {
   props?: BoxProps
   DIRECTION?: 'row' | 'column'
-  Box?: IBoxNotNested[] | undefined
-  Container?: IContainer[] | IContainer[] | undefined
-  Stack?: IStack[] | IStack[] | undefined
+  Box?: IBoxNotNested[] | undefined | undefined[]
+  Container?: IContainer[] | IContainer[] | undefined | undefined[]
+  Stack?: IStack[] | IStack[] | undefined | undefined[]
 
   /** Surfaces Interface */
-  Paper?: IPaper[] | IPaper[] | undefined
+  Paper?: IPaper[] | IPaper[] | undefined | undefined[]
 
   /** Data Display Interface */
-  Typography?: ITypography[] | ITypography[] | undefined
-  Divider?: IDivider[] | IDivider[] | undefined
-  Chip?: IChip[] | IChip[] | undefined
-  Avatar?: IAvatar[] | IAvatar[] | undefined
+  Typography?: ITypography[] | ITypography[] | undefined | undefined[]
+  Divider?: IDivider[] | IDivider[] | undefined | undefined[]
+  Chip?: IChip[] | IChip[] | undefined | undefined[]
+  Avatar?: IAvatar[] | IAvatar[] | undefined | undefined[]
 
   /** Inputs Interface */
-  Autocomplete?: IAutocomplete<any>[] | IAutocomplete<any>[] | undefined
-  Button?: IButton[] | IButton[] | undefined
-  IconButton?: IIconButton[] | IIconButton[] | undefined
-  ButtonGroup?: IButtonGroup[] | IButtonGroup[] | undefined
-  Checkbox?: ICheckbox[] | ICheckbox[] | undefined
-  RadioButton?: IRadioButton[] | IRadioButton[] | undefined
-  Switch?: ISwitch[] | ISwitch[] | undefined
-  TextField?: ITextField[] | ITextField[] | undefined
+  Autocomplete?: IAutocomplete<any>[] | IAutocomplete<any>[] | undefined | undefined[]
+  Button?: IButton[] | IButton[] | undefined | undefined[]
+  IconButton?: IIconButton[] | IIconButton[] | undefined | undefined[]
+  ButtonGroup?: IButtonGroup[] | IButtonGroup[] | undefined | undefined[]
+  Checkbox?: ICheckbox[] | ICheckbox[] | undefined | undefined[]
+  RadioButton?: IRadioButton[] | IRadioButton[] | undefined | undefined[]
+  Switch?: ISwitch[] | ISwitch[] | undefined | undefined[]
+  TextField?: ITextField[] | ITextField[] | undefined | undefined[]
 
   /** New */
-  Menu?: IMenu[] | undefined
+  Menu?: IMenu[] | undefined | undefined[]
 }
 export interface IContainer extends CommonTypes {
   props?: ContainerProps
@@ -189,31 +191,31 @@ export interface IStack extends CommonTypes {
 export interface IPaper extends CommonTypes {
   props?: PaperProps
   DIRECTION?: 'row' | 'column'
-  Box?: IBoxNotNested[] | undefined
-  Container?: IContainer[] | IContainer[] | undefined
-  Stack?: IStack[] | IStack[] | undefined
+  Box?: IBoxNotNested[] | undefined | undefined[]
+  Container?: IContainer[] | IContainer[] | undefined | undefined[]
+  Stack?: IStack[] | IStack[] | undefined | undefined[]
 
   /** Surfaces Interface */
-  Paper?: IPaper[] | IPaper[] | undefined
+  Paper?: IPaper[] | IPaper[] | undefined | undefined[]
 
   /** Data Display Interface */
-  Typography?: ITypography[] | ITypography[] | undefined
-  Divider?: IDivider[] | IDivider[] | undefined
-  Chip?: IChip[] | IChip[] | undefined
-  Avatar?: IAvatar[] | IAvatar[] | undefined
+  Typography?: ITypography[] | ITypography[] | undefined | undefined[]
+  Divider?: IDivider[] | IDivider[] | undefined | undefined[]
+  Chip?: IChip[] | IChip[] | undefined | undefined[]
+  Avatar?: IAvatar[] | IAvatar[] | undefined | undefined[]
 
   /** Inputs Interface */
-  Autocomplete?: IAutocomplete<any>[] | IAutocomplete<any>[] | undefined
-  Button?: IButton[] | undefined
-  IconButton?: IIconButton[] | IIconButton[] | undefined
-  ButtonGroup?: IButtonGroup[] | IButtonGroup[] | undefined
-  Checkbox?: ICheckbox[] | ICheckbox[] | undefined
-  RadioButton?: IRadioButton[] | IRadioButton[] | undefined
-  Switch?: ISwitch[] | ISwitch[] | undefined
-  TextField?: ITextField[] | ITextField[] | undefined
+  Autocomplete?: IAutocomplete<any>[] | IAutocomplete<any>[] | undefined | undefined[]
+  Button?: IButton[] | undefined | undefined[]
+  IconButton?: IIconButton[] | IIconButton[] | undefined | undefined[]
+  ButtonGroup?: IButtonGroup[] | IButtonGroup[] | undefined | undefined[]
+  Checkbox?: ICheckbox[] | ICheckbox[] | undefined | undefined[]
+  RadioButton?: IRadioButton[] | IRadioButton[] | undefined | undefined[]
+  Switch?: ISwitch[] | ISwitch[] | undefined | undefined[]
+  TextField?: ITextField[] | ITextField[] | undefined | undefined[]
 
   /** New */
-  Menu?: IMenu[] | undefined
+  Menu?: IMenu[] | undefined | undefined[]
 }
 
 // Data Display ================================================================== Data Display Interface
@@ -247,9 +249,10 @@ export interface IAutocomplete<
   FreeSolo extends boolean | undefined = undefined,
   ChipComponent extends React.ElementType = ChipTypeMap['defaultComponent']
 > extends Omit<CommonTypes, '__CHILD'> {
-  props?: AutocompleteProps<T, Multiple, DisableClearable, FreeSolo, ChipComponent>
+  props?: ConvertToOptional<AutocompleteProps<T, Multiple, DisableClearable, FreeSolo, ChipComponent>>
   option: ReadonlyArray<T>
   label?: string
+  icon?: IIconCollection | undefined
 }
 
 export interface IButton extends CommonTypes {
@@ -436,7 +439,20 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
                               style={{ order: row.order }}
                               sx={row.style}
                               options={row.option}
-                              renderInput={(params) => <TextField {...params} label={row.label} />}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  label={row.label}
+                                  InputProps={{
+                                    ...params.InputProps,
+                                    startAdornment: (
+                                      <InputAdornment position="start">
+                                        {IconCollection(row.icon ?? undefined, 'ButtonSize')}
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                />
+                              )}
                               {...row.props}
                             />
                           )
@@ -509,7 +525,7 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
                           )
                         )}
 
-                        {row?.TextField?.map((row, key) =>
+                        {row?.TextField?.map((row: ITextField | undefined, key) =>
                           row === undefined ? undefined : (
                             <TextField key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
                               {row?.MenuItem?.map((row, key) =>
@@ -658,7 +674,22 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
                         style={{ order: row.order }}
                         sx={row.style}
                         options={row.option}
-                        renderInput={(params) => <TextField {...params} label={row.label} />}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            InputLabelProps={{
+                              ...params.InputLabelProps,
+                              sx: { fontWeight: 700, fontSize: '1rem', marginTop: '-0.3rem' },
+                            }}
+                            label={row.label}
+                            InputProps={{
+                              ...params.InputProps,
+                              startAdornment: (
+                                <InputAdornment position="start">{IconCollection(row.icon ?? undefined, 'ButtonSize')}</InputAdornment>
+                              ),
+                            }}
+                          />
+                        )}
                         {...row.props}
                       />
                     )
@@ -729,7 +760,7 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
                     )
                   )}
 
-                  {row?.TextField?.map((row, key) =>
+                  {row?.TextField?.map((row: ITextField | undefined, key) =>
                     row === undefined ? undefined : (
                       <TextField key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
                         {row?.MenuItem?.map((row, key) =>
@@ -897,7 +928,22 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
                         style={{ order: row.order }}
                         sx={row.style}
                         options={row.option}
-                        renderInput={(params) => <TextField {...params} label={row.label} />}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            InputLabelProps={{
+                              ...params.InputLabelProps,
+                              sx: { fontWeight: 700, fontSize: '1rem', marginTop: '-0.3rem' },
+                            }}
+                            label={row.label}
+                            InputProps={{
+                              ...params.InputProps,
+                              startAdornment: (
+                                <InputAdornment position="start">{IconCollection(row.icon ?? undefined, 'ButtonSize')}</InputAdornment>
+                              ),
+                            }}
+                          />
+                        )}
                         {...row.props}
                       />
                     )
@@ -968,7 +1014,7 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
                     )
                   )}
 
-                  {row?.TextField?.map((row, key) =>
+                  {row?.TextField?.map((row: ITextField | undefined, key) =>
                     row === undefined ? undefined : (
                       <TextField key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
                         {row?.MenuItem?.map((row, key) =>
@@ -1063,7 +1109,22 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
                   style={{ order: row.order }}
                   sx={row.style}
                   options={row.option}
-                  renderInput={(params) => <TextField {...params} label={row.label} />}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      InputLabelProps={{
+                        ...params.InputLabelProps,
+                        sx: { fontWeight: 700, fontSize: '1rem', marginTop: '-0.3rem' },
+                      }}
+                      label={row.label}
+                      InputProps={{
+                        ...params.InputProps,
+                        startAdornment: (
+                          <InputAdornment position="start">{IconCollection(row.icon ?? undefined, 'ButtonSize')}</InputAdornment>
+                        ),
+                      }}
+                    />
+                  )}
                   {...row.props}
                 />
               )
@@ -1134,7 +1195,7 @@ export const CreateElements = ({ Ingredient: Ingredient }: ICreateElements) => {
               )
             )}
 
-            {row?.TextField?.map((row, key) =>
+            {row?.TextField?.map((row: ITextField | undefined, key) =>
               row === undefined ? undefined : (
                 <TextField key={key} style={{ order: row.order }} sx={row.style} {...row.props}>
                   {row?.MenuItem?.map((row, key) =>

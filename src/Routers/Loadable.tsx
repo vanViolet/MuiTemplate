@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import React, { Suspense, Fragment } from 'react'
 import { FallbackSkeleton } from './FallbackSkeleton'
 
 // project imports
@@ -8,7 +8,9 @@ import { FallbackSkeleton } from './FallbackSkeleton'
 const Loadable = (Component: any) => (props: any) =>
   (
     <Suspense fallback={<FallbackSkeleton />}>
-      <Component {...props} />
+      <Fragment>
+        <Component {...props} />
+      </Fragment>
     </Suspense>
   )
 

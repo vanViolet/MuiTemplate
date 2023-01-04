@@ -29,3 +29,7 @@ export function convertToLabel(row: string) {
   const giveSpaceBeforeUppercaseChar = capitalize.replace(/([a-z])([A-Z])/g, '$1 $2')
   return giveSpaceBeforeUppercaseChar
 }
+
+export function removeUnderscores(str: string) {
+  return str.replace(/_/g, ' ')
+}

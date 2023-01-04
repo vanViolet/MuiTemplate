@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import { GlobalAPI } from 'Services/Api'
 import { authReducer } from './authReducer'
 import { customReducer } from './customizationReducer'
 import { modeReducer } from './modeReducer'
@@ -13,8 +14,9 @@ export const store = configureStore({
     custom: customReducer.reducer,
     auth: authReducer.reducer,
     mode: modeReducer.reducer,
+    [GlobalAPI.reducerPath]: GlobalAPI.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(GlobalAPI.middleware),
 })
 
 export type RootState = ReturnType<typeof store.getState>

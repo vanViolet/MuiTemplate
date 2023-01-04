@@ -4,20 +4,26 @@ import { LottieCollection } from 'Collections/LottieCollection'
 import { CreateElements, IIngredient } from 'Components/CreateElements'
 import { sidebarToggleToTrue, sidebarToggleToFalse } from 'Contexts/customizationReducer'
 import { useAppDispatch, useAppSelector } from 'Contexts/_store'
-import { useEffect, useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Navigate, Outlet } from 'react-router-dom'
 import { MobileView } from 'Utilities/MediaQuery'
 import { Header } from './Header'
 import { Sidebar } from './Sidebar'
 import { commonCss } from 'Assets/commonCss'
 
 export const MainLayout = () => {
-  const Mobile = useMediaQuery('(max-width: 850px)')
-  const dispatch = useAppDispatch()
-  const BURGER_TOGGLE = useAppSelector((state) => state.custom.sidebarToggle)
-  const LOADING_OVERLAY = useAppSelector((state) => state.custom.loadingOverlay)
-  const DIALOG = useAppSelector((state) => state.custom.openStack)
-  const [value, setValue] = useState(0)
+  const { BURGER_TOGGLE, DIALOG, LOADING_OVERLAY, Mobile, dispatch, USER } = {
+    Mobile: useMediaQuery('(max-width: 850px)'),
+    dispatch: useAppDispatch(),
+    BURGER_TOGGLE: useAppSelector((state) => state.custom.sidebarToggle),
+    LOADING_OVERLAY: useAppSelector((state) => state.custom.loadingOverlay),
+    DIALOG: useAppSelector((state) => state.custom.openStack),
+    USER: useAppSelector((state) => state.auth.auth),
+  }
+
+  if (!USER) {
+    return <Navigate to="/login" />
+  }
   useEffect(() => {
     if (Mobile) {
       dispatch(sidebarToggleToFalse())

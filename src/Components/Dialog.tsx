@@ -20,7 +20,8 @@ export const AppDialog = ({ title, icon, dialogProps, action, children, onSubmit
   return (
     <Dialog
       sx={(theme) => ({
-        '& .MuiPaper-root': {
+        '& .MuiDialog-paper': {
+          overflow: 'initial',
           transitionDuration: '1000ms',
           borderRadius: borderRadius.md,
           '@keyframes darkModeEffect': {

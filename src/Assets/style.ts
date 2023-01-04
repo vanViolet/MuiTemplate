@@ -155,7 +155,7 @@ export const css = {
     return {
       width: '100%',
       padding: '0.7rem',
-      marginBottom: '1rem',
+      marginBottom: '0.5rem',
       alignItems: 'center',
       flexWrap: 'wrap',
       background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.light[0],
@@ -170,24 +170,44 @@ export const css = {
 
   CRUD_ACTION: (theme: Theme): SxProps<Theme> => {
     return {
+      background: theme.palette.mode === 'dark' ? ColorCollection.bg.light[1] : ColorCollection.bg.light[0],
+      borderRadius: borderRadius.md,
+      boxShadow: shadow.light.sm,
+      flexGrow: 1,
+      width: '100%',
+      marginBottom: '0.5rem',
+      padding: '0.5rem',
+      justifyContent: 'flex-end',
+      '& > button': {
+        margin: '0rem 0.3rem',
+      },
+    }
+  },
+
+  FILTER_ACTION_RIGHT: (theme: Theme): SxProps<Theme> => {
+    return {
+      [MobileView()]: {
+        width: '100%',
+        marginLeft: '0',
+      },
       width: '69%',
       marginLeft: '2%',
       alignItems: 'flex-end',
       justifyContent: 'center',
-      flexWrap: 'wrap',
-      paddingRight: '1rem',
-      background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[1] : ColorCollection.bg.light[0],
       borderRadius: `${borderRadius.md} ${borderRadius.md} 0 0 `,
     }
   },
 
-  FILTER_ACTION: (theme: Theme): SxProps<Theme> => {
+  FILTER_ACTION_LEFT: (theme: Theme): SxProps<Theme> => {
     return {
+      [MobileView()]: {
+        width: '100%',
+        marginTop: '0.5rem',
+      },
       width: '29%',
       alignItems: 'center',
       justifyContent: 'flex-start',
       flexWrap: 'wrap',
-      paddingRight: '1rem',
       background: theme.palette.mode === 'dark' ? ColorCollection.bg.dark[2] : 'white',
       borderRadius: `${borderRadius.sm} ${borderRadius.sm} 0 0 `,
     }

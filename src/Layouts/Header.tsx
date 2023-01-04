@@ -7,15 +7,23 @@ import { css } from 'Assets/style'
 import { IconCollection } from 'Collections/IconCollection'
 import { DekstopView, MobileView } from 'Utilities/MediaQuery'
 import { MuiSwitch } from 'Components/MuiSwitch'
-import React from 'react'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export const Header = () => {
-  const DARK_MODE = useAppSelector((state) => state.mode.Theme)
-  const BURGER_TOGGLE = useAppSelector((state) => state.custom.sidebarToggle)
-  const dispatch = useAppDispatch()
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
-
+  const {
+    DARK_MODE,
+    BURGER_TOGGLE,
+    dispatch,
+    ANCHOR: [anchorEl, setAnchorEl],
+    navigate,
+  } = {
+    DARK_MODE: useAppSelector((state) => state.mode.Theme),
+    BURGER_TOGGLE: useAppSelector((state) => state.custom.sidebarToggle),
+    dispatch: useAppDispatch(),
+    ANCHOR: useState<null | HTMLElement>(null),
+    navigate: useNavigate(),
+  }
   function Ingredient(): IIngredient[] {
     return [
       {
@@ -124,7 +132,7 @@ export const Header = () => {
           {
             Menu: [
               {
-                open,
+                open: Boolean(anchorEl),
                 anchorEl,
                 onClose() {
                   setAnchorEl(null)
@@ -159,6 +167,13 @@ export const Header = () => {
                     }),
                     rightIcon: IconCollection('LogOut', 'MenuSize'),
                     label: 'Logout',
+                    props: {
+                      onClick: () => {
+                        localStorage.removeItem('token')
+                        window.location.reload()
+                        navigate('/login')
+                      },
+                    },
                   },
                 ],
               },

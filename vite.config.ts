@@ -10,6 +10,12 @@ export default (props) => {
   return defineConfig({
     server: {
       port: 3000,
+      proxy: {
+        '/api': {
+          target: `${process.env.VITE_APP_ENDPOINT}`,
+          changeOrigin: true,
+        },
+      },
     },
     preview: {
       port: 8080,

@@ -1,6 +1,7 @@
 import {
   AiFillCloseCircle,
   AiFillDashboard,
+  AiOutlineDeploymentUnit,
   AiOutlineFileExcel,
   AiOutlineKey,
   AiOutlineReload,
@@ -36,8 +37,15 @@ import {
   FaHistory,
 } from 'react-icons/fa'
 import { GiHamburgerMenu, GiMoonBats } from 'react-icons/gi'
-import { GrProductHunt, GrUserSettings } from 'react-icons/gr'
-import { MdAdminPanelSettings, MdEmail, MdOutlineVisibility, MdOutlineVisibilityOff, MdShoppingCart } from 'react-icons/md'
+import { GrProductHunt, GrStatusGoodSmall, GrUserSettings } from 'react-icons/gr'
+import {
+  MdAdminPanelSettings,
+  MdEmail,
+  MdOutlineAdminPanelSettings,
+  MdOutlineVisibility,
+  MdOutlineVisibilityOff,
+  MdShoppingCart,
+} from 'react-icons/md'
 import { CgUserlane } from 'react-icons/cg'
 import { FiLogOut } from 'react-icons/fi'
 import { TbListDetails } from 'react-icons/tb'
@@ -98,6 +106,9 @@ export type IIconCollection =
   | 'Close'
   | 'VisibilityOn'
   | 'VisibilityOff'
+  | 'Status'
+  | 'Unit'
+  | 'GuardOutlined'
   | undefined
 
 type ISize = 'ButtonSize' | 'HeroSize' | 'MenuSize' | number
@@ -107,6 +118,51 @@ export const IconCollection = (icon: IIconCollection, size: ISize, color?: strin
   if (icon === 'Plus')
     return (
       <FaPlusSquare
+        size={
+          typeof size === 'number'
+            ? size
+            : size === 'HeroSize'
+            ? iconSize.HeroSize
+            : size === 'MenuSize'
+            ? iconSize.MenuSize
+            : iconSize.ButtonSize
+        }
+        color={color}
+      />
+    )
+  if (icon === 'GuardOutlined')
+    return (
+      <MdOutlineAdminPanelSettings
+        size={
+          typeof size === 'number'
+            ? size
+            : size === 'HeroSize'
+            ? iconSize.HeroSize
+            : size === 'MenuSize'
+            ? iconSize.MenuSize
+            : iconSize.ButtonSize
+        }
+        color={color}
+      />
+    )
+  if (icon === 'Unit')
+    return (
+      <AiOutlineDeploymentUnit
+        size={
+          typeof size === 'number'
+            ? size
+            : size === 'HeroSize'
+            ? iconSize.HeroSize
+            : size === 'MenuSize'
+            ? iconSize.MenuSize
+            : iconSize.ButtonSize
+        }
+        color={color}
+      />
+    )
+  if (icon === 'Status')
+    return (
+      <GrStatusGoodSmall
         size={
           typeof size === 'number'
             ? size
